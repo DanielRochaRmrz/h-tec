@@ -1,11 +1,16 @@
 {
-  "hosting": [
-    {
-      "target": "h-tec",
-      "source": ".",
-      "frameworksBackend": {
-        "region": "us-central1"
+  "hosting": {
+    "public": "dist/h-tec/browser",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
       }
-    }
-  ]
+    ]
+  }
 }
