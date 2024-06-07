@@ -1,0 +1,77 @@
+<h2 mat-dialog-title>Nuevo Técnico</h2>
+<mat-dialog-content>
+  <form autocomplete="" [formGroup]="myForm">
+    <div class="row g-3 mt-2">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre:</mat-label>
+          <input matInput formControlName="nombre" />
+          <mat-icon matSuffix>badge</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Dirección:</mat-label>
+          <input matInput formControlName="direccion" />
+          <mat-icon matSuffix>home</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>WhatsApp:</mat-label>
+          <input matInput formControlName="whatsApp" />
+          <mat-icon matSuffix>phone_iphone</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Correo:</mat-label>
+          <input matInput formControlName="correo" />
+          <mat-icon matSuffix>mail</mat-icon>
+        </mat-form-field>
+      </div>
+      <hr />
+      <div class="col-md-10 checkboxHorizontal">
+        <div *ngFor="let clasificacion of clasificaciones">
+          <mat-checkbox (change)="onCheckboxChange($event, clasificacion)">
+            {{clasificacion.nombre}}
+          </mat-checkbox>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="button-container">
+          <button mat-fab color="primary" (click)="openDialog()">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </div>
+      <hr />
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Clave:</mat-label>
+          <input matInput formControlName="clave" />
+          <mat-icon matSuffix>vpn_key</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Clasificación:</mat-label>
+          <input matInput formControlName="clasificacion" />
+          <mat-icon matSuffix>engineering</mat-icon>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <div class="row gx-4 me-3">
+    <div class="col">
+      <button mat-button (click)="onNoClick()">Cerrar</button>
+    </div>
+    <div class="col">
+      <button mat-flat-button color="primary" (click)="onSubmit()">
+        Guardar
+      </button>
+    </div>
+  </div>
+</mat-dialog-actions>

@@ -1,0 +1,12 @@
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Esto hace que el contenedor ocupe toda la altura de la pantalla */
+}
+
+.login-card {
+  max-width: 400px; /* Ajusta este valor a tus necesidades */
+  margin: 0 auto; /* Centra la tarjeta en su contenedor */
+}

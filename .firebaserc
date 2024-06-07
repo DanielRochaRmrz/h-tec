@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "h-tec-aec06": {
+      "hosting": {
+        "h-tec": [
+          "h-tec-aec06"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "h-tec-aec06"
+  }
+}

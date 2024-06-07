@@ -1,0 +1,11 @@
+{
+  "hosting": [
+    {
+      "target": "h-tec",
+      "source": ".",
+      "frameworksBackend": {
+        "region": "us-central1"
+      }
+    }
+  ]
+}

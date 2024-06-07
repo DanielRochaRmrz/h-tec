@@ -1,0 +1,23 @@
+<mat-dialog-content>
+  <p>Busqueda de cliente</p>
+  <form class="example-form">
+    <mat-form-field class="example-full-width">
+      <mat-label>Cliente</mat-label>
+      <input type="text"
+             placeholder="Pick one"
+             aria-label="Number"
+             matInput
+             [formControl]="myControl"
+             [matAutocomplete]="auto">
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+        @for (option of filteredOptions | async; track option) {
+          <mat-option [value]="option">{{ option.cliente }}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button>Cerrar</button>
+  <button mat-button [mat-dialog-close]="myControl.value" cdkFocusInitial>Autocompletar</button>
+</mat-dialog-actions>

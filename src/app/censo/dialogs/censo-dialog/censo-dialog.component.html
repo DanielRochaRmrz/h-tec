@@ -1,0 +1,324 @@
+<h2 mat-dialog-title>Nuevo Censo</h2>
+<mat-dialog-content>
+  <mat-stepper orientation="vertical" [linear]="isLinear" #stepper>
+    <mat-step [stepControl]="clientForm">
+      <form [formGroup]="clientForm">
+        <ng-template matStepLabel>Cliente</ng-template>
+        <div class="row g-3 mt-2">
+          <div class="col-md-5">
+            <mat-form-field appearance="outline">
+              <mat-label>Clave cliente ASPEL:</mat-label>
+              <input matInput formControlName="claveASPEL" />
+              <mat-icon matSuffix>vpn_key</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="col-md-1 text-start">
+            <button
+              mat-mini-fab
+              type="button"
+              class="mt-4"
+              color="primary"
+              (click)="openDialog()"
+            >
+              <mat-icon>search</mat-icon>
+            </button>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Nombre del Cliente:</mat-label>
+              <input matInput formControlName="cliente" />
+              <mat-icon matSuffix>apartment</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field appearance="outline">
+              <mat-label>WhatsApp:</mat-label>
+              <input matInput formControlName="whatsApp" />
+              <mat-icon matSuffix>phone_iphone</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Teléfono:</mat-label>
+              <input matInput formControlName="telefono" />
+              <mat-icon matSuffix>call</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Correo:</mat-label>
+              <input matInput formControlName="correo" />
+              <mat-icon matSuffix>mail</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Fecha de registro</mat-label>
+              <input
+                matInput
+                formControlName="fechaRegistro"
+                [matDatepicker]="fechaRegistro"
+                (focus)="fechaRegistro.open()"
+                readonly
+              />
+              <mat-icon matSuffix>calendar_month</mat-icon>
+            </mat-form-field>
+            <mat-datepicker #fechaRegistro></mat-datepicker>
+          </div>
+        </div>
+        <hr />
+        <div>
+          <button mat-button matStepperNext>Descripción</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="equipoForm">
+      <ng-template matStepLabel>Descripción</ng-template>
+      <mat-accordion class="example-headers-align">
+        <form [formGroup]="equipoForm">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title> Descripción de Equipos </mat-panel-title>
+              <mat-panel-description>
+                <mat-icon>devices</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="row g-3 mt-2">
+              <div class="col-md-12">
+                <section class="example-section">
+                  <label class="example-margin">Equipo:</label>
+                  <mat-radio-group formControlName="tipo">
+                    <mat-radio-button class="example-margin" value="computadora"
+                      >Computadora</mat-radio-button
+                    >
+                    <mat-radio-button class="example-margin" value="escritorio"
+                      >Escritorio</mat-radio-button
+                    >
+                    <mat-radio-button class="example-margin" value="portatil"
+                      >Portatil</mat-radio-button
+                    >
+                    <mat-radio-button class="example-margin" value="tableta"
+                      >Tableta</mat-radio-button
+                    >
+                  </mat-radio-group>
+                </section>
+              </div>
+              <hr />
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Modelo:</mat-label>
+                  <input matInput formControlName="modelo" />
+                  <mat-icon matSuffix>devices</mat-icon>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Marca:</mat-label>
+                  <input matInput formControlName="marca" />
+                  <mat-icon matSuffix>branding_watermark</mat-icon>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Numero de serie:</mat-label>
+                  <input matInput formControlName="numeroSerie" />
+                  <mat-icon matSuffix>pin</mat-icon>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Sistema Opetivo + Versión:</mat-label>
+                  <input matInput formControlName="sistemOperativoV" />
+                  <mat-icon matSuffix>album</mat-icon>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Office + Versión:</mat-label>
+                  <input matInput formControlName="officeV" />
+                  <mat-icon matSuffix>description</mat-icon>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Antivirus:</mat-label>
+                  <input matInput formControlName="antivirus" />
+                  <mat-icon matSuffix>bug_report</mat-icon>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Fecha de caducidad antivirus</mat-label>
+                  <input
+                    matInput
+                    formControlName="fechaCaducidadAnti"
+                    [matDatepicker]="fechaCaducidadAnti"
+                    (focus)="fechaCaducidadAnti.open()"
+                    readonly
+                  />
+                  <mat-icon matSuffix>event</mat-icon>
+                </mat-form-field>
+                <mat-datepicker #fechaCaducidadAnti></mat-datepicker>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>QR:</mat-label>
+                  <input matInput formControlName="qr" />
+                  <mat-icon matSuffix>qr_code_2</mat-icon>
+                </mat-form-field>
+              </div>
+              <hr />
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Área o departamento:</mat-label>
+                  <input matInput formControlName="areaDepartamento" />
+                  <mat-icon matSuffix>apartment</mat-icon>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Responsable del equipo:</mat-label>
+                  <input matInput formControlName="reponsableEquipo" />
+                  <mat-icon matSuffix>badge</mat-icon>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label
+                    >Correo de la persona responsable del equipo:</mat-label
+                  >
+                  <input matInput formControlName="responsableCorreo" />
+                  <mat-icon matSuffix>alternate_email</mat-icon>
+                </mat-form-field>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </form>
+        <form [formGroup]="impresoraForm">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title> Descripción de Impresoras </mat-panel-title>
+              <mat-panel-description>
+                <mat-icon>print</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="row g-3 mt-2">
+              <div class="col-md-12">
+                <section class="example-section">
+                  <label class="example-margin">Equipo:</label>
+                  <mat-radio-group formControlName="tipo">
+                    <mat-radio-button class="example-margin" value="impresora"
+                      >Impresora</mat-radio-button
+                    >
+                    <mat-radio-button class="example-margin" value="matriz"
+                      >Matriz</mat-radio-button
+                    >
+                    <mat-radio-button class="example-margin" value="laser"
+                      >Laser</mat-radio-button
+                    >
+                    <mat-radio-button class="example-margin" value="termica"
+                      >Termica</mat-radio-button
+                    >
+                  </mat-radio-group>
+                </section>
+              </div>
+              <hr />
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Modelo:</mat-label>
+                  <input matInput formControlName="modelo" />
+                  <mat-icon matSuffix>print</mat-icon>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Marca:</mat-label>
+                  <input matInput formControlName="marca" />
+                  <mat-icon matSuffix>branding_watermark</mat-icon>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Numero de serie:</mat-label>
+                  <input matInput formControlName="numeroSerie" />
+                  <mat-icon matSuffix>pin</mat-icon>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Toner modelo</mat-label>
+                  <input matInput formControlName="sistemOperativoV" />
+                  <mat-icon matSuffix>opacity</mat-icon>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>QR:</mat-label>
+                  <input matInput formControlName="qr" />
+                  <mat-icon matSuffix>qr_code_2</mat-icon>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Área o departamento:</mat-label>
+                  <input matInput formControlName="qr" />
+                  <mat-icon matSuffix>apartment</mat-icon>
+                </mat-form-field>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </form>
+      </mat-accordion>
+      <hr />
+      <div>
+        <button mat-button matStepperPrevious>Clientes</button>
+        <button mat-button matStepperNext>Fotografias</button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Fotografías</ng-template>
+      <div class="row justify-content-center align-items-center g-2">
+        <div class="col-md-6">
+          <div class="text-center">
+            <input
+              type="file"
+              #fileInput
+              style="display: none"
+              (change)="onFileSelected($event)"
+              multiple
+            />
+            <button mat-fab color="primary" (click)="fileInput.click()">
+              <mat-icon>photo_camera</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row justify-content-center align-items-center g-2">
+            <ngx-gallery
+              [options]="galleryOptions"
+              [images]="galleryImages"
+            ></ngx-gallery>
+          </div>
+        </div>
+      </div>
+      <div>
+        <button mat-button matStepperPrevious>Descripción</button>
+        <button mat-button (click)="stepper.reset()">Clientes</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <div class="row gx-4 me-3">
+    <div class="col">
+      <button mat-button (click)="onNoClick()">Cerrar</button>
+    </div>
+    <div class="col">
+      <button mat-flat-button color="primary" (click)="onSubmit()">
+        Guardar
+      </button>
+    </div>
+  </div>
+</mat-dialog-actions>

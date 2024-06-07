@@ -1,0 +1,68 @@
+<h2 mat-dialog-title>Censo detalle</h2>
+<mat-dialog-content>
+  <div class="row g-2">
+    <hr />
+    <div class="col-md-12">
+      <h2 class="fw-bolder">Cliente: {{ data.cliente.cliente }}</h2>
+    </div>
+    <hr />
+    <div class="col-md-3 fw-bolder">Clave cliente ASPEL:</div>
+    <div class="col-md-3">{{ data.cliente.claveASPEL }}</div>
+    <div class="col-md-3 fw-bolder">WhatsApp:</div>
+    <div class="col-md-3">{{ data.cliente.whatsApp }}</div>
+
+    <div class="col-md-3 fw-bolder">Telefono:</div>
+    <div class="col-md-3">{{ data.cliente.telefono }}</div>
+    <div class="col-md-3 fw-bolder">Correo:</div>
+    <div class="col-md-3">{{ data.cliente.correo }}</div>
+
+    <div class="col-md-3 fw-bolder">Fecha de registro:</div>
+    <div class="col-md-3">{{ data.cliente.fechaRegistro }}</div>
+
+    <hr />
+    <div class="col-md-12">
+      <h2 class="fw-bolder">Equipo: {{ data.equipo.tipo }}</h2>
+    </div>
+    <hr />
+
+    <div class="col-md-3 fw-bolder">Modelo:</div>
+    <div class="col-md-3">{{ data.equipo.modelo }}</div>
+    <div class="col-md-3 fw-bolder">Marca:</div>
+    <div class="col-md-3">{{ data.equipo.marca }}</div>
+
+    <div class="col-md-3 fw-bolder">Numero de serie:</div>
+    <div class="col-md-3">{{ data.equipo.numeroSerie }}</div>
+    <div class="col-md-3 fw-bolder">Sistema Operativo + Version:</div>
+    <div class="col-md-3">{{ data.equipo.sistemOperativoV }}</div>
+
+    <div class="col-md-3 fw-bolder">Office + Version:</div>
+    <div class="col-md-3">{{ data.equipo.officeV }}</div>
+    <div class="col-md-3 fw-bolder">Antivirus:</div>
+    <div class="col-md-3">{{ data.equipo.antivirus }}</div>
+
+    <div class="col-md-3 fw-bolder">Fecha de caducidad antivirus:</div>
+    <div class="col-md-3">{{ data.equipo.fechaCaducidadAnti }}</div>
+    <div class="col-md-3 fw-bolder">QR:</div>
+    <div class="col-md-3">{{ data.equipo.qr }}</div>
+
+    <hr />
+    <div class="col-md-12">
+      <h2 class="fw-bolder">Fotografias</h2>
+    </div>
+    <hr />
+
+    <div class="row justify-content-center align-items-center g-2">
+      <div class="col-md-6">
+        <div class="row justify-content-center align-items-center g-2">
+          <ngx-gallery
+            [options]="galleryOptions"
+            [images]="galleryImages"
+          ></ngx-gallery>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cerrar</button>
+</mat-dialog-actions>

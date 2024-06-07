@@ -1,0 +1,98 @@
+<h2 mat-dialog-title>Nuevo Cliente</h2>
+<mat-dialog-content>
+  <form autocomplete="" [formGroup]="myForm">
+    <div class="row g-3 mt-2">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Cliente:</mat-label>
+          <input matInput formControlName="cliente" />
+          <mat-icon matSuffix>apartment</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>RFC:</mat-label>
+          <input matInput formControlName="rfc" />
+          <mat-icon matSuffix>account_balance</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Clave cliente ASPEL:</mat-label>
+          <input matInput formControlName="claveASPEL" />
+          <mat-icon matSuffix>vpn_key</mat-icon>
+        </mat-form-field>
+      </div>
+      <hr>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Calle y No:</mat-label>
+          <input matInput formControlName="calleNumero" />
+          <mat-icon matSuffix>location_on</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>CP:</mat-label>
+          <input matInput formControlName="cp" />
+          <mat-icon matSuffix>location_on</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Colonia:</mat-label>
+          <input matInput formControlName="colonia" />
+          <mat-icon matSuffix>location_on</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Ciudad:</mat-label>
+          <input matInput formControlName="ciudad" />
+          <mat-icon matSuffix>location_on</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Estado:</mat-label>
+          <input matInput formControlName="estado" />
+          <mat-icon matSuffix>location_on</mat-icon>
+        </mat-form-field>
+      </div>
+      <hr>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>WhatsApp:</mat-label>
+          <input matInput formControlName="whatsApp" />
+          <mat-icon matSuffix>phone_iphone</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Teléfono:</mat-label>
+          <input matInput formControlName="telefono" />
+          <mat-icon matSuffix>call</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Correo:</mat-label>
+          <input matInput formControlName="correo" />
+          <mat-icon matSuffix>mail</mat-icon>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <div class="row gx-4 me-3">
+    <div class="col">
+      <button mat-button (click)="onNoClick()">Cerrar</button>
+    </div>
+    <div class="col">
+      <button mat-flat-button color="primary" (click)="onSubmit()">
+        Guardar
+      </button>
+    </div>
+  </div>
+</mat-dialog-actions>
