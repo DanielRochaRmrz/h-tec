@@ -12,7 +12,16 @@ export class AuthService {
   constructor() {
     this.auth.onAuthStateChanged((user) => {
       this.user = user;
+      if (user) {
+        localStorage.setItem('user', JSON.stringify(user));
+      } else {
+        localStorage.removeItem('user');
+      }
     });
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      this.user = JSON.parse(storedUser);
+    }
   }
 
   async createUser(email: string, password: string): Promise<any> {
@@ -31,6 +40,14 @@ export class AuthService {
       // Handle the error here
       throw error;
     }
+  }
+
+
+  logout(): void {
+    this.auth.signOut().then(() => {
+      localStorage.removeItem('user');
+      this.user = null;
+    });
   }
 
 }
