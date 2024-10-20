@@ -13,6 +13,7 @@ import { ProductosDialogComponent } from '../../dialogs/productos-dialog/product
 
 import { ProductoData } from '../../interfaces/productos.interface';
 import { ProductosService } from '../../services/productos.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-productos',
@@ -23,7 +24,7 @@ import { ProductosService } from '../../services/productos.service';
 })
 export class ProductosComponent {
 
-  displayedColumns: string[] = ['clave', 'descripcion', 'precio'];
+  displayedColumns: string[] = ['clave', 'descripcion', 'precio', 'acciones'];
   dataSource!: MatTableDataSource<ProductoData>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -71,4 +72,41 @@ export class ProductosComponent {
     });
   }
 
+  consultar(row: any) {
+    // Lógica para consultar
+  }
+
+  editar(row: any) {
+    // Lógica para editar
+  }
+
+  eliminar(row: any) {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'No podrás revertir esto',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminarlo'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._productosService.eliminarProducto(row.id).then(() => {
+          Swal.fire(
+            'Eliminado',
+            'El producto ha sido eliminado.',
+            'success'
+          );
+          this.getDataProductos();
+        }).catch(error => {
+          Swal.fire(
+            'Error',
+            'Hubo un problema al eliminar el producto.',
+            'error'
+          );
+          console.error('Error al eliminar el producto', error);
+        });
+      }
+    });
+  }
 }

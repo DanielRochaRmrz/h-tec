@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, addDoc, collection, collectionData } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, collectionData, deleteDoc, doc } from '@angular/fire/firestore';
 
 import { Observable } from 'rxjs';
 
@@ -24,5 +24,10 @@ export class ProductosService {
         error: error => reject(error)
       });
     });
+  }
+
+  eliminarProducto(id: string) {
+    const productoDoc = doc(this.firestore, `productos/${id}`);
+    return deleteDoc(productoDoc);
   }
 }
