@@ -1,5 +1,5 @@
-import { Component, Inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, FormGroup, Validators  } from '@angular/forms';
 
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -27,33 +27,30 @@ import { ProductosService } from '../../services/productos.service';
   templateUrl: './productos-dialog.component.html',
   styleUrl: './productos-dialog.component.scss'
 })
-export class ProductosDialogComponent {
-  myForm = this.formBuilder.group({
-    clave: [],
-    descripcion: [],
-    observación: [],
-    precio: [],
-  });
+export class ProductosDialogComponent implements OnInit {
+  myForm: FormGroup;
+  isEditMode: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
     private _productosService: ProductosService,
     public dialogRef: MatDialogRef<ProductosDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ProductoData,
-  ) { }
+  ) { 
+    this.isEditMode = !!data; // Si hay datos, estamos en modo edición
+    this.myForm = this.formBuilder.group({
+      clave: [data?.clave || '', Validators.required],
+      descripcion: [data?.descripcion || '', Validators.required],
+      observacion: [data?.observacion || '', Validators.required],
+      precio: [data?.precio || '', Validators.required]
+    });
+  }
 
+  ngOnInit(): void {}
 
-  async onSubmit() {
-    // TODO: Use EventEmitter with form value
-    console.warn(this.myForm.value);
-
-    try {
-      const resp = await this._productosService.addProducto(this.myForm.value);
-      console.info(resp);
-      Swal.fire('Producto agregado', 'El producto se ha agregado correctamente', 'success');
-      this.dialogRef.close();
-    } catch (error) {
-      console.error(error);
+  onSave(): void {
+    if (this.myForm.valid) {
+      this.dialogRef.close(this.myForm.value);
     }
   }
 

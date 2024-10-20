@@ -66,18 +66,48 @@ export class ProductosComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.getDataProductos();
-      const animal = result;
+      if (result) {
+        this._productosService.addProducto(result).then(() => {
+          Swal.fire(
+            'Agregado',
+            'El producto ha sido agregado exitosamente.',
+            'success'
+          );
+          this.getDataProductos();
+        }).catch(error => {
+          console.error('Error al agregar el producto', error);
+        });
+      }
     });
   }
 
   consultar(row: any) {
-    // Lógica para consultar
+    
   }
 
   editar(row: any) {
-    // Lógica para editar
+    const dialogRef = this.dialog.open(ProductosDialogComponent, {
+      data: { ...row }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this._productosService.actualizarProducto(row.id, result).then(() => {
+          Swal.fire(
+            'Actualizado',
+            'El producto ha sido actualizado.',
+            'success'
+          );
+          this.getDataProductos();
+        }).catch(error => {
+          Swal.fire(
+            'Error',
+            'Hubo un problema al actualizar el producto.',
+            'error'
+          );
+          console.error('Error al actualizar el producto', error);
+        });
+      }
+    });
   }
 
   eliminar(row: any) {

@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Nuevo Producto</h2>
+<h2 mat-dialog-title> {{isEditMode ? 'Editar producto' : 'Nuevo producto'}} </h2>
 <mat-dialog-content>
   <form autocomplete="" [formGroup]="myForm">
     <div class="row g-3 mt-2">
@@ -41,7 +41,7 @@
       <button mat-button (click)="onNoClick()">Cerrar</button>
     </div>
     <div class="col">
-      <button mat-flat-button color="primary" (click)="onSubmit()">
+      <button mat-flat-button color="primary" (click)="onSave()" [disabled]="!myForm.valid">
         Guardar
       </button>
     </div>
