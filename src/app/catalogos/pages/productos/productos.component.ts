@@ -1,5 +1,4 @@
 import { Component, ViewChild } from '@angular/core';
-
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,17 +7,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-
 import { ProductosDialogComponent } from '../../dialogs/productos-dialog/productos-dialog.component';
-
 import { ProductoData } from '../../interfaces/productos.interface';
 import { ProductosService } from '../../services/productos.service';
 import Swal from 'sweetalert2';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-productos',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, MatPaginator, MatSort, MatPaginatorModule, MatSortModule, MatTableModule, MatInputModule, MatFormFieldModule],
+  imports: [MatButtonModule, MatIconModule, MatPaginator, MatSort, MatPaginatorModule, MatSortModule, MatTableModule, MatInputModule, MatFormFieldModule, CommonModule],
   templateUrl: './productos.component.html',
   styleUrl: './productos.component.scss'
 })
@@ -26,6 +24,8 @@ export class ProductosComponent {
 
   displayedColumns: string[] = ['clave', 'descripcion', 'precio', 'acciones'];
   dataSource!: MatTableDataSource<ProductoData>;
+  isSaveDisabled: boolean = false;
+  type?: string;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -62,7 +62,7 @@ export class ProductosComponent {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(ProductosDialogComponent, {
-      data: {},
+      data: {isSaveDisabled: false, type: 'agregar'},
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -82,12 +82,14 @@ export class ProductosComponent {
   }
 
   consultar(row: any) {
-    
+     this.dialog.open(ProductosDialogComponent, {
+      data: { ...row, isSaveDisabled: true, type: 'ver' }
+    });
   }
 
   editar(row: any) {
     const dialogRef = this.dialog.open(ProductosDialogComponent, {
-      data: { ...row }
+      data: { ...row, isSaveDisabled: false, type: 'editar' }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {

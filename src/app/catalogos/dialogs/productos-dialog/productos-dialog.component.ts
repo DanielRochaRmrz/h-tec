@@ -30,6 +30,8 @@ import { ProductosService } from '../../services/productos.service';
 export class ProductosDialogComponent implements OnInit {
   myForm: FormGroup;
   isEditMode: boolean;
+  isSaveDisabled: boolean = false;
+  type?: string;  
 
   constructor(
     private formBuilder: FormBuilder,
@@ -37,6 +39,9 @@ export class ProductosDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<ProductosDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ProductoData,
   ) { 
+
+    this.isSaveDisabled = data.isSaveDisabled || false;
+    this.type = data.type || '';
     this.isEditMode = !!data; // Si hay datos, estamos en modo edición
     this.myForm = this.formBuilder.group({
       clave: [data?.clave || '', Validators.required],
