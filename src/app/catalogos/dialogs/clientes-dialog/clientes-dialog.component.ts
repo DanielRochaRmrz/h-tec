@@ -1,6 +1,5 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-
 import { MatButtonModule } from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
@@ -13,17 +12,16 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-
 import Swal from 'sweetalert2';
-
 import { ClientesService } from '../../services/clientes.service';
-
 import { ClienteData } from '../../interfaces/clientes.interface';
+import { CatalogosService } from '../../services/catalogos.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-clientes-dialog',
   standalone: true,
-  imports: [ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule],
+  imports: [ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, HttpClientModule],
   templateUrl: './clientes-dialog.component.html',
   styleUrl: './clientes-dialog.component.scss'
 })
@@ -48,7 +46,12 @@ export class ClientesDialogComponent {
     private _clientesService: ClientesService,
     public dialogRef: MatDialogRef<ClientesDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ClienteData,
-  ) { }
+    private _catalogosService: CatalogosService
+  ) {
+
+    this.getColonias();
+
+   }
 
 
   async onSubmit() {
@@ -67,5 +70,11 @@ export class ClientesDialogComponent {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  getColonias() {
+    this._catalogosService.getColoniasByCP("37408").subscribe(data => {
+      console.log("Colonias", data);
+    })
   }
 }
