@@ -19,23 +19,31 @@
       <div class="col-md-6">
         <mat-form-field appearance="outline">
           <mat-label>WhatsApp:</mat-label>
-          <input matInput formControlName="whatsApp" type="number"/>
+          <input matInput formControlName="whatsApp" type="number" />
           <mat-icon matSuffix>phone_iphone</mat-icon>
         </mat-form-field>
       </div>
       <div class="col-md-6">
         <mat-form-field appearance="outline">
           <mat-label>Correo:</mat-label>
-          <input matInput formControlName="correo" type="email"/>
+          <input matInput formControlName="correo" type="email" />
           <mat-icon matSuffix>mail</mat-icon>
         </mat-form-field>
       </div>
       <hr />
       <div class="col-md-10 checkboxHorizontal">
-        <div *ngFor="let clasificacion of clasificaciones">
+        <div *ngFor="let clasificacion of clasificaciones" class="clasificacion-item">
           <mat-checkbox [disabled]="isSaveDisabled" (change)="onCheckboxChange($event, clasificacion)">
             {{clasificacion.nombre}}
           </mat-checkbox>
+          <div class="action-buttons">
+            <button mat-icon-button color="accent" [disabled]="isSaveDisabled" (click)="editClasificacion(clasificacion)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" [disabled]="isSaveDisabled" (click)="deleteClasificacion(clasificacion)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
         </div>
       </div>
       <div class="col-md-2">

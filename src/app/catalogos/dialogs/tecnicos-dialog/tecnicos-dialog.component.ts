@@ -18,6 +18,7 @@ import { TecnicosData } from '../../interfaces/tecnicos.interfaces';
 import { TecnicosService } from '../../services/tecnicos.service';
 import { NgFor, NgIf } from '@angular/common';
 import { ClasificacionDialogComponent } from '../clasificacion-dialog/clasificacion-dialog.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-tecnicos-dialog',
@@ -60,7 +61,6 @@ export class TecnicosDialogComponent implements OnInit {
     this.getDataClasificaciones();
   }
 
-
   openDialogClasificacion(): void {
     const dialogRef = this.dialog.open(ClasificacionDialogComponent, {
       data: {},
@@ -102,5 +102,53 @@ export class TecnicosDialogComponent implements OnInit {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  editClasificacion(item: any) {
+
+    var editMod: boolean = true;
+    const dialogRef = this.dialog.open(ClasificacionDialogComponent, {
+      data: { item, editMod },
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Encuentra el índice del elemento editado
+        const index = this.clasificaciones.findIndex(c => c.id === item.id);
+        if (index !== -1) {
+          // Actualiza el elemento en la lista
+          this.clasificaciones[index] = { ...this.clasificaciones[index], ...result };
+        }
+      }
+    });
+  }
+
+  deleteClasificacion(item: any) {
+    Swal.fire({
+      title: '¿Estás seguro de eliminar el item?',
+      text: 'No podrás revertir esto',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminarlo'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._tecnicosService.eliminarItem(item.id).then(() => {
+          this.clasificaciones = this.clasificaciones.filter(c => c.id !== item.id);
+          Swal.fire(
+            'Eliminado',
+            'El item ha sido eliminado.',
+            'success'
+          );
+        }).catch(error => {
+          Swal.fire(
+            'Error',
+            'Hubo un problema al eliminar el producto.',
+            'error'
+          );
+          console.error('Error al eliminar el producto', error);
+        });
+      }
+    });
   }
 }

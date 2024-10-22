@@ -55,9 +55,22 @@ export class TecnicosService {
     return deleteDoc(tecnicoDoc);
   }
 
-  actualizarTecnico(id: string, tecnico: any){
+  actualizarTecnico(id: string, tecnico: any) {
     const tecnicoDoc = doc(this.firestore, `tecnicos/${id}`);
     return updateDoc(tecnicoDoc, tecnico);
   }
 
+  eliminarItem(id: string) {
+
+    const itemDoc = doc(this.firestore, `tecnicosClasificaciones/${id}`);
+    return deleteDoc(itemDoc);
+
+  }
+
+  actualizarItem(id: string, clasificacion: any) {
+    const itemDoc = doc(this.firestore, `tecnicosClasificaciones/${id}`);
+    return updateDoc(itemDoc, clasificacion);
+  }
 }
+
+

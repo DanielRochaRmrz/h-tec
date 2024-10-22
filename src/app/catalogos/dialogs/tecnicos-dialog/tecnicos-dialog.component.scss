@@ -3,8 +3,27 @@
   width: 100%;
 }
 
-
 .checkboxHorizontal {
   display: flex;
-  flex-wrap: wrap
+  flex-direction: column;
+  gap: 8px;
+}
+
+.clasificacion-item {
+  display: flex;
+  justify-content: space-between; // Asegura que el checkbox y los botones estén en extremos opuestos
+  align-items: center; // Alinea verticalmente al centro
+  padding: 8px; // Espacio adicional alrededor del elemento
+  border: 1px solid #ddd; // Opcional, para delimitar cada ítem
+  border-radius: 4px; // Bordes redondeados para un mejor aspecto
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px; // Espacio entre los botones
+  visibility: hidden; // Oculta por defecto
+}
+
+.clasificacion-item:hover .action-buttons {
+  visibility: visible; // Muestra los botones solo al pasar el cursor sobre el ítem
 }
