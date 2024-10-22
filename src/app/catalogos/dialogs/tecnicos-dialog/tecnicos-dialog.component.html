@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Nuevo Técnico</h2>
+<h2 mat-dialog-title>{{type === 'ver' ? 'Ver Técnico' : (type === 'editar' ? 'Editar Técnico' : 'Nuevo Técnico')}} </h2>
 <mat-dialog-content>
   <form autocomplete="" [formGroup]="myForm">
     <div class="row g-3 mt-2">
@@ -19,28 +19,28 @@
       <div class="col-md-6">
         <mat-form-field appearance="outline">
           <mat-label>WhatsApp:</mat-label>
-          <input matInput formControlName="whatsApp" />
+          <input matInput formControlName="whatsApp" type="number"/>
           <mat-icon matSuffix>phone_iphone</mat-icon>
         </mat-form-field>
       </div>
       <div class="col-md-6">
         <mat-form-field appearance="outline">
           <mat-label>Correo:</mat-label>
-          <input matInput formControlName="correo" />
+          <input matInput formControlName="correo" type="email"/>
           <mat-icon matSuffix>mail</mat-icon>
         </mat-form-field>
       </div>
       <hr />
       <div class="col-md-10 checkboxHorizontal">
         <div *ngFor="let clasificacion of clasificaciones">
-          <mat-checkbox (change)="onCheckboxChange($event, clasificacion)">
+          <mat-checkbox [disabled]="isSaveDisabled" (change)="onCheckboxChange($event, clasificacion)">
             {{clasificacion.nombre}}
           </mat-checkbox>
         </div>
       </div>
       <div class="col-md-2">
         <div class="button-container">
-          <button mat-fab color="primary" (click)="openDialog()">
+          <button [disabled]="isSaveDisabled" mat-fab color="primary" (click)="openDialogClasificacion()">
             <mat-icon>add</mat-icon>
           </button>
         </div>
@@ -69,7 +69,7 @@
       <button mat-button (click)="onNoClick()">Cerrar</button>
     </div>
     <div class="col">
-      <button mat-flat-button color="primary" (click)="onSubmit()">
+      <button mat-flat-button color="primary" (click)="onSave()" [disabled]="isSaveDisabled">
         Guardar
       </button>
     </div>

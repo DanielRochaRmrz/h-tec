@@ -1,6 +1,5 @@
-import { Component, Inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import {
@@ -15,9 +14,6 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-
-import Swal from 'sweetalert2';
-
 import { TecnicosData } from '../../interfaces/tecnicos.interfaces';
 import { TecnicosService } from '../../services/tecnicos.service';
 import { NgFor, NgIf } from '@angular/common';
@@ -30,15 +26,11 @@ import { ClasificacionDialogComponent } from '../clasificacion-dialog/clasificac
   templateUrl: './tecnicos-dialog.component.html',
   styleUrl: './tecnicos-dialog.component.scss'
 })
-export class TecnicosDialogComponent {
-  myForm = this.formBuilder.group({
-    nombre: [],
-    direccion: [],
-    whatsApp: [],
-    correo: [],
-    clave: [],
-    clasificacion: [],
-  });
+export class TecnicosDialogComponent implements OnInit {
+  myForm: FormGroup;
+  isEditMode: boolean;
+  isSaveDisabled: boolean = false;
+  type?: string;
 
   public selectedNumbers: any[] = [];
   public clasificaciones: any[] = [];
@@ -49,14 +41,27 @@ export class TecnicosDialogComponent {
     public dialogRef: MatDialogRef<TecnicosDialogComponent>,
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: TecnicosData,
-  ) { }
+  ) {
 
-  ngAfterViewInit() {
+    this.isSaveDisabled = data.isSaveDisabled || false;
+    this.type = data.type || '';
+    this.isEditMode = !!data;
+    this.myForm = this.formBuilder.group({
+      nombre: [data?.nombre || '', Validators.required],
+      direccion: [data?.direccion || '', Validators.required],
+      whatsApp: [data?.whatsApp || '', Validators.required],
+      correo: [data?.correo || '', Validators.required],
+      clave: [data?.clave || '', Validators.required],
+      clasificacion: [data?.clasificacion || '']
+    });
+  }
+
+  ngOnInit() {
     this.getDataClasificaciones();
   }
 
 
-  openDialog(): void {
+  openDialogClasificacion(): void {
     const dialogRef = this.dialog.open(ClasificacionDialogComponent, {
       data: {},
     });
@@ -89,17 +94,9 @@ export class TecnicosDialogComponent {
     this.myForm.get('clasificacion')?.setValue(this.selectedNumbers.map(c => c.counter) as unknown as null);
   }
 
-  async onSubmit() {
-    // TODO: Use EventEmitter with form value
-    console.warn(this.myForm.value);
-
-    try {
-      const resp = await this._tecnicosService.addTecnico(this.myForm.value);
-      console.info(resp);
-      Swal.fire('Técnico agregado', 'El técnico se ha agregado correctamente', 'success');
-      this.dialogRef.close();
-    } catch (error) {
-      console.error(error);
+  onSave(): void {
+    if (this.myForm.valid) {
+      this.dialogRef.close(this.myForm.value);
     }
   }
 

@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, addDoc, collection, collectionData, doc, getDoc, setDoc } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, collectionData, doc, getDoc, setDoc, deleteDoc, updateDoc } from '@angular/fire/firestore';
 
 import { Observable } from 'rxjs';
 
@@ -48,6 +48,16 @@ export class TecnicosService {
         error: error => reject(error)
       });
     });
+  }
+
+  eliminarTecnico(id: string) {
+    const tecnicoDoc = doc(this.firestore, `tecnicos/${id}`);
+    return deleteDoc(tecnicoDoc);
+  }
+
+  actualizarTecnico(id: string, tecnico: any){
+    const tecnicoDoc = doc(this.firestore, `tecnicos/${id}`);
+    return updateDoc(tecnicoDoc, tecnico);
   }
 
 }

@@ -1,4 +1,8 @@
 export interface TecnicosData {
+  nombre: string;
+  direccion: string;
+  clave: string;
+  clasificacion: string;
   calleNumero: string;
   ciudad: string;
   cliente: string;
@@ -10,6 +14,8 @@ export interface TecnicosData {
   rfc: string;
   telefono: string;
   whatsApp: string;
+  isSaveDisabled: boolean;
+  type: string;
  }
 
  export interface clasificacionesData {
