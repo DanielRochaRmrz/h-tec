@@ -14,7 +14,7 @@ export class CatalogosService {
   constructor(private http: HttpClient) { }
 
   getColoniasByCP(cp: string): Observable<CodigoPostal> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.apiKey}`);
-    return this.http.get<CodigoPostal>(environment.API_DOPIMEX+`codigo_postal?cp=${cp}`, { headers });
+    const headers = new HttpHeaders({ 'APIKEY': this.apiKey });
+    return this.http.get<CodigoPostal>(`${environment.API_DOPIMEX}/codigo_postal?cp=${cp}`, { headers });
   }
 }
