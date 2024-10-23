@@ -35,6 +35,7 @@ export class TecnicosDialogComponent implements OnInit {
 
   public selectedNumbers: any[] = [];
   public clasificaciones: any[] = [];
+  clasificacion?: any[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -151,4 +152,19 @@ export class TecnicosDialogComponent implements OnInit {
       }
     });
   }
+
+  isChecked(counter: number): boolean {
+    console.log("isSave", this.isSaveDisabled);
+    console.log("isEditMode", this.isEditMode);
+    console.log("type", this.type);
+
+    if (this.type != "agregar") {
+      return this.data?.clasificacion.includes(counter);
+    } else {
+
+      return false;
+    }
+  }
+
+
 }

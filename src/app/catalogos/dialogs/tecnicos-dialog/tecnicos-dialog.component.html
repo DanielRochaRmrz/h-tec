@@ -34,7 +34,10 @@
       <div class="col-md-10 checkboxHorizontal">
         <div *ngFor="let clasificacion of clasificaciones" class="row mb-2">
           <div class="col-md-6">
-            <mat-checkbox [disabled]="isSaveDisabled" (change)="onCheckboxChange($event, clasificacion)">
+            <mat-checkbox 
+            [disabled]="isSaveDisabled" 
+            (change)="onCheckboxChange($event, clasificacion)"
+            [checked]="isChecked(clasificacion.counter)">
               {{clasificacion.nombre}}
             </mat-checkbox>
           </div>

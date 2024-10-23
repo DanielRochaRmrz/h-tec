@@ -2,7 +2,7 @@ export interface TecnicosData {
   nombre: string;
   direccion: string;
   clave: string;
-  clasificacion: string;
+  clasificacion: any[];
   calleNumero: string;
   ciudad: string;
   cliente: string;
