@@ -32,15 +32,17 @@
       </div>
       <hr />
       <div class="col-md-10 checkboxHorizontal">
-        <div *ngFor="let clasificacion of clasificaciones" class="clasificacion-item">
-          <mat-checkbox [disabled]="isSaveDisabled" (change)="onCheckboxChange($event, clasificacion)">
-            {{clasificacion.nombre}}
-          </mat-checkbox>
-          <div class="action-buttons">
-            <button mat-icon-button color="accent" [disabled]="isSaveDisabled" (click)="editClasificacion(clasificacion)">
+        <div *ngFor="let clasificacion of clasificaciones" class="row mb-2">
+          <div class="col-md-6">
+            <mat-checkbox [disabled]="isSaveDisabled" (change)="onCheckboxChange($event, clasificacion)">
+              {{clasificacion.nombre}}
+            </mat-checkbox>
+          </div>
+          <div class="col-md-6 text-right">
+            <button mat-icon-button color="accent" [disabled]="isSaveDisabled" (click)="editClasificacion(clasificacion)" class="btn-small">
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn" [disabled]="isSaveDisabled" (click)="deleteClasificacion(clasificacion)">
+            <button mat-icon-button color="warn" [disabled]="isSaveDisabled" (click)="deleteClasificacion(clasificacion)" class="btn-small">
               <mat-icon>delete</mat-icon>
             </button>
           </div>
