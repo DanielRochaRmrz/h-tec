@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, FormGroup, Validators  } from '@angular/forms';
-
 import { MatButtonModule } from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
@@ -13,11 +12,7 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-
-import Swal from 'sweetalert2';
-
 import { ProductoData } from '../../interfaces/productos.interface';
-
 import { ProductosService } from '../../services/productos.service';
 
 @Component({

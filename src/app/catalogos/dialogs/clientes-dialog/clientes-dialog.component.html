@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Nuevo Cliente</h2>
+<h2 mat-dialog-title>{{type === 'ver' ? 'Ver Cliente' : (type === 'editar' ? 'Editar Cliente' : 'Nuevo Cliente')}}</h2>
 <mat-dialog-content>
   <form autocomplete="" [formGroup]="myForm">
     <div class="row g-3 mt-2">
@@ -34,7 +34,7 @@
       <div class="col-md-6">
         <mat-form-field appearance="outline">
           <mat-label>CP:</mat-label>
-          <input matInput formControlName="cp" />
+          <input matInput formControlName="cp" type="number" />
           <mat-icon matSuffix>location_on</mat-icon>
         </mat-form-field>
       </div>
@@ -90,7 +90,7 @@
       <button mat-button (click)="onNoClick()">Cerrar</button>
     </div>
     <div class="col">
-      <button mat-flat-button color="primary" (click)="onSubmit()">
+      <button mat-flat-button color="primary" (click)="onSave()" [disabled]="isSaveDisabled">
         Guardar
       </button>
     </div>

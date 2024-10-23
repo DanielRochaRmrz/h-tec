@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, FormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
@@ -26,20 +26,11 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrl: './clientes-dialog.component.scss'
 })
 export class ClientesDialogComponent {
+  myForm: FormGroup;
+  isEditMode?: boolean;
+  isSaveDisabled: boolean = false;
+  type?: string; 
 
-  myForm = this.formBuilder.group({
-    cliente: [],
-    rfc: [],
-    claveASPEL: [],
-    calleNumero: [],
-    cp: [],
-    colonia: [],
-    ciudad: [],
-    estado: [],
-    whatsApp: [],
-    telefono: [],
-    correo: [],
-  });
 
   constructor(
     private formBuilder: FormBuilder,
@@ -49,22 +40,29 @@ export class ClientesDialogComponent {
     private _catalogosService: CatalogosService
   ) {
 
-    this.getColonias();
+    this.isSaveDisabled = data.isSaveDisabled || false;
+    this.type = data.type || '';
+    this.isEditMode = !!data; // Si hay datos, estamos en modo edición
+    this.myForm = this.formBuilder.group({
+      cliente: [data?.cliente || '', Validators.required],
+      rfc: [data?.rfc || '', Validators.required],
+      claveASPEL: [data?.claveASPEL || '', Validators.required],
+      calleNumero: [data?.calleNumero || '', Validators.required],
+      cp: [data?.cp || '', Validators.required],
+      colonia: [data?.colonia || '', Validators.required],
+      ciudad: [data?.ciudad || '', Validators.required],
+      estado: [data?.estado || '', Validators.required],
+      whatsApp: [data?.whatsApp || '', Validators.required],
+      telefono: [data?.telefono || '', Validators.required],
+      correo: [data?.correo || '', Validators.required],
+    });
 
    }
 
 
-  async onSubmit() {
-    // TODO: Use EventEmitter with form value
-    console.warn(this.myForm.value);
-
-    try {
-      const resp = await this._clientesService.addCliente(this.myForm.value);
-      console.info(resp);
-      Swal.fire('Cliente agregado', 'El cliente se ha agregado correctamente', 'success');
-      this.dialogRef.close();
-    } catch (error) {
-      console.error(error);
+  onSave():void{
+    if (this.myForm.valid) {
+      this.dialogRef.close(this.myForm.value);
     }
   }
 
