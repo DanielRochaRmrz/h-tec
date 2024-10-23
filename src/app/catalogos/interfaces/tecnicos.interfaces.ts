@@ -14,6 +14,7 @@ export interface TecnicosData {
   rfc: string;
   telefono: string;
   whatsApp: string;
+  password: string;
   isSaveDisabled: boolean;
   type: string;
  }

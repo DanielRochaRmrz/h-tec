@@ -30,22 +30,35 @@
           <mat-icon matSuffix>mail</mat-icon>
         </mat-form-field>
       </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Contraseña:</mat-label>
+          <input matInput formControlName="password" type="password" />
+          <mat-icon matSuffix>password</mat-icon>
+          <mat-error *ngIf="myForm.get('password')?.hasError('required')">
+            La contraseña es obligatoria.
+          </mat-error>
+          <mat-error *ngIf="myForm.get('password')?.hasError('minlength')">
+            La contraseña debe tener al menos 6 caracteres.
+          </mat-error>
+        </mat-form-field>
+      </div>
       <hr />
       <div class="col-md-10 checkboxHorizontal">
         <div *ngFor="let clasificacion of clasificaciones" class="row mb-2">
           <div class="col-md-6">
-            <mat-checkbox 
-            [disabled]="isSaveDisabled" 
-            (change)="onCheckboxChange($event, clasificacion)"
-            [checked]="isChecked(clasificacion.counter)">
+            <mat-checkbox [disabled]="isSaveDisabled" (change)="onCheckboxChange($event, clasificacion)"
+              [checked]="isChecked(clasificacion.counter)">
               {{clasificacion.nombre}}
             </mat-checkbox>
           </div>
           <div class="col-md-6 text-right">
-            <button mat-icon-button color="accent" [disabled]="isSaveDisabled" (click)="editClasificacion(clasificacion)" class="btn-small">
+            <button mat-icon-button color="accent" [disabled]="isSaveDisabled"
+              (click)="editClasificacion(clasificacion)" class="btn-small">
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn" [disabled]="isSaveDisabled" (click)="deleteClasificacion(clasificacion)" class="btn-small">
+            <button mat-icon-button color="warn" [disabled]="isSaveDisabled"
+              (click)="deleteClasificacion(clasificacion)" class="btn-small">
               <mat-icon>delete</mat-icon>
             </button>
           </div>

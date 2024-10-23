@@ -52,7 +52,8 @@ export class TecnicosDialogComponent implements OnInit {
       nombre: [data?.nombre || '', Validators.required],
       direccion: [data?.direccion || '', Validators.required],
       whatsApp: [data?.whatsApp || '', Validators.required],
-      correo: [data?.correo || '', Validators.required],
+      correo: [data?.correo || '', [Validators.required, Validators.email]],
+      password: [data?.password || '', [Validators.required, Validators.minLength(6)]],
       clave: [data?.clave || '', Validators.required],
       clasificacion: [data?.clasificacion || '']
     });
@@ -154,9 +155,6 @@ export class TecnicosDialogComponent implements OnInit {
   }
 
   isChecked(counter: number): boolean {
-    console.log("isSave", this.isSaveDisabled);
-    console.log("isEditMode", this.isEditMode);
-    console.log("type", this.type);
 
     if (this.type != "agregar") {
       return this.data?.clasificacion.includes(counter);
