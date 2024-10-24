@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, FormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -9,28 +9,33 @@ import {
   MatDialogActions,
   MatDialogClose,
 } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import Swal from 'sweetalert2';
 import { ClientesService } from '../../services/clientes.service';
 import { ClienteData } from '../../interfaces/clientes.interface';
 import { CatalogosService } from '../../services/catalogos.service';
 import { HttpClientModule } from '@angular/common/http';
+import { CodigoPostal, Colonia, ColoniasResponse, Estado, Estados, Municipio, MunicipiosResponse } from '../../interfaces/catalogos.interface';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-clientes-dialog',
   standalone: true,
-  imports: [ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, HttpClientModule],
+  imports: [ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, HttpClientModule, MatSelectModule, MatOptionModule, CommonModule],
   templateUrl: './clientes-dialog.component.html',
   styleUrl: './clientes-dialog.component.scss'
 })
-export class ClientesDialogComponent {
+export class ClientesDialogComponent implements OnInit {
   myForm: FormGroup;
   isEditMode?: boolean;
   isSaveDisabled: boolean = false;
-  type?: string; 
-
+  type?: string;
+  colonias: string[] = [];
+  estados: Estado[] = [];
+  municipios: Municipio[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -48,21 +53,45 @@ export class ClientesDialogComponent {
       rfc: [data?.rfc || '', Validators.required],
       claveASPEL: [data?.claveASPEL || '', Validators.required],
       calleNumero: [data?.calleNumero || '', Validators.required],
-      cp: [data?.cp || '', Validators.required],
+      cp: [data?.cp || '', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]],
       colonia: [data?.colonia || '', Validators.required],
-      ciudad: [data?.ciudad || '', Validators.required],
+      municipio: [data?.municipio || '', Validators.required],
       estado: [data?.estado || '', Validators.required],
       whatsApp: [data?.whatsApp || '', Validators.required],
       telefono: [data?.telefono || '', Validators.required],
       correo: [data?.correo || '', Validators.required],
     });
 
-   }
+  }
+
+  ngOnInit(): void {
+
+    if (this.isEditMode) {
+      this.loadInitialData();
+    }
+
+    this.myForm.get('cp')?.valueChanges.subscribe(cp => {
+      const cpString = cp.toString();
+
+      if (cpString.length === 5) {
+        this.getColonias(cp);
+      }
+
+    })
+
+    this.getEstados();
+
+    this.myForm.get("estado")?.valueChanges.subscribe((estado: Estado) => {
+      this.getMunicipios(estado.ESTADO_ID);
+    })
+  }
 
 
-  onSave():void{
+  onSave(): void {
     if (this.myForm.valid) {
-      this.dialogRef.close(this.myForm.value);
+      const formValue = this.myForm.value;
+      formValue.estado = formValue.estado.ESTADO;
+      this.dialogRef.close(formValue);
     }
   }
 
@@ -70,9 +99,45 @@ export class ClientesDialogComponent {
     this.dialogRef.close();
   }
 
-  getColonias() {
-    this._catalogosService.getColoniasByCP("37408").subscribe(data => {
-      console.log("Colonias", data);
+  getColonias(cp: string): void {
+    this._catalogosService.getColoniasByCP(cp).subscribe((data: CodigoPostal) => {
+      this.colonias = data.codigo_postal.colonias;
     })
   }
+
+  getEstados(): void {
+    this._catalogosService.getEstados().subscribe((data: Estados) => {
+      this.estados = data.estados;
+      if (this.isEditMode) {
+        this.loadInitialData();
+      }
+    })
+  }
+
+  getMunicipios(id_estado: string): void {
+    this._catalogosService.getMunicipiosByEstado(id_estado).subscribe((data: MunicipiosResponse) => {
+      this.municipios = data.municipios;
+    })
+
+  }
+
+  loadInitialData(): void {
+    // INICIALIZAMOS COLONIAS
+    const cp = this.myForm.get('cp')?.value;
+    if (cp) {
+      this.getColonias(cp);
+    }
+
+    // INCIALIZAMOS ESTADO
+    const estadoNombre = this.myForm.get('estado')?.value;
+    if (estadoNombre) {
+      const estado = this.estados.find(e => e.ESTADO === estadoNombre);
+      if (estado) {
+        this.myForm.get('estado')?.setValue(estado);
+        this.getMunicipios(estado.ESTADO_ID);
+      }
+    }
+
+  }
+
 }

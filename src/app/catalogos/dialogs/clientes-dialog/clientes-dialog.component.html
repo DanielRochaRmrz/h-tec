@@ -41,24 +41,47 @@
       <div class="col-md-6">
         <mat-form-field appearance="outline">
           <mat-label>Colonia:</mat-label>
-          <input matInput formControlName="colonia" />
+          <mat-select formControlName="colonia">
+            <mat-option *ngFor="let colonia of colonias" [value]="colonia">
+              {{ colonia }}
+            </mat-option>
+          </mat-select>
           <mat-icon matSuffix>location_on</mat-icon>
         </mat-form-field>
       </div>
+
       <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Estado:</mat-label>
+          <mat-select formControlName="estado">
+            <mat-option *ngFor="let estado of estados" [value]="estado">
+              {{ estado.ESTADO }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matSuffix>location_on</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <!-- <div class="col-md-6">
         <mat-form-field appearance="outline">
           <mat-label>Ciudad:</mat-label>
           <input matInput formControlName="ciudad" />
           <mat-icon matSuffix>location_on</mat-icon>
         </mat-form-field>
-      </div>
+      </div> -->
+
       <div class="col-md-6">
         <mat-form-field appearance="outline">
-          <mat-label>Estado:</mat-label>
-          <input matInput formControlName="estado" />
+          <mat-label>Municipio:</mat-label>
+          <mat-select formControlName="municipio">
+            <mat-option *ngFor="let municipio of municipios" [value]="municipio.MUNICIPIO">
+              {{ municipio.MUNICIPIO }}
+            </mat-option>
+          </mat-select>
           <mat-icon matSuffix>location_on</mat-icon>
         </mat-form-field>
       </div>
+      
       <hr>
       <div class="col-md-6">
         <mat-form-field appearance="outline">

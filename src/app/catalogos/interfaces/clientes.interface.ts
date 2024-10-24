@@ -4,6 +4,7 @@ export interface ClienteData {
   calleNumero: string;
   ciudad: string;
   cliente: string;
+  municipio: string;
   colonia: string;
   correo: string;
   cp: string;
