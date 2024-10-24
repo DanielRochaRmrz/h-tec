@@ -18,6 +18,6 @@
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button>Cerrar</button>
+  <button mat-button (click)="onNoClick()">Cerrar</button>
   <button mat-button [mat-dialog-close]="myControl.value" cdkFocusInitial>Autocompletar</button>
 </mat-dialog-actions>

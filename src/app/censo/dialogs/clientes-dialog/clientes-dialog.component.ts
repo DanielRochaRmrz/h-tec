@@ -38,7 +38,7 @@ export class ClientesDialogComponent {
     public dialogRef: MatDialogRef<ClientesDialogComponent>,
     private _clientesService: ClientesService,
     @Inject(MAT_DIALOG_DATA) public data: ClienteData,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadclientes();
@@ -53,7 +53,7 @@ export class ClientesDialogComponent {
         startWith(''),
         map((value: any) => {
           const cliente = typeof value === 'string' ? value : value.cliente;
-          return cliente ?  this._filter(cliente as string) : this.options.slice();
+          return cliente ? this._filter(cliente as string) : this.options.slice();
         }),
       );
 
@@ -70,6 +70,10 @@ export class ClientesDialogComponent {
     console.log('value:', cliente);
     const filterValue = cliente.toLowerCase();
     return this.options.filter(option => option.cliente.toLowerCase().includes(filterValue));
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
 }

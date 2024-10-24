@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { NgFor } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { provideNativeDateAdapter } from '@angular/material/core';
 
 import { MatButtonModule } from '@angular/material/button';
@@ -21,15 +21,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatStepperModule } from '@angular/material/stepper';
-
 import { DateTime } from 'luxon';
 import Swal from 'sweetalert2';
 import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryModule, NgxGalleryOptions } from '@kolkov/ngx-gallery';
-
 import { CensosService } from '../../services/censos.service';
-
 import { ClienteData } from './../../../catalogos/interfaces/clientes.interface';
-
 import { ClientesDialogComponent } from '../clientes-dialog/clientes-dialog.component';
 
 @Component({
@@ -42,14 +38,7 @@ import { ClientesDialogComponent } from '../clientes-dialog/clientes-dialog.comp
 })
 export class CensoDialogComponent {  currentDate = DateTime.local().toISODate();
 
-  clientForm = this.formBuilder.group({
-    cliente: ['', Validators.required],
-    claveASPEL: ['', Validators.required],
-    whatsApp: ['', Validators.required],
-    telefono: ['', Validators.required],
-    correo: ['', Validators.required],
-    fechaRegistro: [this.currentDate, Validators.required],
-  });
+  clientForm: FormGroup;
 
   equipoForm = this.formBuilder.group({
     modelo: [],
@@ -141,7 +130,17 @@ export class CensoDialogComponent {  currentDate = DateTime.local().toISODate();
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<CensoDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ClienteData,
-  ) { }
+  ) { 
+
+    this.clientForm = this.formBuilder.group({
+      cliente: [{ value: '', disabled: true }, Validators.required],
+      claveASPEL: [{ value: '', disabled: true }, Validators.required],
+      whatsApp: [{ value: '', disabled: true }, Validators.required],
+      telefono: [{ value: '', disabled: true }, Validators.required],
+      correo: [{ value: '', disabled: true }, Validators.required],
+      fechaRegistro: [{ value: this.currentDate, disabled: false }, Validators.required],
+    });
+  }
 
   onFileSelected(event: any) {
     this.files = event.target.files;

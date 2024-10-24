@@ -86,4 +86,12 @@ export class CensosComponent {
     });
   }
 
+  eliminar(row: any): void {
+
+  }
+
+  editar(row: any): void {
+
+  }
+
 }

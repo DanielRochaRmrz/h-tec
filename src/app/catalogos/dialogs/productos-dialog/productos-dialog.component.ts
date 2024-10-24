@@ -13,7 +13,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ProductoData } from '../../interfaces/productos.interface';
-import { ProductosService } from '../../services/productos.service';
 
 @Component({
   selector: 'app-productos-dialog',
@@ -30,7 +29,6 @@ export class ProductosDialogComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private _productosService: ProductosService,
     public dialogRef: MatDialogRef<ProductosDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ProductoData,
   ) { 

@@ -18,7 +18,7 @@ import { ClientesService } from '../../services/clientes.service';
 import { ClienteData } from '../../interfaces/clientes.interface';
 import { CatalogosService } from '../../services/catalogos.service';
 import { HttpClientModule } from '@angular/common/http';
-import { CodigoPostal, Colonia, ColoniasResponse, Estado, Estados, Municipio, MunicipiosResponse } from '../../interfaces/catalogos.interface';
+import { CodigoPostal, Estado, Estados, Municipio, MunicipiosResponse } from '../../interfaces/catalogos.interface';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -39,7 +39,6 @@ export class ClientesDialogComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private _clientesService: ClientesService,
     public dialogRef: MatDialogRef<ClientesDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ClienteData,
     private _catalogosService: CatalogosService
