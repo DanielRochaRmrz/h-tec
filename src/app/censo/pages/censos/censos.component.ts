@@ -8,11 +8,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-
-import { TecnicosData } from './../../../catalogos/interfaces/tecnicos.interfaces';
+import Swal from 'sweetalert2';
 import { CensosService } from '../../services/censos.service';
 import { CensosData } from '../../interfaces/cesos.interface';
-
 import { CensoDialogComponent } from '../../dialogs/censo-dialog/censo-dialog.component';
 import { CensoDetalleDialogComponent } from '../../dialogs/censo-detalle-dialog/censo-detalle-dialog.component';
 
@@ -87,11 +85,37 @@ export class CensosComponent {
   }
 
   eliminar(row: any): void {
-
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'No podrás revertir esto',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminarlo'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._censosService.eliminarCenso(row.id).then(() => {
+          Swal.fire(
+            'Eliminado',
+            'El producto ha sido eliminado.',
+            'success'
+          );
+          this.getDataCensos();
+        }).catch(error => {
+          Swal.fire(
+            'Error',
+            'Hubo un problema al eliminar el producto.',
+            'error'
+          );
+          console.error('Error al eliminar el producto', error);
+        });
+      }
+    });
   }
 
   editar(row: any): void {
-
+    
   }
 
 }

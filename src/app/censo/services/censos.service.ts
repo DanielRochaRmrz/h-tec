@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, addDoc, collection, collectionData, doc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, collectionData, doc, updateDoc, deleteDoc } from '@angular/fire/firestore';
 import { Storage, ref, uploadBytesResumable, getDownloadURL } from "@angular/fire/storage";
 import { Observable } from 'rxjs';
 import { DateTime } from "luxon";
@@ -80,6 +80,12 @@ export class CensosService {
         }
       );
     });
+  }
+
+  eliminarCenso(id:string){
+    const censoDoc = doc(this.firestore, `censos/${id}`);
+    return deleteDoc(censoDoc);
+    
   }
 }
 
