@@ -55,6 +55,7 @@ export class ClientesDialogComponent implements OnInit {
       cp: [data?.cp || '', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]],
       colonia: [data?.colonia || '', Validators.required],
       municipio: [data?.municipio || '', Validators.required],
+      urlMaps: [data?.urlMaps || '', Validators.required],
       estado: [data?.estado || '', Validators.required],
       whatsApp: [data?.whatsApp || '', Validators.required],
       telefono: [data?.telefono || '', Validators.required],
