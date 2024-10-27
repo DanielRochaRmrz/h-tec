@@ -1,9 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore, addDoc, collection, collectionData, doc, getDoc, setDoc, deleteDoc, updateDoc } from '@angular/fire/firestore';
-
 import { Observable } from 'rxjs';
-
 import { TecnicosData, clasificacionesData } from '../interfaces/tecnicos.interfaces';
+import { AuthService } from '../../auth/services/auth.service';
+import { error } from 'console';
+import { get } from 'http';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +14,15 @@ export class TecnicosService {
   private firestore: Firestore = inject(Firestore);
   private tecnicosCollection = collection(this.firestore, 'tecnicos');
   private clasificacionesnCollection = collection(this.firestore, 'tecnicosClasificaciones');
+  private auth: AuthService = inject(AuthService);
 
   addTecnico(tecnico: any) {
-    return addDoc(this.tecnicosCollection, tecnico);
+    return this.auth.createUser(tecnico.correo, tecnico.password).then(() => {
+      return addDoc(this.tecnicosCollection, tecnico);
+    }).catch((error) => {
+      console.error('Error al crear el usuario:', error);
+      throw error;
+    });
   }
 
   getTecnicos() {
