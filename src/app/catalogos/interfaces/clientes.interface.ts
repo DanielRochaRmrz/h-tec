@@ -1,4 +1,5 @@
 export interface ClienteData {
+  urlMaps: string;
   type: string;
   isSaveDisabled: boolean;
   calleNumero: string;

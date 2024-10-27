@@ -115,7 +115,9 @@ export class CensosComponent {
   }
 
   editar(row: any): void {
-    
+   this.dialog.open(CensoDialogComponent, {
+      data: {...row, editMod: true},
+      panelClass: 'full-screen-modal',
+    }); 
   }
-
 }

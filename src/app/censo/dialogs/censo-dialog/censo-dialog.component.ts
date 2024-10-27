@@ -26,7 +26,10 @@ import Swal from 'sweetalert2';
 import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryModule, NgxGalleryOptions } from '@kolkov/ngx-gallery';
 import { CensosService } from '../../services/censos.service';
 import { ClienteData } from './../../../catalogos/interfaces/clientes.interface';
+import { ClienteRegistradoData } from '../../../catalogos/interfaces/censo.interface';
 import { ClientesDialogComponent } from '../clientes-dialog/clientes-dialog.component';
+
+
 
 @Component({
   selector: 'app-censo-dialog',
@@ -131,9 +134,11 @@ export class CensoDialogComponent {  currentDate = DateTime.local().toISODate();
     public dialogRef: MatDialogRef<CensoDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ClienteData,
   ) { 
-
+    this.data = data;
+    console.log('Data:', this.data);
+    
     this.clientForm = this.formBuilder.group({
-      cliente: [{ value: '', disabled: true }, Validators.required],
+      cliente: [{ value: data, disabled: true }, Validators.required],
       claveASPEL: [{ value: '', disabled: true }, Validators.required],
       whatsApp: [{ value: '', disabled: true }, Validators.required],
       telefono: [{ value: '', disabled: true }, Validators.required],
