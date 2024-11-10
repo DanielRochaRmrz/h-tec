@@ -16,6 +16,15 @@ export interface ClienteRegistradoData {
         reponsableEquipo: string;
         tipo: string;
     };
+    impresora: {
+        modelo: string;
+        marca: string;
+        numeroSerie: string;
+        toner: string;
+        qr: string;
+        areaDepartamento: string;
+        tipo: string; 
+    };
     imagenes: string[];
     cliente: {
         whatsApp: string;

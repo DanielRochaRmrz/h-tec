@@ -62,7 +62,7 @@
       </form>
     </mat-step>
 
-    <mat-step [stepControl]="equipoForm">
+    <mat-step [completed]="isFormValid()">
       <ng-template matStepLabel>Descripción</ng-template>
       <mat-accordion class="example-headers-align">
         <div class="mt-2"></div>
@@ -74,7 +74,7 @@
                 <mat-icon>devices</mat-icon>
               </mat-panel-description>
             </mat-expansion-panel-header>
-
+    
             <div class="row g-3 mt-2">
               <div class="col-md-12">
                 <section class="example-section">
@@ -180,7 +180,7 @@
                 <mat-icon>print</mat-icon>
               </mat-panel-description>
             </mat-expansion-panel-header>
-
+    
             <div class="row g-3 mt-2">
               <div class="col-md-12">
                 <section class="example-section">
@@ -218,7 +218,7 @@
               <div class="col-md-6">
                 <mat-form-field appearance="outline">
                   <mat-label>Toner modelo</mat-label>
-                  <input matInput formControlName="sistemOperativoV" />
+                  <input matInput formControlName="toner" />
                   <mat-icon matSuffix>opacity</mat-icon>
                 </mat-form-field>
               </div>
@@ -232,7 +232,7 @@
               <div class="col-md-6">
                 <mat-form-field appearance="outline">
                   <mat-label>Área o departamento:</mat-label>
-                  <input matInput formControlName="qr" />
+                  <input matInput formControlName="areaDepartamento" />
                   <mat-icon matSuffix>apartment</mat-icon>
                 </mat-form-field>
               </div>

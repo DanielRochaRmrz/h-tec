@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,19 +13,19 @@ import { CensosService } from '../../services/censos.service';
 import { CensosData } from '../../interfaces/cesos.interface';
 import { CensoDialogComponent } from '../../dialogs/censo-dialog/censo-dialog.component';
 import { CensoDetalleDialogComponent } from '../../dialogs/censo-detalle-dialog/censo-detalle-dialog.component';
-
+import { ClienteRegistradoData } from './../../../catalogos/interfaces/censo.interface';
 
 @Component({
   selector: 'app-censos',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, MatPaginator, MatSort, MatPaginatorModule, MatSortModule, MatTableModule, MatInputModule, MatFormFieldModule],
+  imports: [MatButtonModule, MatIconModule, MatPaginator, MatSort, MatPaginatorModule, MatSortModule, MatTableModule, MatInputModule, MatFormFieldModule, CommonModule],
   templateUrl: './censos.component.html',
   styleUrl: './censos.component.scss'
 })
 export class CensosComponent {
 
   displayedColumns: string[] = ['censoNo', 'cliente', 'equipo', 'qr', 'acciones'];
-  dataSource!: MatTableDataSource<CensosData>;
+  dataSource!: MatTableDataSource<ClienteRegistradoData>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -43,7 +43,7 @@ export class CensosComponent {
       const censos = await this._censosService.getCensos();
       console.log('Censos:', censos);
 
-      this.dataSource = new MatTableDataSource<CensosData>(censos as CensosData[]);
+      this.dataSource = new MatTableDataSource<ClienteRegistradoData>(censos as ClienteRegistradoData[]);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     } catch (error) {

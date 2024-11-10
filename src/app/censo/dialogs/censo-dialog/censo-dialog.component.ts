@@ -24,11 +24,8 @@ import { DateTime } from 'luxon';
 import Swal from 'sweetalert2';
 import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryModule, NgxGalleryOptions } from '@kolkov/ngx-gallery';
 import { CensosService } from '../../services/censos.service';
-import { ClienteData } from './../../../catalogos/interfaces/clientes.interface';
 import { ClienteRegistradoData } from './../../../catalogos/interfaces/censo.interface';
 import { ClientesDialogComponent } from '../clientes-dialog/clientes-dialog.component';
-import { url } from 'inspector';
-
 
 @Component({
   selector: 'app-censo-dialog',
@@ -141,24 +138,27 @@ export class CensoDialogComponent {  currentDate = DateTime.local().toISODate();
     });
   
     this.impresoraForm = this.formBuilder.group({
-      modelo: [data?.equipo?.modelo || '', Validators.required],
-      marca: [ data?.equipo?.marca || '', Validators.required],
-      numeroSerie: [ data?.equipo?.numeroSerie || '', Validators.required],
-      sistemOperativoV: [ data?.equipo?.sistemOperativoV || '', Validators.required],
-      officeV: [ data?.equipo?.officeV || '', Validators.required],
-      antivirus: [ data?.equipo?.antivirus || '', Validators.required],
-      fechaCaducidadAnti: [ fechaRegistroEquipo || '', Validators.required],
-      qr: [ data?.equipo?.qr || '', Validators.required],
-      areaDepartamento: [ data?.equipo?.areaDepartamento || '', Validators.required],
-      tipo: [ data?.equipo?.tipo || '', Validators.required],
+      tipo: [ data?.impresora?.tipo || '', Validators.required],
+      modelo: [data?.impresora?.modelo || '', Validators.required],
+      marca: [ data?.impresora?.marca || '', Validators.required],
+      numeroSerie: [ data?.impresora?.numeroSerie || '', Validators.required],
+      toner: [ data?.impresora?.toner || '', Validators.required],
+      qr: [ data?.impresora?.qr || '', Validators.required],
+      areaDepartamento: [ data?.impresora?.areaDepartamento || '', Validators.required]
     });
 
+    
     this.galleryImages = (data.imagenes || []).map((url: string) => ({
       small: url,
       medium: url,
       big: url
     }));
   }
+
+  isFormValid(): boolean {
+    return this.equipoForm.valid || this.impresoraForm.valid;
+  }
+  
 
   onFileSelected(event: any) {
     this.files = event.target.files;
@@ -203,21 +203,24 @@ export class CensoDialogComponent {  currentDate = DateTime.local().toISODate();
 
   async onSubmit() {
     try {
-      const formValues = this.equipoForm.value;
-      const isEmpty = Object.values(formValues).every(x => (x === null || x === ''));
+      if (this.equipoForm.invalid && this.impresoraForm.invalid) {
+        // Mostrar un mensaje de error si ambos formularios son inválidos
+        Swal.fire('Error', 'Debe llenar la sección de "Descripción" ya sea "Descripción de equipo" o "Descripción de impresora"  ', 'error');
+        return;
+      }
 
       let censo: any;
 
-      if (isEmpty) {
-        censo = {
-          cliente: this.clientForm.getRawValue(),
-          impresora: this.impresoraForm.value,
-        }
-      } else {
+      if (this.equipoForm.valid) {
         censo = {
           cliente: this.clientForm.getRawValue(),
           equipo: this.equipoForm.value,
-        }
+        };
+      } else if (this.impresoraForm.valid) {
+        censo = {
+          cliente: this.clientForm.getRawValue(),
+          impresora: this.impresoraForm.value,
+        };
       }
 
       const respCenso = await this._censosSevice.addCenso(censo);

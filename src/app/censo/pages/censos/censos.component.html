@@ -34,13 +34,13 @@
     <!-- Equipo Column -->
     <ng-container matColumnDef="equipo">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Equipo</th>
-      <td mat-cell *matCellDef="let row">{{ row.equipo.modelo }}</td>
+      <td mat-cell *matCellDef="let row">{{ row.equipo?.modelo || row.impresora?.modelo }}</td>
     </ng-container>
-
+    
     <!-- QR Column -->
     <ng-container matColumnDef="qr">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>QR</th>
-      <td mat-cell *matCellDef="let row">{{ row.equipo.qr }}</td>
+      <td mat-cell *matCellDef="let row">{{ row.equipo?.qr || row.impresora?.qr }}</td>
     </ng-container>
 
     <!-- Acciones Column -->
