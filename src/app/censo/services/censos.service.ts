@@ -87,5 +87,10 @@ export class CensosService {
     return deleteDoc(censoDoc);
     
   }
+
+   convertTimestampToDate(timestamp: { seconds: number, nanoseconds: number }): string {
+    const date = new Date(timestamp.seconds * 1000);
+    return date.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+  }
 }
 

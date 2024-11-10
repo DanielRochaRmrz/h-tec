@@ -2,7 +2,6 @@ import { Component, Inject } from '@angular/core';
 import { NgFor } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { provideNativeDateAdapter } from '@angular/material/core';
-
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -26,9 +25,9 @@ import Swal from 'sweetalert2';
 import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryModule, NgxGalleryOptions } from '@kolkov/ngx-gallery';
 import { CensosService } from '../../services/censos.service';
 import { ClienteData } from './../../../catalogos/interfaces/clientes.interface';
-import { ClienteRegistradoData } from '../../../catalogos/interfaces/censo.interface';
+import { ClienteRegistradoData } from './../../../catalogos/interfaces/censo.interface';
 import { ClientesDialogComponent } from '../clientes-dialog/clientes-dialog.component';
-
+import { url } from 'inspector';
 
 
 @Component({
@@ -42,34 +41,8 @@ import { ClientesDialogComponent } from '../clientes-dialog/clientes-dialog.comp
 export class CensoDialogComponent {  currentDate = DateTime.local().toISODate();
 
   clientForm: FormGroup;
-
-  equipoForm = this.formBuilder.group({
-    modelo: [],
-    marca: [],
-    numeroSerie: [],
-    sistemOperativoV: [],
-    officeV: [],
-    antivirus: [],
-    fechaCaducidadAnti: [],
-    qr: [],
-    areaDepartamento: [],
-    reponsableEquipo: [],
-    responsableCorreo: [],
-    tipo: [],
-  });
-
-  impresoraForm = this.formBuilder.group({
-    modelo: [],
-    marca: [],
-    numeroSerie: [],
-    sistemOperativoV: [],
-    officeV: [],
-    antivirus: [],
-    fechaCaducidadAnti: [],
-    qr: [],
-    areaDepartamento: [],
-    tipo: [],
-  });
+  equipoForm: FormGroup;
+  impresoraForm: FormGroup;
 
   isLinear = true;
 
@@ -132,19 +105,59 @@ export class CensoDialogComponent {  currentDate = DateTime.local().toISODate();
     private _censosSevice: CensosService,
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<CensoDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ClienteData,
+    @Inject(MAT_DIALOG_DATA) public data: ClienteRegistradoData,
   ) { 
-    this.data = data;
-    console.log('Data:', this.data);
+
+    const fechaRegistro = data?.cliente?.fechaRegistro && typeof data.cliente.fechaRegistro === 'object' 
+      ? this._censosSevice.convertTimestampToDate(data.cliente.fechaRegistro) 
+      : '';
+
+    const fechaRegistroEquipo = data?.equipo?.fechaCaducidadAnti && typeof data.equipo.fechaCaducidadAnti === 'object' 
+      ? this._censosSevice.convertTimestampToDate(data.equipo.fechaCaducidadAnti) 
+      : '';
     
     this.clientForm = this.formBuilder.group({
-      cliente: [{ value: data, disabled: true }, Validators.required],
-      claveASPEL: [{ value: '', disabled: true }, Validators.required],
-      whatsApp: [{ value: '', disabled: true }, Validators.required],
-      telefono: [{ value: '', disabled: true }, Validators.required],
-      correo: [{ value: '', disabled: true }, Validators.required],
-      fechaRegistro: [{ value: this.currentDate, disabled: false }, Validators.required],
+      cliente: [{ value: data?.cliente?.cliente, disabled: true }, Validators.required],
+      claveASPEL: [{ value: data?.cliente?.claveASPEL, disabled: true }, Validators.required],
+      whatsApp: [{ value: data?.cliente?.whatsApp, disabled: true }, Validators.required],
+      telefono: [{ value: data?.cliente?.telefono, disabled: true }, Validators.required],
+      correo: [{ value: data?.cliente?.correo, disabled: true }, Validators.required],
+      fechaRegistro: [{ value: fechaRegistro, disabled: false }, Validators.required],
     });
+
+    this.equipoForm = this.formBuilder.group({    
+      modelo: [ data?.equipo?.modelo || '', Validators.required],
+      marca: [ data?.equipo?.marca || '', Validators.required],
+      numeroSerie: [ data?.equipo?.numeroSerie || '', Validators.required],
+      sistemOperativoV: [ data?.equipo?.sistemOperativoV || '', Validators.required],
+      officeV: [ data?.equipo?.officeV || '', Validators.required],
+      antivirus: [ data?.equipo?.antivirus || '', Validators.required],
+      fechaCaducidadAnti: [ fechaRegistroEquipo || '', Validators.required],
+      qr: [ data?.equipo?.qr || '', Validators.required],
+      areaDepartamento: [ data?.equipo?.areaDepartamento || '', Validators.required],
+      reponsableEquipo: [ data?.equipo?.reponsableEquipo || '', Validators.required],
+      responsableCorreo: [ data?.equipo?.responsableCorreo || '', Validators.required],
+      tipo: [ data?.equipo?.tipo || '', Validators.required],
+    });
+  
+    this.impresoraForm = this.formBuilder.group({
+      modelo: [data?.equipo?.modelo || '', Validators.required],
+      marca: [ data?.equipo?.marca || '', Validators.required],
+      numeroSerie: [ data?.equipo?.numeroSerie || '', Validators.required],
+      sistemOperativoV: [ data?.equipo?.sistemOperativoV || '', Validators.required],
+      officeV: [ data?.equipo?.officeV || '', Validators.required],
+      antivirus: [ data?.equipo?.antivirus || '', Validators.required],
+      fechaCaducidadAnti: [ fechaRegistroEquipo || '', Validators.required],
+      qr: [ data?.equipo?.qr || '', Validators.required],
+      areaDepartamento: [ data?.equipo?.areaDepartamento || '', Validators.required],
+      tipo: [ data?.equipo?.tipo || '', Validators.required],
+    });
+
+    this.galleryImages = (data.imagenes || []).map((url: string) => ({
+      small: url,
+      medium: url,
+      big: url
+    }));
   }
 
   onFileSelected(event: any) {
@@ -197,12 +210,12 @@ export class CensoDialogComponent {  currentDate = DateTime.local().toISODate();
 
       if (isEmpty) {
         censo = {
-          cliente: this.clientForm.value,
+          cliente: this.clientForm.getRawValue(),
           impresora: this.impresoraForm.value,
         }
       } else {
         censo = {
-          cliente: this.clientForm.value,
+          cliente: this.clientForm.getRawValue(),
           equipo: this.equipoForm.value,
         }
       }
