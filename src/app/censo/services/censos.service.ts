@@ -1,8 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, addDoc, collection, collectionData, doc, updateDoc, deleteDoc } from '@angular/fire/firestore';
-import { Storage, ref, uploadBytesResumable, getDownloadURL } from "@angular/fire/storage";
+import { Firestore, addDoc, collection, collectionData, doc, updateDoc, deleteDoc, getDoc } from '@angular/fire/firestore';
+import { Storage, ref, uploadBytesResumable, getDownloadURL, getStorage, deleteObject } from "@angular/fire/storage";
 import { Observable } from 'rxjs';
 import { DateTime } from "luxon";
+import { url } from 'inspector';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,33 @@ export class CensosService {
   updateCenso(id: string, imagenes: any) {
     const censoRef = doc(this.firestore, 'censos', id);
     return updateDoc(censoRef, imagenes);
+  }
+
+  updateCensoData(id: string, censo: any) {
+    const censoRef = doc(this.firestore, 'censos', id);
+    return updateDoc(censoRef, censo);
+  }
+
+  getCensoById(id: string) {
+    const censoRef = doc(this.firestore, 'censos', id);
+    return getDoc(censoRef).then(doc => doc.exists() ? doc.data() : undefined);
+  }
+
+  async deleteImg(imgUrl: string, censoId: string): Promise<void> {
+
+    // Elimina del almacenamiento
+    const storage = getStorage();
+    const imgRef = ref(storage, imgUrl);
+    await deleteObject(imgRef);
+
+    const censoRef = doc(this.firestore, 'censos', censoId);
+    const censoDoc = await getDoc(censoRef);
+    if(censoDoc.exists()){
+      const censoData = censoDoc.data();
+      const updatedImages = (censoData['imagenes'] || []).filter((url: string) => url !== imgUrl);
+      await updateDoc(censoRef, {imagenes: updatedImages});
+    }
+
   }
 
   getCensos() {

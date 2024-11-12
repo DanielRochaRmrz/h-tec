@@ -34,3 +34,24 @@
 }
 
 .ngx-gallery { display: inline-block; margin-bottom: 20px; }
+
+.btn-delete-image {
+  position: absolute;
+  top: 5px;
+  right: -2px;
+  background-color: rgba(255, 0, 0, 0.8); /* Rojo con opacidad */
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+  width: 50px; /* El ancho será ajustado automáticamente */
+  min-width: 30px; /* Ancho mínimo para que no se haga demasiado pequeño */
+  max-width: 50px; /* Ancho máximo para evitar que sea largo */
+  text-align: center;
+  transition: background-color 0.3s;
+}
+
+.btn-delete-image:hover {
+  background-color: rgba(255, 0, 0, 1); /* Cambio al pasar el mouse */
+}
