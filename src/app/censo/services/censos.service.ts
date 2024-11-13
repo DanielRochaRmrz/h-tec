@@ -130,5 +130,20 @@ export class CensosService {
       });
     });
   }
+
+  actualizarItemDispositivo(id: string, dispositivo: any) {
+    const itemDoc = doc(this.firestore, `dispositivos/${id}`);
+    return updateDoc(itemDoc, dispositivo);
+  }
+
+  addItemDispositivo(dispositivo: any) {
+    return addDoc(this.dispositivosCollection, dispositivo);
+  }
+
+  eliminarItem(id: string) {
+    const itemDoc = doc(this.firestore, `dispositivos/${id}`);
+    return deleteDoc(itemDoc);
+
+  }
 }
 

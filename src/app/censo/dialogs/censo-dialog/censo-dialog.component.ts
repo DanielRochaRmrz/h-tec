@@ -26,6 +26,7 @@ import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryModule, NgxGalleryOptio
 import { CensosService } from '../../services/censos.service';
 import { ClienteRegistradoData } from './../../../catalogos/interfaces/censo.interface';
 import { ClientesDialogComponent } from '../clientes-dialog/clientes-dialog.component';
+import { ItemsDispositivoComponent } from '../items-dispositivo/items-dispositivo.component';
 
 @Component({
   selector: 'app-censo-dialog',
@@ -351,13 +352,68 @@ export class CensoDialogComponent {
     }
   }
 
-
-  editDispositivo(item: any) {
-    console.log("Editando dispositivo:", item);
-
+  openDialogDispositivos(tipo: string) {
+    const dialogRef = this.dialog.open(ItemsDispositivoComponent, {
+      data: { tipo },
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.getDataDispositivo("equipo", this.equipos);
+      this.getDataDispositivo("impresora", this.impresoras);
+    })
   }
-  deleteDispositivo(item: any) {
-    console.log("Eliminando dispositivo:", item);
 
+
+  editDispositivo(item: any, dispositivo: string) {
+
+    var editMod: boolean = true;
+    const dialogRef = this.dialog.open(ItemsDispositivoComponent, {
+      data: { item, editMod }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        let targetArray = dispositivo === "equipo" ? this.equipos : this.impresoras;
+        const index = targetArray.findIndex(c => c.id === item.id);
+        if (index !== -1) {
+          targetArray[index] = { ...targetArray[index], ...result };
+        }
+      }
+    })
+  }
+
+  deleteDispositivo(item: any, dispositivo: string) {
+    Swal.fire({
+      title: '¿Estás seguro de eliminar el item?',
+      text: 'No podrás revertir esto',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminarlo'
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        this._censosSevice.eliminarItem(item.id).then(() => {
+
+          if (dispositivo === 'impresora') {
+            this.getDataDispositivo('impresora', this.impresoras);
+          } else {
+            this.getDataDispositivo('equipo', this.equipos);
+          }
+
+          Swal.fire(
+            'Eliminado',
+            'El item ha sido eliminado.',
+            'success'
+          );
+        }).catch(error => {
+          Swal.fire(
+            'Error',
+            'Hubo un problema al eliminar el item.',
+            'error'
+          );
+          console.error('Error al eliminar el item', error);
+        });
+      }
+    });
   }
 }

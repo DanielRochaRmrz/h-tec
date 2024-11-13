@@ -85,11 +85,11 @@
                         <mat-radio-button class="example-margin" [value]="equipo.nombre">{{equipo.nombre}}</mat-radio-button>
                         <div class="btn-container">
                           <button mat-icon-button color="accent"
-                            (click)="editDispositivo(equipo)" class="btn-small">
+                            (click)="editDispositivo(equipo, 'equipo')" class="btn-small">
                             <mat-icon>edit</mat-icon>
                           </button>
                           <button mat-icon-button color="warn"
-                            (click)="deleteDispositivo(equipo)" class="btn-small">
+                            (click)="deleteDispositivo(equipo, 'equipo')" class="btn-small">
                             <mat-icon>delete</mat-icon>
                           </button>
                         </div>
@@ -98,7 +98,7 @@
                   </div>
                   <div class="margin-left-20">
                     <div class="button-container">
-                      <button [disabled]="" mat-fab color="primary">
+                      <button [disabled]="" mat-fab color="primary" (click)="openDialogDispositivos('equipo')">
                         <mat-icon>add</mat-icon>
                       </button>
                     </div>
@@ -209,11 +209,11 @@
                         <mat-radio-button class="example-margin" [value]="impresora.nombre">{{impresora.nombre}}</mat-radio-button>
                         <div class="btn-container">
                           <button mat-icon-button color="accent"
-                            (click)="editDispositivo(impresora)" class="btn-small">
+                            (click)="editDispositivo(impresora, 'impresora')" class="btn-small">
                             <mat-icon>edit</mat-icon>
                           </button>
                           <button mat-icon-button color="warn"
-                            (click)="deleteDispositivo(impresora)" class="btn-small">
+                            (click)="deleteDispositivo(impresora, 'impresora')" class="btn-small">
                             <mat-icon>delete</mat-icon>
                           </button>
                         </div>
@@ -222,7 +222,7 @@
                   </div>
                   <div class="margin-left-20">
                     <div class="button-container">
-                      <button [disabled]="" mat-fab color="primary">
+                      <button [disabled]="" mat-fab color="primary" (click)="openDialogDispositivos('impresora')">
                         <mat-icon>add</mat-icon>
                       </button>
                     </div>
