@@ -1,4 +1,4 @@
-import { Component, Inject, viewChild, ViewChild  } from '@angular/core';
+import { Component, Inject, viewChild, ViewChild } from '@angular/core';
 import { NgFor, CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -49,6 +49,8 @@ export class CensoDialogComponent {
   step = 0;
   isEditMode = false;
   censoId = '';
+  public equipos: any[] = [];
+  public impresoras: any[] = [];
 
   setStep(index: number) {
     this.step = index;
@@ -119,14 +121,14 @@ export class CensoDialogComponent {
       ? this._censosSevice.convertTimestampToDate(data.equipo.fechaCaducidadAnti)
       : '';
 
-      this.clientForm = this.formBuilder.group({
-        cliente: [{ value: data?.cliente?.['cliente'], disabled: true }, Validators.required],
-        claveASPEL: [{ value: data?.cliente?.['claveASPEL'], disabled: true }, Validators.required],
-        whatsApp: [{ value: data?.cliente?.['whatsApp'], disabled: true }, Validators.required],
-        telefono: [{ value: data?.cliente?.['telefono'], disabled: true }, Validators.required],
-        correo: [{ value: data?.cliente?.['correo'], disabled: true }, Validators.required],
-        fechaRegistro: [{ value: fechaRegistro, disabled: false }, Validators.required],
-      });
+    this.clientForm = this.formBuilder.group({
+      cliente: [{ value: data?.cliente?.['cliente'], disabled: true }, Validators.required],
+      claveASPEL: [{ value: data?.cliente?.['claveASPEL'], disabled: true }, Validators.required],
+      whatsApp: [{ value: data?.cliente?.['whatsApp'], disabled: true }, Validators.required],
+      telefono: [{ value: data?.cliente?.['telefono'], disabled: true }, Validators.required],
+      correo: [{ value: data?.cliente?.['correo'], disabled: true }, Validators.required],
+      fechaRegistro: [{ value: fechaRegistro, disabled: false }, Validators.required],
+    });
 
     this.equipoForm = this.formBuilder.group({
       modelo: [data?.equipo?.modelo || '', Validators.required],
@@ -171,6 +173,8 @@ export class CensoDialogComponent {
         this.loadCenso(this.censoId);
       }
     }
+    this.getDataDispositivo("equipo", this.equipos);
+    this.getDataDispositivo("impresora", this.impresoras);
   }
 
   isFormValid(): boolean {
@@ -209,7 +213,7 @@ export class CensoDialogComponent {
       }))
     ];
   }
-  
+
 
   async loadCenso(id: string) {
     try {
@@ -218,13 +222,13 @@ export class CensoDialogComponent {
         this.existingImages = censo['imagenes'] || [];
         this.loadGalleryImages();
       }
-     } 
+    }
     catch (error) {
       console.error(error);
     }
   }
   removeImage(index: number) {
-  
+
     if (index < this.existingImages.length) {
       const imgUrl = this.existingImages[index];
       this.imagesToDelete.push(imgUrl);
@@ -234,14 +238,14 @@ export class CensoDialogComponent {
       this.previewUrls.splice(newIndex, 1);
       this.filesUpladed.splice(newIndex, 1);
     }
-  
+
     this.loadGalleryImages();
   }
 
   onImageChange(event: any) {
-    this.currentImageIndex = event.index;    
+    this.currentImageIndex = event.index;
   }
-  
+
   openDialog(): void {
     const dialogRef = this.dialog.open(ClientesDialogComponent, {
       data: {},
@@ -334,5 +338,26 @@ export class CensoDialogComponent {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  async getDataDispositivo(tipo: string, targetArray: any[]) {
+    try {
+      const data = await this._censosSevice.getItemsDispositivos(tipo) as any[];
+      targetArray.length = 0; // Limpia el array antes de llenarlo
+      targetArray.push(...data); // Llena el array con los nuevos datos
+      console.log(`${tipo}s:`, targetArray);
+    } catch (error) {
+      console.error(`Error al obtener los ${tipo}s:`, error);
+    }
+  }
+
+
+  editDispositivo(item: any) {
+    console.log("Editando dispositivo:", item);
+
+  }
+  deleteDispositivo(item: any) {
+    console.log("Eliminando dispositivo:", item);
+
   }
 }

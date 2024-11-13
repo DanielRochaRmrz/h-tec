@@ -55,3 +55,35 @@
 .btn-delete-image:hover {
   background-color: rgba(255, 0, 0, 1); /* Cambio al pasar el mouse */
 }
+.dispositivo-container {
+  .radio-button-container {
+    display: flex;
+    align-items: center;
+
+    .btn-container {
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0s, opacity 0.2s linear;
+      margin-left: 8px; // Espacio entre el texto del radio y los botones
+    }
+
+    &:hover .btn-container {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .btn-small {
+      width: 24px; // Ajusta el tamaño del botón
+      height: 24px; // Ajusta el tamaño del botón
+      padding: 0; // Asegúrate de que no haya relleno adicional
+
+      mat-icon {
+        font-size: 16px; // Ajusta el tamaño del icono
+      }
+    }
+  }
+}
+
+.margin-left-20{
+  margin-left: 20px;
+}

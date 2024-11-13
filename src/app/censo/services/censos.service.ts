@@ -1,9 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, addDoc, collection, collectionData, doc, updateDoc, deleteDoc, getDoc } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, collectionData, doc, updateDoc, deleteDoc, getDoc, where, query } from '@angular/fire/firestore';
 import { Storage, ref, uploadBytesResumable, getDownloadURL, getStorage, deleteObject } from "@angular/fire/storage";
 import { Observable } from 'rxjs';
 import { DateTime } from "luxon";
-import { url } from 'inspector';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +11,7 @@ export class CensosService {
 
   private firestore: Firestore = inject(Firestore);
   private censosCollection = collection(this.firestore, 'censos');
-
+  private dispositivosCollection = collection(this.firestore, 'dispositivos');
   private readonly storage: Storage = inject(Storage);
 
   constructor() { }
@@ -45,10 +44,10 @@ export class CensosService {
 
     const censoRef = doc(this.firestore, 'censos', censoId);
     const censoDoc = await getDoc(censoRef);
-    if(censoDoc.exists()){
+    if (censoDoc.exists()) {
       const censoData = censoDoc.data();
       const updatedImages = (censoData['imagenes'] || []).filter((url: string) => url !== imgUrl);
-      await updateDoc(censoRef, {imagenes: updatedImages});
+      await updateDoc(censoRef, { imagenes: updatedImages });
     }
 
   }
@@ -110,15 +109,26 @@ export class CensosService {
     });
   }
 
-  eliminarCenso(id:string){
+  eliminarCenso(id: string) {
     const censoDoc = doc(this.firestore, `censos/${id}`);
     return deleteDoc(censoDoc);
-    
+
   }
 
-   convertTimestampToDate(timestamp: { seconds: number, nanoseconds: number }): string {
+  convertTimestampToDate(timestamp: { seconds: number, nanoseconds: number }): string {
     const date = new Date(timestamp.seconds * 1000);
     return date.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+  }
+
+  getItemsDispositivos(tipo: string): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const q = query(this.dispositivosCollection, where('tipo', 'in', [tipo]));
+      const dispositivoData = collectionData(q, { idField: 'id' }) as Observable<any[]>;
+      dispositivoData.subscribe({
+        next: data => resolve(data),
+        error: error => reject(error)
+      });
+    });
   }
 }
 
