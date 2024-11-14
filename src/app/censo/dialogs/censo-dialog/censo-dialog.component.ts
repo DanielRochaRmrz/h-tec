@@ -289,8 +289,11 @@ export class CensoDialogComponent {
       let idCenso: string;
 
       if (this.data.editMod) {
-
+        console.log("CENSO ID", this.censoId);
+        console.log("CENSO ID data", this.data.id);
+        
         respCenso = await this._censosSevice.updateCensoData(this.data.id, censo);
+        
         idCenso = this.data.id;
 
         // Subir imagenes 

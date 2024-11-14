@@ -31,7 +31,10 @@ export interface ClienteRegistradoData {
         correo: string;
         claveASPEL: string;
         cliente: string;
-        fechaRegistro: string;
+        fechaRegistro:{
+            seconds: number;
+            nanoseconds: number;
+        };
         telefono: string;
     };
     id: string;

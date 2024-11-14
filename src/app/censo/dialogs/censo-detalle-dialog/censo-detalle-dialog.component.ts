@@ -7,16 +7,17 @@ import {
   MatDialogContent,
   MatDialogTitle,
 } from '@angular/material/dialog';
-import {MatButtonModule} from '@angular/material/button'
-
+import { MatButtonModule } from '@angular/material/button';
 import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryModule, NgxGalleryOptions } from '@kolkov/ngx-gallery';
+import { ClienteRegistradoData } from './../../../catalogos/interfaces/censo.interface';
+import { CommonModule } from '@angular/common';
+import { Timestamp } from '@angular/fire/firestore';
 
-import { CensosData } from '../../interfaces/cesos.interface';
 
 @Component({
   selector: 'app-censo-detalle-dialog',
   standalone: true,
-  imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule, NgxGalleryModule],
+  imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule, NgxGalleryModule, CommonModule],
   templateUrl: './censo-detalle-dialog.component.html',
   styleUrl: './censo-detalle-dialog.component.scss'
 })
@@ -58,10 +59,21 @@ export class CensoDetalleDialogComponent {
     },
   ];
 
+  formattedFechaCaducidadAnti: string = '';
+  formattedFecha: string = '';
+
   constructor(
     public dialogRef: MatDialogRef<CensoDetalleDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: CensosData,
+    @Inject(MAT_DIALOG_DATA) public data: ClienteRegistradoData,
   ) {
+
+
+    const timestamp = new Timestamp(this.data.equipo.fechaCaducidadAnti.seconds, this.data.equipo.fechaCaducidadAnti.nanoseconds);
+    this.formattedFechaCaducidadAnti = this.formatTimestamp(timestamp);
+    const timestamp2 = new Timestamp(this.data.cliente.fechaRegistro.seconds, this.data.cliente.fechaRegistro.nanoseconds);
+    this.formattedFechaCaducidadAnti = this.formatTimestamp(timestamp);
+    this.formattedFecha = this.formatTimestamp(timestamp2);
+
     if (data.imagenes) {
       this.galleryImages = data.imagenes.map((img) => {
         return {
@@ -71,6 +83,12 @@ export class CensoDetalleDialogComponent {
         };
       });
     }
+  }
+
+  formatTimestamp(timestamp: Timestamp) {
+    const date = timestamp.toDate();
+    return date.toLocaleDateString();
+
   }
 
 }
