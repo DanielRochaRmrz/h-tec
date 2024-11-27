@@ -22,6 +22,7 @@ export interface TecnicosData {
  export interface clasificacionesData {
     editMod: boolean | undefined;
     item: any;
-    id: number;
+    id: string;
     nombre: string;
+    counter: number;
   }

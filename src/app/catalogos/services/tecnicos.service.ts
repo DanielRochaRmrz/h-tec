@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, addDoc, collection, collectionData, doc, getDoc, setDoc, deleteDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, collectionData, doc, getDoc, setDoc, deleteDoc, updateDoc, query, getCountFromServer } from '@angular/fire/firestore';
+
 import { Observable } from 'rxjs';
 import { TecnicosData, clasificacionesData } from '../interfaces/tecnicos.interfaces';
 import { AuthService } from '../../auth/services/auth.service';
@@ -39,8 +40,8 @@ export class TecnicosService {
     return getDoc(doc(this.firestore, 'tecnicosCounters', collection));
   }
 
-  updateCounter(collection: string, counter: number) {
-    return setDoc(doc(this.firestore, 'tecnicosCounters', collection), { counter });
+  updateTecnicosCounter(documento: string, counter: number) {
+    return setDoc(doc(this.firestore, 'tecnicosCounters', documento), { counter });
   }
 
   addClasificacion(clasificacion: any) {
@@ -76,7 +77,24 @@ export class TecnicosService {
 
   actualizarItem(id: string, clasificacion: any) {
     const itemDoc = doc(this.firestore, `tecnicosClasificaciones/${id}`);
-    return updateDoc(itemDoc, clasificacion);
+    try {
+      return updateDoc(itemDoc, clasificacion);
+    } catch (error) {
+      console.error("Error updating document: ", error);
+      throw error;
+    }
+  }
+
+  async contarDocumentosTc() {
+    const coleccionRef = this.clasificacionesnCollection;
+    const q = query(coleccionRef);
+    try {
+      const snapshot = await getCountFromServer(q);
+      return snapshot.data().count; // El conteo de documentos
+    } catch (error) {
+      console.error("Error getting document count: ", error);
+      throw error;
+    }
   }
 }
 

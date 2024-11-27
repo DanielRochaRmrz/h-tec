@@ -49,14 +49,16 @@
           <div class="col-md-6">
             <mat-checkbox [disabled]="isSaveDisabled" (change)="onCheckboxChange($event, clasificacion)"
               [checked]="isChecked(clasificacion.counter)">
-              {{clasificacion.nombre}}
+              {{ clasificacion.nombre }}
             </mat-checkbox>
           </div>
-          <div class="col-md-6 text-right">
+          <div class="col-md-6 text-right position-relative">
+            <!-- Botón Edit con tooltip -->
             <button mat-icon-button color="accent" [disabled]="isSaveDisabled"
               (click)="editClasificacion(clasificacion)" class="btn-small">
               <mat-icon>edit</mat-icon>
             </button>
+            <!-- Botón Delete con tooltip -->
             <button mat-icon-button color="warn" [disabled]="isSaveDisabled"
               (click)="deleteClasificacion(clasificacion)" class="btn-small">
               <mat-icon>delete</mat-icon>
@@ -64,6 +66,7 @@
           </div>
         </div>
       </div>
+
       <div class="col-md-2">
         <div class="button-container">
           <button [disabled]="isSaveDisabled" mat-fab color="primary" (click)="openDialogClasificacion()">
@@ -82,7 +85,7 @@
       <div class="col-md-6">
         <mat-form-field appearance="outline">
           <mat-label>Clasificación:</mat-label>
-          <input matInput formControlName="clasificacion" />
+            <input matInput formControlName="clasificacion" [readonly]="true" />
           <mat-icon matSuffix>engineering</mat-icon>
         </mat-form-field>
       </div>

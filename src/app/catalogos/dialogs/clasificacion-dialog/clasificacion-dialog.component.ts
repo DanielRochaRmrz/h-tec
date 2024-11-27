@@ -37,7 +37,7 @@ export class ClasificacionDialogComponent implements OnInit {
   ) {
 
     this.isEditMode = data.editMod;
-    
+
     this.myForm = this.formBuilder.group({
       nombre: [data?.item?.nombre || '', Validators.required]
     });
@@ -75,7 +75,7 @@ export class ClasificacionDialogComponent implements OnInit {
         });
 
         // Actualiza el contador en la base de datos
-        await this._tecnicosService.updateCounter('clasificaciones', counter + 1);
+        await this._tecnicosService.updateTecnicosCounter('clasificaciones', counter + 1);
 
         console.info(resp);
         Swal.fire('Clasificación agregada', 'La clasificación se ha agregado correctamente', 'success');

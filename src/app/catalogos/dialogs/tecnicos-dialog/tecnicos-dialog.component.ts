@@ -14,7 +14,7 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { TecnicosData } from '../../interfaces/tecnicos.interfaces';
+import { clasificacionesData, TecnicosData } from '../../interfaces/tecnicos.interfaces';
 import { TecnicosService } from '../../services/tecnicos.service';
 import { NgFor, NgIf } from '@angular/common';
 import { ClasificacionDialogComponent } from '../clasificacion-dialog/clasificacion-dialog.component';
@@ -77,6 +77,7 @@ export class TecnicosDialogComponent implements OnInit {
   async getDataClasificaciones() {
     try {
       this.clasificaciones = await this._tecnicosService.getClasificaciones() as any[];
+      this.clasificaciones.sort((a, b) =>  a.counter - b.counter);
       console.log('Clasificaciones:', this.clasificaciones);
     } catch (error) {
       console.error('Error al obtener los clasificaciones:', error);
@@ -93,11 +94,12 @@ export class TecnicosDialogComponent implements OnInit {
       }
     }
     // Actualiza el valor del campo 'clasificacion' en el formulario
-    this.myForm.get('clasificacion')?.setValue(this.selectedNumbers.map(c => c.counter) as unknown as null);
+    this.myForm.get('clasificacion')?.setValue(this.selectedNumbers.map(c => c.counter).join(''));
   }
 
   onSave(): void {
     if (this.myForm.valid) {
+      console.log('Formulario válido:', this.myForm.value);
       this.dialogRef.close(this.myForm.value);
     }
   }
@@ -124,7 +126,7 @@ export class TecnicosDialogComponent implements OnInit {
     });
   }
 
-  deleteClasificacion(item: any) {
+  deleteClasificacion(item: clasificacionesData) {
     Swal.fire({
       title: '¿Estás seguro de eliminar el item?',
       text: 'No podrás revertir esto',
@@ -133,23 +135,25 @@ export class TecnicosDialogComponent implements OnInit {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Sí, eliminarlo'
-    }).then((result) => {
+    }).then(async ( result ) => {
       if (result.isConfirmed) {
-        this._tecnicosService.eliminarItem(item.id).then(() => {
+        try {
+          await this._tecnicosService.eliminarItem(item.id);
           this.clasificaciones = this.clasificaciones.filter(c => c.id !== item.id);
-          Swal.fire(
-            'Eliminado',
-            'El item ha sido eliminado.',
-            'success'
-          );
-        }).catch(error => {
-          Swal.fire(
-            'Error',
-            'Hubo un problema al eliminar el producto.',
-            'error'
-          );
+          this.clasificaciones.sort((a, b) => a.counter - b.counter);
+          for (const cfs of this.clasificaciones) {
+            if (item.counter < cfs.counter) {
+              await this._tecnicosService.actualizarItem(cfs.id, { counter: cfs.counter - 1 });
+            }
+          }
+          const documentosTc = await this._tecnicosService.contarDocumentosTc();
+          await this._tecnicosService.updateTecnicosCounter('clasificaciones', documentosTc);
+          this.getDataClasificaciones();
+          Swal.fire('Eliminado', 'El item ha sido eliminado.', 'success');
+        } catch (error) {
+          Swal.fire('Error', 'Hubo un problema al eliminar el producto.', 'error');
           console.error('Error al eliminar el producto', error);
-        });
+        }
       }
     });
   }

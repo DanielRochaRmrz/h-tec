@@ -17,16 +17,37 @@
   opacity: 0;
   transition: opacity 0.3s;
   mat-icon {
-    font-size: 16px;
+    font-size: 20px; // Ajusta el tamaño del ícono dentro del botón
   }
 }
 
+// Mostrar los botones solo al pasar el mouse sobre la fila
+.checkboxHorizontal .row:hover .btn-small {
+  opacity: 1;
+}
+
+// Estilo para las filas de clasificaciones
 .checkboxHorizontal .row {
   display: flex;
   align-items: center;
   margin-bottom: 5px;
 }
 
-.checkboxHorizontal .row:hover .btn-small {
-  opacity: 1;
+// Asegura que el texto del checkbox no se corte o modifique
+::ng-deep .mat-mdc-checkbox label {
+  white-space: nowrap;
+}
+
+// Ajuste para la posición de los botones y evitar solapamientos
+.checkboxHorizontal .row .text-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+}
+
+// Para evitar que el texto largo y los botones se solapen, puedes usar:
+.checkboxHorizontal .row {
+  flex-wrap: nowrap; // Evitar que los elementos se envuelvan
+  justify-content: space-between; // Distribuir el espacio entre el texto y los botones
 }
