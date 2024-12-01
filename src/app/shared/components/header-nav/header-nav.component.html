@@ -26,7 +26,7 @@
 </mat-toolbar>
 
 <mat-drawer-container class="ht-container" hasBackdrop="false">
-  <mat-drawer #drawer class="ht-sidenav">
+  <mat-drawer #drawer mode="side" opened class="ht-sidenav">
     <mat-toolbar>
       <span>My Application</span>
     </mat-toolbar>
@@ -54,7 +54,6 @@
               [routerLink]="['/catalogos/productos']"
               [routerLinkActive]="['active']"
               class="list-group-item list-group-item-action"
-              (click)="drawer.close()"
               >Productos</a
             >
             <a
@@ -62,7 +61,6 @@
               [routerLink]="['/catalogos/tecnicos']"
               [routerLinkActive]="['active']"
               class="list-group-item list-group-item-action"
-              (click)="drawer.close()"
               >Técnicos</a
             >
             <a
@@ -70,7 +68,6 @@
               [routerLink]="['/catalogos/clientes']"
               [routerLinkActive]="['active']"
               class="list-group-item list-group-item-action"
-              (click)="drawer.close()"
               >Clientes</a
             >
           </div>
@@ -87,7 +84,7 @@
     </div>
   </mat-drawer>
 
-  <div class="ht-sidenav-content" (click)="drawer.close()">
+  <div class="ht-sidenav-content">
     <div class="container">
       <div class="row justify-content-center align-items-center g-2">
         <div class="col-12 mt-4">
