@@ -352,6 +352,7 @@ export class CensoDialogComponent {
       console.error(error);
       Swal.close();
       Swal.fire('Error', 'Hubo un problema al guardar el censo', 'error');
+
     }
   }
 
