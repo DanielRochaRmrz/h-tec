@@ -79,23 +79,21 @@
               <div class="col-md-12">
                 <section class="example-section">
                   <label class="example-margin">Equipo:</label>
-                  <div *ngFor="let equipo of equipos" class="dispositivo-container">
-                    <mat-radio-group formControlName="tipo">
+                  <mat-radio-group formControlName="tipo" class="radio-group-container">
+                    <div *ngFor="let equipo of equipos" class="dispositivo-container">
                       <div class="radio-button-container">
-                        <mat-radio-button class="example-margin" [value]="equipo.nombre">{{equipo.nombre}}</mat-radio-button>
+                        <mat-radio-button class="example-margin" [value]="equipo.nombre">{{ equipo.nombre }}</mat-radio-button>
                         <div class="btn-container">
-                          <button mat-icon-button color="accent"
-                            (click)="editDispositivo(equipo, 'equipo')" class="btn-small">
+                          <button mat-icon-button color="accent" (click)="editDispositivo(equipo, 'equipo')" class="btn-small">
                             <mat-icon>edit</mat-icon>
                           </button>
-                          <button mat-icon-button color="warn"
-                            (click)="deleteDispositivo(equipo, 'equipo')" class="btn-small">
+                          <button mat-icon-button color="warn" (click)="deleteDispositivo(equipo, 'equipo')" class="btn-small">
                             <mat-icon>delete</mat-icon>
                           </button>
                         </div>
                       </div>
-                    </mat-radio-group>
-                  </div>
+                    </div>
+                  </mat-radio-group>
                   <div class="margin-left-20">
                     <div class="button-container">
                       <button [disabled]="" mat-fab color="primary" (click)="openDialogDispositivos('equipo')">
@@ -105,6 +103,7 @@
                   </div>
                 </section>
               </div>
+              
               <hr />
               <div class="col-md-6">
                 <mat-form-field appearance="outline">
@@ -203,23 +202,21 @@
               <div class="col-md-12">
                 <section class="example-section">
                   <label class="example-margin">Equipo:</label>
-                  <div *ngFor="let impresora of impresoras" class="dispositivo-container">
-                    <mat-radio-group formControlName="tipo">
+                  <mat-radio-group formControlName="tipo" class="radio-group-container">
+                    <div *ngFor="let impresora of impresoras" class="dispositivo-container">
                       <div class="radio-button-container">
                         <mat-radio-button class="example-margin" [value]="impresora.nombre">{{impresora.nombre}}</mat-radio-button>
                         <div class="btn-container">
-                          <button mat-icon-button color="accent"
-                            (click)="editDispositivo(impresora, 'impresora')" class="btn-small">
+                          <button mat-icon-button color="accent" (click)="editDispositivo(impresora, 'impresora')" class="btn-small">
                             <mat-icon>edit</mat-icon>
                           </button>
-                          <button mat-icon-button color="warn"
-                            (click)="deleteDispositivo(impresora, 'impresora')" class="btn-small">
+                          <button mat-icon-button color="warn" (click)="deleteDispositivo(impresora, 'impresora')" class="btn-small">
                             <mat-icon>delete</mat-icon>
                           </button>
                         </div>
                       </div>
-                    </mat-radio-group>
-                  </div>
+                    </div>
+                  </mat-radio-group>
                   <div class="margin-left-20">
                     <div class="button-container">
                       <button [disabled]="" mat-fab color="primary" (click)="openDialogDispositivos('impresora')">
@@ -229,6 +226,7 @@
                   </div>
                 </section>
               </div>
+              
               <hr />
               <div class="col-md-6">
                 <mat-form-field appearance="outline">

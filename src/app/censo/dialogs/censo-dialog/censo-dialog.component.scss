@@ -55,35 +55,56 @@
 .btn-delete-image:hover {
   background-color: rgba(255, 0, 0, 1); /* Cambio al pasar el mouse */
 }
+
+.radio-group-container {
+  display: flex; // Alinea los elementos en una fila
+  flex-wrap: wrap; // Permite que los elementos se ajusten a la siguiente línea si no caben
+  gap: 14git px; // Espacio entre cada radio button con sus botones asociados
+}
+
 .dispositivo-container {
-  .radio-button-container {
-    display: flex;
-    align-items: center;
+  display: flex; // Hace que cada "radio-button-container" se muestre como un elemento en línea
+  align-items: center; // Alinea verticalmente los elementos
+}
 
-    .btn-container {
-      visibility: hidden;
-      opacity: 0;
-      transition: visibility 0s, opacity 0.2s linear;
-      margin-left: 8px; // Espacio entre el texto del radio y los botones
-    }
+.radio-button-container {
+  display: flex; // Mantiene el radio button y los botones en una fila
+  align-items: center;
 
-    &:hover .btn-container {
-      visibility: visible;
-      opacity: 1;
-    }
+  .btn-container {
+    display: flex; // Coloca los botones en una fila
+    visibility: hidden; // Oculta inicialmente los botones
+    opacity: 0; // Transición suave al hacer hover
+    transition: visibility 0.2s, opacity 0.2s ease-in-out;
+    margin-left: 8px; // Espacio entre el texto del radio y los botones
+    gap: 4px; // Espaciado uniforme entre botones
+  }
 
-    .btn-small {
-      width: 24px; // Ajusta el tamaño del botón
-      height: 24px; // Ajusta el tamaño del botón
-      padding: 0; // Asegúrate de que no haya relleno adicional
+  &:hover .btn-container {
+    visibility: visible; // Muestra los botones al pasar el cursor
+    opacity: 1;
+  }
 
-      mat-icon {
-        font-size: 16px; // Ajusta el tamaño del icono
-      }
+  .btn-small {
+    width: 24px; // Tamaño del botón
+    height: 24px;
+    padding: 0;
+    border-radius: 50%;
+
+    mat-icon {
+      font-size: 16px; // Tamaño del ícono
     }
   }
 }
 
-.margin-left-20{
+.margin-left-20 {
   margin-left: 20px;
 }
+
+
+
+.margin-left-20 {
+  margin-left: 20px;
+}
+
+
