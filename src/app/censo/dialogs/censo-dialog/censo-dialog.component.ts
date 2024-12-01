@@ -271,6 +271,16 @@ export class CensoDialogComponent {
         return;
       }
 
+      const swalLaoading = Swal.fire({
+        title: 'Procesando...',
+        text: 'Por favor espere mientras se guarda la información.',
+        didOpen: () => {
+          Swal.showLoading();
+        },
+        allowOutsideClick: false,
+        willClose: () => {}
+      });
+
       let censo: any;
 
       if (this.equipoForm.valid) {
@@ -289,11 +299,9 @@ export class CensoDialogComponent {
       let idCenso: string;
 
       if (this.data.editMod) {
-        console.log("CENSO ID", this.censoId);
-        console.log("CENSO ID data", this.data.id);
-        
+
         respCenso = await this._censosSevice.updateCensoData(this.data.id, censo);
-        
+
         idCenso = this.data.id;
 
         // Subir imagenes 
@@ -316,6 +324,10 @@ export class CensoDialogComponent {
 
         Swal.fire('Censo actualizado', 'El censo se ha actualizado con éxito', 'success');
 
+        swalLaoading.then(() => Swal.close()); 
+
+        Swal.fire('Censo actualizado', 'El censo se ha actualizado con éxito', 'success');
+
       } else {
 
         respCenso = await this._censosSevice.addCenso(censo);
@@ -328,15 +340,18 @@ export class CensoDialogComponent {
 
         const updateCenso = this._censosSevice.updateCenso(idCenso, { imagenes: await Promise.all(uploadPromises) });
 
-        Promise.all([respCenso, uploadPromises, updateCenso]).then(() => {
-          Swal.fire('Censo agregado', 'El censo se ha agregado con éxito', 'success');
-        });
+        await Promise.all([respCenso, uploadPromises, updateCenso]);
+
+        swalLaoading.then(() => Swal.close()); 
+        Swal.fire('Censo guardado', 'El censo se ha guardado con éxito', 'success');
 
       }
 
       this.dialogRef.close();
     } catch (error) {
       console.error(error);
+      Swal.close();
+      Swal.fire('Error', 'Hubo un problema al guardar el censo', 'error');
     }
   }
 
