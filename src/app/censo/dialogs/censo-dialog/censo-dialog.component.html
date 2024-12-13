@@ -4,7 +4,7 @@
     <mat-step [stepControl]="clientForm">
       <form [formGroup]="clientForm">
         <ng-template matStepLabel>Cliente</ng-template>
-        <div class="col-md-1 text-start">
+        <div class="col-12 text-start">
           <button mat-fab extended type="button" class="mt-4" color="primary" (click)="openDialog()">
             Buscar cliente
           </button>
@@ -67,7 +67,7 @@
       <mat-accordion class="example-headers-align">
         <div class="mt-2"></div>
         <form [formGroup]="equipoForm">
-          <mat-expansion-panel>
+          <mat-expansion-panel (click)="toggleExpansionPanel('equipo')" [disabled]="expansionPanelEquipoDisabled" [expanded]="expansionPanelEquipoExpanded" [ngClass]="{'invalid-panel': highlightInvalidPanels && isFormPanelInvalid('equipo') && !expansionPanelEquipoDisabled}" >
             <mat-expansion-panel-header>
               <mat-panel-title> Descripción de Equipos </mat-panel-title>
               <mat-panel-description>
@@ -103,7 +103,7 @@
                   </div>
                 </section>
               </div>
-              
+
               <hr />
               <div class="col-md-6">
                 <mat-form-field appearance="outline">
@@ -190,7 +190,7 @@
         </form>
         <div class="mt-2"></div>
         <form [formGroup]="impresoraForm">
-          <mat-expansion-panel>
+          <mat-expansion-panel (click)="toggleExpansionPanel('impresora')" [disabled]="expansionPanelImpresoraDisabled" [expanded]="expansionPanelImpresoraExpanded" [ngClass]="{'invalid-panel': highlightInvalidPanels && isFormPanelInvalid('impresora') && !expansionPanelImpresoraDisabled}">
             <mat-expansion-panel-header>
               <mat-panel-title> Descripción de Impresoras </mat-panel-title>
               <mat-panel-description>
@@ -226,7 +226,7 @@
                   </div>
                 </section>
               </div>
-              
+
               <hr />
               <div class="col-md-6">
                 <mat-form-field appearance="outline">
@@ -277,7 +277,7 @@
       <hr />
       <div>
         <button mat-button matStepperPrevious>Clientes</button>
-        <button mat-button matStepperNext>Fotografias</button>
+        <button mat-button matStepperNext (click)="highlightInvalid()">Fotografias</button>
       </div>
     </mat-step>
 
@@ -295,9 +295,9 @@
         <div class="col-md-6 position-relative">
           <div class="row justify-content-center align-items-center g-2">
             <ngx-gallery [options]="galleryOptions" [images]="galleryImages" (change)="onImageChange($event)"></ngx-gallery>
-            <button 
-              *ngIf="galleryImages.length > 0" 
-              class="btn-delete-image" 
+            <button
+              *ngIf="galleryImages.length > 0"
+              class="btn-delete-image"
               (click)="removeImage(currentImageIndex)">
               Eliminar
             </button>
