@@ -32,7 +32,7 @@ import { ItemsDispositivoComponent } from '../items-dispositivo/items-dispositiv
   selector: 'app-censo-dialog',
   standalone: true,
   providers: [provideNativeDateAdapter()],
-  imports: [ReactiveFormsModule, NgFor, MatCardModule, MatDatepickerModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, MatRadioModule, MatStepperModule, MatExpansionModule, NgxGalleryModule, CommonModule],
+  imports: [ReactiveFormsModule, NgFor, MatCardModule, MatDatepickerModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, MatRadioModule, MatStepperModule, MatExpansionModule, NgxGalleryModule, CommonModule],
   templateUrl: './censo-dialog.component.html',
   styleUrl: './censo-dialog.component.scss'
 })
@@ -104,6 +104,12 @@ export class CensoDialogComponent {
   files!: FileList;
   filesUpladed: any[] = [];
   previewUrls: (string | ArrayBuffer)[] = [];
+
+  public expansionPanelEquipoDisabled: boolean = false;
+  public expansionPanelImpresoraDisabled: boolean = false;
+  public expansionPanelEquipoExpanded: boolean = false;
+  public expansionPanelImpresoraExpanded: boolean = false;
+  public highlightInvalidPanels: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -304,7 +310,7 @@ export class CensoDialogComponent {
 
         idCenso = this.data.id;
 
-        // Subir imagenes 
+        // Subir imagenes
         const upLoadPromises = Array.from(this.filesUpladed).map(async (file: File) => {
           const resp = await this._censosSevice.uploadImg(file, idCenso);
           return resp;
@@ -324,7 +330,7 @@ export class CensoDialogComponent {
 
         Swal.fire('Censo actualizado', 'El censo se ha actualizado con éxito', 'success');
 
-        swalLaoading.then(() => Swal.close()); 
+        swalLaoading.then(() => Swal.close());
 
         Swal.fire('Censo actualizado', 'El censo se ha actualizado con éxito', 'success');
 
@@ -342,7 +348,7 @@ export class CensoDialogComponent {
 
         await Promise.all([respCenso, uploadPromises, updateCenso]);
 
-        swalLaoading.then(() => Swal.close()); 
+        swalLaoading.then(() => Swal.close());
         Swal.fire('Censo guardado', 'El censo se ha guardado con éxito', 'success');
 
       }
@@ -434,5 +440,51 @@ export class CensoDialogComponent {
         });
       }
     });
+  }
+
+  toggleExpansionPanel(type: 'equipo' | 'impresora') {
+    const otherType = type === 'equipo' ? 'impresora' : 'equipo';
+    const otherForm = type === 'equipo' ? this.impresoraForm : this.equipoForm;
+
+    if (otherForm.dirty || otherForm.touched) {
+      Swal.fire({
+        title: "¿Estás seguro?",
+        text: `¡El formulario de ${otherType} se va a borrar o resetear si eliges complementar la información del ${type}!`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, continuar"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          otherForm.reset();
+          this.setPanelState(type, true);
+        }
+      });
+    } else {
+      this.setPanelState(type, true);
+    }
+  }
+
+  private setPanelState(type: 'equipo' | 'impresora', expanded: boolean) {
+    if (type === 'equipo') {
+      this.expansionPanelEquipoDisabled = false;
+      this.expansionPanelImpresoraDisabled = true;
+      this.expansionPanelEquipoExpanded = expanded;
+      this.expansionPanelImpresoraExpanded = !expanded;
+    } else {
+      this.expansionPanelEquipoDisabled = true;
+      this.expansionPanelImpresoraDisabled = false;
+      this.expansionPanelEquipoExpanded = !expanded;
+      this.expansionPanelImpresoraExpanded = expanded;
+    }
+  }
+
+  isFormPanelInvalid(type: 'equipo' | 'impresora'): boolean {
+    return type === 'equipo' ? this.equipoForm.invalid : this.impresoraForm.invalid;
+  }
+
+  highlightInvalid() {
+    this.highlightInvalidPanels = true;
   }
 }
