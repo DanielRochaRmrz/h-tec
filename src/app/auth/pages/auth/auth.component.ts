@@ -38,7 +38,7 @@ export class AuthComponent {
     if (this.loginForm.valid) {
       await this.authService.login(this.loginForm.value.email, this.loginForm.value.password);
       this.router.navigate(['/']);
-      console.log(this.authService.user);
+      console.log(this.authService.user$);
     }
   }
 

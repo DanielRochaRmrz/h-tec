@@ -1,26 +1,30 @@
 import { Injectable, inject } from '@angular/core';
 import { Auth, User, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { createUserWithEmailAndPassword } from '@firebase/auth';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private auth: Auth = inject(Auth);
-  public user: User | null = null;
+  private userSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
+  public user$ = this.userSubject.asObservable();
 
   constructor() {
-    this.auth.onAuthStateChanged((user) => {
-      this.user = user;
-      if (user) {
-        localStorage.setItem('user', JSON.stringify(user));
-      } else {
-        localStorage.removeItem('user');
+    if (this.isBrowser()) {
+      this.auth.onAuthStateChanged((user) => {
+        this.userSubject.next(user);
+        if (user) {
+          localStorage.setItem('user', JSON.stringify(user));
+        } else {
+          localStorage.removeItem('user');
+        }
+      });
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        this.userSubject.next(JSON.parse(storedUser));
       }
-    });
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      this.user = JSON.parse(storedUser);
     }
   }
 
@@ -28,7 +32,6 @@ export class AuthService {
     try {
       await createUserWithEmailAndPassword(this.auth, email, password);
     } catch (error) {
-      // Handle the error here
       throw error;
     }
   }
@@ -37,17 +40,20 @@ export class AuthService {
     try {
       await signInWithEmailAndPassword(this.auth, email, password);
     } catch (error) {
-      // Handle the error here
       throw error;
     }
   }
 
-
   logout(): void {
     this.auth.signOut().then(() => {
-      localStorage.removeItem('user');
-      this.user = null;
+      if (this.isBrowser()) {
+        localStorage.removeItem('user');
+      }
+      this.userSubject.next(null);
     });
   }
 
+  private isBrowser(): boolean {
+    return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
+  }
 }
