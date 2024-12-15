@@ -1,10 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, HostListener, inject, ViewChild } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
@@ -15,6 +15,29 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   styleUrl: './header-nav.component.scss'
 })
 export class HeaderNavComponent {
+
+@ViewChild('drawer') drawer!: MatDrawer;
+
+@HostListener('window:resize', ['$event'])
+
+onResize(event: Event) {
+  this.checkScreenSize();
+}
+
+ngOnInit(){
+  this.checkScreenSize();
+}
+
+checkScreenSize(){
+  if(window.innerWidth < 768){
+    this.drawer.close();
+  }
+}
+
+toggleDrawer(){
+  this.drawer.toggle();
+}
+  
   private router = inject(Router);
   public title = '';
   constructor() {
