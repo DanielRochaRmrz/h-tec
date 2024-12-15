@@ -1,5 +1,6 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, NgZone, inject } from '@angular/core';
 import { Auth, User, signInWithEmailAndPassword } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 import { createUserWithEmailAndPassword } from '@firebase/auth';
 import { BehaviorSubject } from 'rxjs';
 
@@ -11,7 +12,7 @@ export class AuthService {
   private userSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
   public user$ = this.userSubject.asObservable();
 
-  constructor() {
+  constructor(private ngZone: NgZone, private router: Router) {
     if (this.isBrowser()) {
       this.auth.onAuthStateChanged((user) => {
         this.userSubject.next(user);
@@ -39,6 +40,9 @@ export class AuthService {
   async login(email: string, password: string): Promise<any> {
     try {
       await signInWithEmailAndPassword(this.auth, email, password);
+      this.ngZone.run(() => {
+        this.router.navigate(['/']);
+      });
     } catch (error) {
       throw error;
     }
@@ -49,7 +53,10 @@ export class AuthService {
       if (this.isBrowser()) {
         localStorage.removeItem('user');
       }
-      this.userSubject.next(null);
+      this.ngZone.run(() => {
+        this.userSubject.next(null);
+        this.router.navigate(['/auth/login']);
+      });
     });
   }
 

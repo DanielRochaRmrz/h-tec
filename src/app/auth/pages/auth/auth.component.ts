@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -29,13 +29,15 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   private userSubscription: Subscription | null = null;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router, private ngZone: NgZone) {
   }
 
   ngOnInit() {
     this.userSubscription = this.authService.user$.subscribe(user => {
       if (user) {
-        this.router.navigate(['/']);
+        this.ngZone.run(() => {
+          this.router.navigate(['/']);
+       });
       }
     });
   }
@@ -51,11 +53,12 @@ export class AuthComponent implements OnInit, OnDestroy {
     event.stopPropagation();
   }
 
-  async onSubmit() {
+  onSubmit(): void {
     if (this.loginForm.valid) {
-      await this.authService.login(this.loginForm.value.email, this.loginForm.value.password);
-      this.router.navigate(['/']);
-      console.log(this.authService.user$);
+      const { email, password } = this.loginForm.value;
+      this.authService.login(email, password).catch(error => {
+        console.error('Login error:', error);
+      });
     }
   }
 
