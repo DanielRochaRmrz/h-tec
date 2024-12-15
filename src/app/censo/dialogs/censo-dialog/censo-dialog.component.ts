@@ -124,9 +124,10 @@ export class CensoDialogComponent {
       ? this._censosSevice.convertTimestampToDate(data.cliente.fechaRegistro)
       : '';
 
-    const fechaRegistroEquipo = data?.equipo?.fechaCaducidadAnti && typeof data.equipo.fechaCaducidadAnti === 'object'
+    const fechaRegistroEquipo = data?.equipo?.fechaCaducidadAnti && typeof data?.equipo?.fechaCaducidadAnti === 'object'
       ? this._censosSevice.convertTimestampToDate(data.equipo.fechaCaducidadAnti)
-      : '';
+      : null;
+      
 
     this.clientForm = this.formBuilder.group({
       cliente: [{ value: data?.cliente?.['cliente'], disabled: true }, Validators.required],
@@ -275,6 +276,12 @@ export class CensoDialogComponent {
         // Mostrar un mensaje de error si ambos formularios son inválidos
         Swal.fire('Error', 'Debe llenar la sección de "Descripción" ya sea "Descripción de equipo" o "Descripción de impresora"  ', 'error');
         return;
+      } else if (this.clientForm.getRawValue().cliente === undefined) {
+        Swal.fire('Error', 'Debe seleccionar un cliente', 'error');
+        return;
+      } else if (this.filesUpladed.length === 0 && this.existingImages.length === 0) {
+        Swal.fire('Error', 'Debe subir al menos una imagen', 'error');
+        return;
       }
 
       const swalLaoading = Swal.fire({
@@ -284,7 +291,7 @@ export class CensoDialogComponent {
           Swal.showLoading();
         },
         allowOutsideClick: false,
-        willClose: () => {}
+        willClose: () => { }
       });
 
       let censo: any;
