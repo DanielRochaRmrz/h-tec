@@ -68,7 +68,7 @@ export class CensoDetalleDialogComponent {
   ) {
 
 
-    const timestamp = new Timestamp(this.data.equipo.fechaCaducidadAnti.seconds, this.data.equipo.fechaCaducidadAnti.nanoseconds);
+    const timestamp = new Timestamp(this.data?.equipo?.fechaCaducidadAnti.seconds, this.data?.equipo?.fechaCaducidadAnti.nanoseconds);
     this.formattedFechaCaducidadAnti = this.formatTimestamp(timestamp);
     const timestamp2 = new Timestamp(this.data.cliente.fechaRegistro.seconds, this.data.cliente.fechaRegistro.nanoseconds);
     this.formattedFechaCaducidadAnti = this.formatTimestamp(timestamp);
