@@ -9,12 +9,13 @@
   </button>
   <span>H-Tec</span>
   <span class="ht-spacer"></span>
-  <!-- <button
+  <button
     mat-icon-button
-    class="ht-icon favorite-icon"
-    aria-label="Example icon-button with heart icon">
-    <mat-icon>favorite</mat-icon>
-  </button> -->
+    (click)="logout()"
+    class="ht-icon"
+  >
+    <mat-icon>logout</mat-icon>
+  </button>
 </mat-toolbar>
 
 <mat-drawer-container class="ht-container" hasBackdrop="false">

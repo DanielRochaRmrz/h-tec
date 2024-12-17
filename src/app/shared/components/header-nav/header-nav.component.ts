@@ -7,6 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
+import { AuthService } from '../../../auth/services/auth.service';
+
 @Component({
   selector: 'app-header-nav',
   standalone: true,
@@ -40,7 +42,7 @@ toggleDrawer(){
   
   private router = inject(Router);
   public title = '';
-  constructor() {
+  constructor(private _authService: AuthService) {
     this.router.events.subscribe((router: any) => {
       switch (router.url) {
         case '/catalogos/clientes':
@@ -60,5 +62,9 @@ toggleDrawer(){
           break;
       }
     });
+  }
+
+  logout(): void {
+    this._authService.logout();
   }
 }
