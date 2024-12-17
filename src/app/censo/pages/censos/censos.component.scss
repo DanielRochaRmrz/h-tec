@@ -43,3 +43,26 @@ section {
   justify-content: center;
   width: 50px;
 }
+
+
+.mobile-label{
+  display: none;
+}
+
+@media(max-width: 600px){
+  .mobile-label{
+    width: 180px;
+    display: inline-block;
+    font-weight: bold;
+  }
+
+  mat-header-row{
+    display: none;
+  }
+
+  mat-row{
+    flex-direction: column;
+    align-items: start;
+    padding: 8px, 24px;
+  }
+}
