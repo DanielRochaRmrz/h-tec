@@ -21,21 +21,21 @@
 
     <hr />
     <div class="col-md-12">
-      <h2 class="fw-bolder">Equipo: {{ data.equipo?.tipo || data.impresora?.tipo }}</h2>
+      <h2 class="fw-bolder">Equipo: {{ data.equipo.tipo || data.impresora.tipo }}</h2>
     </div>
     <hr />
 
     <div class="col-md-3 fw-bolder">Modelo:</div>
-    <div class="col-md-3">{{ data.equipo?.modelo || data.impresora?.modelo }}</div>
+    <div class="col-md-3">{{ data.equipo.modelo || data.impresora.modelo }}</div>
     <div class="col-md-3 fw-bolder">Marca:</div>
-    <div class="col-md-3">{{ data.equipo?.marca || data.impresora?.marca}}</div>
+    <div class="col-md-3">{{ data.equipo.marca || data.impresora.marca}}</div>
 
     <div class="col-md-3 fw-bolder">Numero de serie:</div>
-    <div class="col-md-3">{{ data.equipo?.numeroSerie || data.impresora?.numeroSerie }}</div>
+    <div class="col-md-3">{{ data.equipo.numeroSerie || data.impresora.numeroSerie }}</div>
 
     <div *ngIf="data.impresora">
       <div class="col-md-3 fw-bolder">Toner:</div>
-      <div class="col-md-3">{{ data.impresora?.toner}}</div>
+      <div class="col-md-3">{{ data.impresora.toner}}</div>
     </div>
 
     <div *ngIf="data.equipo">
@@ -44,14 +44,14 @@
       <div class="col-md-3 fw-bolder">Office + Version:</div>
       <div class="col-md-3">{{ data.equipo.officeV }}</div>
       <div class="col-md-3 fw-bolder">Antivirus:</div>
-      <div class="col-md-3">{{ data.equipo.antivirus }}</div>      
+      <div class="col-md-3">{{ data.equipo.antivirus }}</div>
       <div class="col-md-3 fw-bolder">Fecha de caducidad antivirus:</div>
       <div class="col-md-3">{{ formattedFechaCaducidadAnti }}</div>
     </div>
-   
+
 
     <div class="col-md-3 fw-bolder">QR:</div>
-    <div class="col-md-3">{{ data.equipo?.qr || data.impresora?.qr}}</div>
+    <div class="col-md-3">{{ data.equipo.qr || data.impresora.qr}}</div>
 
     <hr />
     <div class="col-md-12">

@@ -11,17 +11,10 @@
   <span class="ht-spacer"></span>
   <button
     mat-icon-button
-    class="ht-icon favorite-icon"
-    aria-label="Example icon-button with heart icon"
-  >
-    <mat-icon>favorite</mat-icon>
-  </button>
-  <button
-    mat-icon-button
+    (click)="logout()"
     class="ht-icon"
-    aria-label="Example icon-button with share icon"
   >
-    <mat-icon>share</mat-icon>
+    <mat-icon>logout</mat-icon>
   </button>
 </mat-toolbar>
 
@@ -79,12 +72,6 @@
           [routerLinkActive]="['active']"
           class="list-group-item list-group-item-action active"
           >Censo</a
-        >
-        <a
-          href="#"
-          (click)="logout()"
-          class="list-group-item list-group-item-action"
-          >Cerrar sesión</a
         >
       </div>
     </div>
