@@ -19,38 +19,54 @@
   <table mat-table [dataSource]="dataSource" matSort>
     <!-- Clave Column -->
     <ng-container matColumnDef="clave">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Clave</th>
-      <td mat-cell *matCellDef="let row; let i = index">{{ row.clave }}</td>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Clave</mat-header-cell>
+      <mat-cell *matCellDef="let row; let i = index">
+        <span class="mobile-label">Clave:</span>
+        {{ row.clave }}
+      </mat-cell>
     </ng-container>
 
     <!-- Clasificación Column -->
     <ng-container matColumnDef="clasificacion">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Clacificación</th>
-      <td mat-cell *matCellDef="let row">{{ row.clasificacion }}</td>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Clasificación</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <span class="mobile-label">Clasificación:</span>
+        {{ row.clasificacion }}
+      </mat-cell>
     </ng-container>
 
     <!-- Nombre Column -->
     <ng-container matColumnDef="nombre">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
-      <td mat-cell *matCellDef="let row">{{ row.nombre }}</td>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <span class="mobile-label">Nombre:</span>
+        {{ row.nombre }}
+      </mat-cell>
     </ng-container>
 
     <!-- WhatsApp Column -->
     <ng-container matColumnDef="whatsApp">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>WhatsApp</th>
-      <td mat-cell *matCellDef="let row">{{ row.whatsApp }}</td>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>WhatsApp</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <span class="mobile-label">WhatsApp:</span>
+        {{ row.whatsApp }}
+      </mat-cell>
     </ng-container>
 
     <!-- Correo Column -->
     <ng-container matColumnDef="correo">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Correo</th>
-      <td mat-cell *matCellDef="let row">{{ row.correo }}</td>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Correo</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <span class="mobile-label">Correo:</span>
+        {{ row.correo }}
+      </mat-cell>
     </ng-container>
 
     <!-- Acciones Column -->
     <ng-container matColumnDef="acciones">
-      <th mat-header-cell *matHeaderCellDef>Acciones</th>
-      <td mat-cell *matCellDef="let row">
+      <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <span class="mobile-label">Acciones:</span>
         <button mat-icon-button color="primary" (click)="consultar(row)">
           <mat-icon>search</mat-icon>
         </button>
@@ -60,11 +76,11 @@
         <button mat-icon-button color="warn" (click)="eliminar(row)">
           <mat-icon>delete</mat-icon>
         </button>
-      </td>
+      </mat-cell>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 
     <!-- Row shown when there is no matching data. -->
     <tr class="mat-row" *matNoDataRow>
