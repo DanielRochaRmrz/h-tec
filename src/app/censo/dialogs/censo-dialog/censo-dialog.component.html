@@ -69,7 +69,7 @@
         <form [formGroup]="equipoForm">
           <mat-expansion-panel (click)="toggleExpansionPanel('equipo')" [disabled]="expansionPanelEquipoDisabled" [expanded]="expansionPanelEquipoExpanded" [ngClass]="{'invalid-panel': highlightInvalidPanels && isFormPanelInvalid('equipo') && !expansionPanelEquipoDisabled}" >
             <mat-expansion-panel-header>
-              <mat-panel-title> Descripción de Equipos </mat-panel-title>
+              <mat-panel-title class="title-resp"> Descripción de Equipos </mat-panel-title>
               <mat-panel-description>
                 <mat-icon>devices</mat-icon>
               </mat-panel-description>
@@ -192,7 +192,7 @@
         <form [formGroup]="impresoraForm">
           <mat-expansion-panel (click)="toggleExpansionPanel('impresora')" [disabled]="expansionPanelImpresoraDisabled" [expanded]="expansionPanelImpresoraExpanded" [ngClass]="{'invalid-panel': highlightInvalidPanels && isFormPanelInvalid('impresora') && !expansionPanelImpresoraDisabled}">
             <mat-expansion-panel-header>
-              <mat-panel-title> Descripción de Impresoras </mat-panel-title>
+              <mat-panel-title class="title-resp"> Descripción de Impresoras </mat-panel-title>
               <mat-panel-description>
                 <mat-icon>print</mat-icon>
               </mat-panel-description>
