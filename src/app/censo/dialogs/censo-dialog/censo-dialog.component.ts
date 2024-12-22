@@ -27,12 +27,16 @@ import { CensosService } from '../../services/censos.service';
 import { ClienteRegistradoData } from './../../../catalogos/interfaces/censo.interface';
 import { ClientesDialogComponent } from '../clientes-dialog/clientes-dialog.component';
 import { ItemsDispositivoComponent } from '../items-dispositivo/items-dispositivo.component';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+
 
 @Component({
   selector: 'app-censo-dialog',
   standalone: true,
   providers: [provideNativeDateAdapter()],
-  imports: [ReactiveFormsModule, NgFor, MatCardModule, MatDatepickerModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, MatRadioModule, MatStepperModule, MatExpansionModule, NgxGalleryModule, CommonModule],
+  imports: [ReactiveFormsModule, NgFor, MatCardModule, MatDatepickerModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, MatRadioModule, MatStepperModule, MatExpansionModule, NgxGalleryModule, CommonModule, MatSelectModule, MatOptionModule],
   templateUrl: './censo-dialog.component.html',
   styleUrl: './censo-dialog.component.scss'
 })
@@ -52,6 +56,8 @@ export class CensoDialogComponent {
   censoId = '';
   public equipos: any[] = [];
   public impresoras: any[] = [];
+  isSmallScreen: boolean = false;
+  private readonly customBreakpoint = '(max-width: 800px)';
 
   setStep(index: number) {
     this.step = index;
@@ -117,6 +123,7 @@ export class CensoDialogComponent {
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<CensoDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ClienteRegistradoData,
+    private breakpointObserver: BreakpointObserver
   ) {
 
 
@@ -183,6 +190,11 @@ export class CensoDialogComponent {
     }
     this.getDataDispositivo("equipo", this.equipos);
     this.getDataDispositivo("impresora", this.impresoras);
+    this.breakpointObserver
+      .observe([this.customBreakpoint])
+      .subscribe(result => {
+        this.isSmallScreen = result.matches;
+      });
   }
 
   isFormValid(): boolean {
