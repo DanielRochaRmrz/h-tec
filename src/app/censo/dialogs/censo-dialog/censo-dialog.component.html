@@ -93,21 +93,23 @@
                     </mat-form-field>
 
                     <div *ngIf="selectedEquipo" class="btn-actions">
-                      <button mat-icon-button color="accent" (click)="editDispositivo(selectedEquipo, 'equipo')" class="btn-small">
+                      <button mat-icon-button color="accent" (click)="editDispositivo(selectedEquipo, 'equipo')"
+                        class="btn-small">
                         <mat-icon>edit</mat-icon>
                       </button>
-                      <button mat-icon-button color="warn" (click)="deleteDispositivo(selectedEquipo, 'equipo')" class="btn-small">
+                      <button mat-icon-button color="warn" (click)="deleteDispositivo(selectedEquipo, 'equipo')"
+                        class="btn-small">
                         <mat-icon>delete</mat-icon>
                       </button>
                     </div>
 
                     <div>
-                      <button mat-fab extended color="primary" (click)="openDialogDispositivos('equipo')" class="rectangular-button">
+                      <button mat-fab extended color="primary" (click)="openDialogDispositivos('equipo')"
+                        class="rectangular-button">
                         <mat-icon>add</mat-icon>
                         Agregar equipo
                       </button>
                     </div>
-                    
                   </div>
 
                   <ng-template #radioGroupTemplate>
@@ -131,11 +133,11 @@
                       </div>
                     </mat-radio-group>
                   </ng-template>
-                    <div class="button-container">
-                      <button [disabled]="" mat-fab color="primary" (click)="openDialogDispositivos('equipo')">
-                        <mat-icon>add</mat-icon>
-                      </button>
-                    </div>
+                  <div class="button-container">
+                    <button [disabled]="" mat-fab color="primary" (click)="openDialogDispositivos('equipo')">
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </div>
                 </section>
 
               </div>
@@ -239,25 +241,58 @@
             <div class="row g-3 mt-2">
               <div class="col-md-12">
                 <section class="example-section">
-                  <label class="example-margin">Equipo:</label>
-                  <mat-radio-group formControlName="tipo" class="radio-group-container">
-                    <div *ngFor="let impresora of impresoras" class="dispositivo-container">
-                      <div class="radio-button-container">
-                        <mat-radio-button class="example-margin"
-                          [value]="impresora.nombre">{{impresora.nombre}}</mat-radio-button>
-                        <div class="btn-container">
-                          <button mat-icon-button color="accent" (click)="editDispositivo(impresora, 'impresora')"
-                            class="btn-small">
-                            <mat-icon>edit</mat-icon>
-                          </button>
-                          <button mat-icon-button color="warn" (click)="deleteDispositivo(impresora, 'impresora')"
-                            class="btn-small">
-                            <mat-icon>delete</mat-icon>
-                          </button>
+
+                  <div class="col-md-12" *ngIf="isSmallScreenImpresora; else radioGroupTemplateImpresora">
+                    <!-- Mostrar mat-select en pantallas pequeñas -->
+                    <mat-form-field appearance="outline" class="select-container">
+                      <mat-label>Selecciona una impresora</mat-label>
+                      <mat-select formControlName="tipo" class="select-equipo" [(ngModel)]="selectedEquipo">
+                        <mat-option *ngFor="let impresora of impresoras" [value]="impresora">
+                          {{ impresora.nombre }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <div *ngIf="selectedEquipo" class="btn-actions">
+                      <button mat-icon-button color="accent" (click)="editDispositivo(selectedEquipo, 'equipo')"
+                        class="btn-small">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button mat-icon-button color="warn" (click)="deleteDispositivo(selectedEquipo, 'equipo')"
+                        class="btn-small">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+
+                    <div>
+                      <button mat-fab extended color="primary" (click)="openDialogDispositivos('impresora')"
+                        class="rectangular-button">
+                        Agregar impresora
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Dispositivos en pantalla grande -->
+                  <ng-template #radioGroupTemplateImpresora>
+                    <label class="example-margin">Equipo:</label>
+                    <mat-radio-group formControlName="tipo" class="radio-group-container">
+                      <div *ngFor="let impresora of impresoras" class="dispositivo-container">
+                        <div class="radio-button-container">
+                          <mat-radio-button class="example-margin"
+                            [value]="impresora.nombre">{{impresora.nombre}}</mat-radio-button>
+                          <div class="btn-container">
+                            <button mat-icon-button color="accent" (click)="editDispositivo(impresora, 'impresora')"
+                              class="btn-small">
+                              <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button color="warn" (click)="deleteDispositivo(impresora, 'impresora')"
+                              class="btn-small">
+                              <mat-icon>delete</mat-icon>
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </mat-radio-group>
+                    </mat-radio-group>
+                  </ng-template>
                   <div class="margin-left-20">
                     <div class="button-container">
                       <button [disabled]="" mat-fab color="primary" (click)="openDialogDispositivos('impresora')">

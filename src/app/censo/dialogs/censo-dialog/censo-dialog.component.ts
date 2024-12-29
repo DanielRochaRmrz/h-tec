@@ -57,6 +57,7 @@ export class CensoDialogComponent {
   public equipos: any[] = [];
   public impresoras: any[] = [];
   isSmallScreen: boolean = false;
+  isSmallScreenImpresora: boolean = false;
   private readonly customBreakpoint = '(max-width: 800px)';
   selectedEquipo:any;
 
@@ -195,6 +196,7 @@ export class CensoDialogComponent {
       .observe([this.customBreakpoint])
       .subscribe(result => {
         this.isSmallScreen = result.matches;
+        this.isSmallScreenImpresora = result.matches;
       });
   }
 
