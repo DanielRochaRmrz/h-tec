@@ -58,6 +58,7 @@ export class CensoDialogComponent {
   public impresoras: any[] = [];
   isSmallScreen: boolean = false;
   private readonly customBreakpoint = '(max-width: 800px)';
+  selectedEquipo:any;
 
   setStep(index: number) {
     this.step = index;
@@ -408,7 +409,10 @@ export class CensoDialogComponent {
 
 
   editDispositivo(item: any, dispositivo: string) {
-
+    
+    console.log('item', item);
+    console.log('dispositivo', dispositivo);
+    
     var editMod: boolean = true;
     const dialogRef = this.dialog.open(ItemsDispositivoComponent, {
       data: { item, editMod }

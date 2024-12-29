@@ -85,13 +85,22 @@
                     <!-- Mostrar mat-select en pantallas pequeñas -->
                     <mat-form-field appearance="outline" class="select-container">
                       <mat-label>Selecciona un equipo</mat-label>
-                      <mat-select formControlName="tipo" class="select-equipo">
-                        <mat-option *ngFor="let equipo of equipos" [value]="equipo.nombre">
+                      <mat-select formControlName="tipo" class="select-equipo" [(ngModel)]="selectedEquipo">
+                        <mat-option *ngFor="let equipo of equipos" [value]="equipo">
                           {{ equipo.nombre }}
                         </mat-option>
-                        
                       </mat-select>
                     </mat-form-field>
+
+                    <div *ngIf="selectedEquipo" class="btn-actions">
+                      <button mat-icon-button color="accent" (click)="editDispositivo(selectedEquipo, 'equipo')" class="btn-small">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button mat-icon-button color="warn" (click)="deleteDispositivo(selectedEquipo, 'equipo')" class="btn-small">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+
                     <div>
                       <button mat-fab extended color="primary" (click)="openDialogDispositivos('equipo')" class="rectangular-button">
                         <mat-icon>add</mat-icon>
@@ -131,7 +140,7 @@
 
               </div>
 
-              <hr>
+              <hr />
               <div class="col-md-6">
                 <mat-form-field appearance="outline">
                   <mat-label>Modelo:</mat-label>
