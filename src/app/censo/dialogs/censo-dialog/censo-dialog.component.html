@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Nuevo Censo</h2>
+<h2 mat-dialog-title> {{ isEditMode ? 'Editar censo' : 'Nuevo censo' }} </h2>
 <mat-dialog-content>
   <mat-stepper orientation="vertical" [linear]="isLinear" #stepper>
     <mat-step [stepControl]="clientForm">
