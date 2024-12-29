@@ -19,6 +19,7 @@
     "@angular/fire": "^17.0.1",
     "@angular/forms": "^17.1.0",
     "@angular/material": "^17.3.6",
+    "@angular/material-moment-adapter": "^19.0.4",
     "@angular/platform-browser": "^17.1.0",
     "@angular/platform-browser-dynamic": "^17.1.0",
     "@angular/platform-server": "^17.1.0",

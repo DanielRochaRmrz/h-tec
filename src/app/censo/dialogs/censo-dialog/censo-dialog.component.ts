@@ -12,7 +12,6 @@ import {
   MatDialogTitle,
   MatDialogContent,
   MatDialogActions,
-  MatDialogClose,
 } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -27,15 +26,32 @@ import { CensosService } from '../../services/censos.service';
 import { ClienteRegistradoData } from './../../../catalogos/interfaces/censo.interface';
 import { ClientesDialogComponent } from '../clientes-dialog/clientes-dialog.component';
 import { ItemsDispositivoComponent } from '../items-dispositivo/items-dispositivo.component';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatDateFormats } from '@angular/material/core';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
 
+export const MY_DATE_FORMATS: MatDateFormats = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  }
+};
 
 @Component({
   selector: 'app-censo-dialog',
   standalone: true,
-  providers: [provideNativeDateAdapter()],
+  providers: [
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
+  ],
   imports: [ReactiveFormsModule, NgFor, MatCardModule, MatDatepickerModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, MatRadioModule, MatStepperModule, MatExpansionModule, NgxGalleryModule, CommonModule, MatSelectModule, MatOptionModule],
   templateUrl: './censo-dialog.component.html',
   styleUrl: './censo-dialog.component.scss'
@@ -59,7 +75,7 @@ export class CensoDialogComponent {
   isSmallScreen: boolean = false;
   isSmallScreenImpresora: boolean = false;
   private readonly customBreakpoint = '(max-width: 800px)';
-  selectedEquipo:any;
+  selectedEquipo: any;
 
   setStep(index: number) {
     this.step = index;
@@ -136,7 +152,8 @@ export class CensoDialogComponent {
     const fechaRegistroEquipo = data?.equipo?.fechaCaducidadAnti && typeof data?.equipo?.fechaCaducidadAnti === 'object'
       ? this._censosSevice.convertTimestampToDate(data.equipo.fechaCaducidadAnti)
       : null;
-      
+
+    console.log('fechaRegistro', fechaRegistro);
 
     this.clientForm = this.formBuilder.group({
       cliente: [{ value: data?.cliente?.['cliente'], disabled: true }, Validators.required],
@@ -146,6 +163,7 @@ export class CensoDialogComponent {
       correo: [{ value: data?.cliente?.['correo'], disabled: true }, Validators.required],
       fechaRegistro: [{ value: fechaRegistro, disabled: false }, Validators.required],
     });
+
 
     this.equipoForm = this.formBuilder.group({
       modelo: [data?.equipo?.modelo || '', Validators.required],
@@ -411,10 +429,10 @@ export class CensoDialogComponent {
 
 
   editDispositivo(item: any, dispositivo: string) {
-    
+
     console.log('item', item);
     console.log('dispositivo', dispositivo);
-    
+
     var editMod: boolean = true;
     const dialogRef = this.dialog.open(ItemsDispositivoComponent, {
       data: { item, editMod }
