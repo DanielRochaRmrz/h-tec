@@ -86,8 +86,8 @@
                     <mat-form-field appearance="outline" class="select-container">
                       <mat-label>Selecciona un equipo</mat-label>
                       <mat-select formControlName="tipo" class="select-equipo" [(ngModel)]="selectedEquipo">
-                        <mat-option *ngFor="let equipo of equipos" [value]="equipo">
-                          {{ equipo.nombre }}
+                        <mat-option *ngFor="let equipo of equipos" [value]="equipo.nombre">
+                          {{ equipo.nombre }} 
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
@@ -247,7 +247,7 @@
                     <mat-form-field appearance="outline" class="select-container">
                       <mat-label>Selecciona una impresora</mat-label>
                       <mat-select formControlName="tipo" class="select-equipo" [(ngModel)]="selectedEquipo">
-                        <mat-option *ngFor="let impresora of impresoras" [value]="impresora">
+                        <mat-option *ngFor="let impresora of impresoras" [value]="impresora.nombre">
                           {{ impresora.nombre }}
                         </mat-option>
                       </mat-select>

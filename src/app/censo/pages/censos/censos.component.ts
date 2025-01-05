@@ -47,9 +47,10 @@ export class CensosComponent {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     } catch (error) {
-      console.error('Error al obtener los tecnicos:', error);
+      console.error('Error al obtener los censos:', error);
     }
   }
+
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -115,9 +116,9 @@ export class CensosComponent {
   }
 
   editar(row: any): void {
-   this.dialog.open(CensoDialogComponent, {
-      data: {...row, editMod: true},
+    this.dialog.open(CensoDialogComponent, {
+      data: { ...row, editMod: true },
       panelClass: 'full-screen-modal',
-    }); 
+    });
   }
 }

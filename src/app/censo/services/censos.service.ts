@@ -17,7 +17,8 @@ export class CensosService {
   constructor() { }
 
   addCenso(censo: any) {
-    return addDoc(this.censosCollection, censo);
+    const censoCollection = collection(this.firestore, 'censos');
+    return addDoc(censoCollection, censo);
   }
 
   updateCenso(id: string, imagenes: any) {
@@ -52,15 +53,25 @@ export class CensosService {
 
   }
 
-  getCensos() {
+  getCensos(): Promise<any[]> {
     return new Promise((resolve, reject) => {
       const censosData = collectionData(this.censosCollection, { idField: 'id' }) as Observable<any[]>;
-      censosData.subscribe({
-        next: data => resolve(data),
-        error: error => reject(error)
+      
+      // Suscripción para obtener los datos y resolver la promesa
+      const subscription = censosData.subscribe({
+        next: data => {
+          console.log('Datos de censos obtenidos:', data);
+          resolve(data); // Resolver con los datos obtenidos
+          subscription.unsubscribe(); // Limpia la suscripción
+        },
+        error: error => {
+          console.error('Error al obtener datos de Firestore:', error);
+          reject(error); // Rechaza la promesa si ocurre un error
+        }
       });
     });
   }
+  
 
   uploadImg(img: File, i: string): Promise<string> {
     const originalFileName = img.name;

@@ -1,4 +1,4 @@
-import { Component, Inject, viewChild, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, viewChild, ViewChild } from '@angular/core';
 import { NgFor, CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -30,7 +30,6 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
-import { MatDateFormats } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import moment from 'moment';
 
@@ -142,9 +141,11 @@ export class CensoDialogComponent {
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<CensoDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ClienteRegistradoData,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private cdr: ChangeDetectorRef
   ) {
-
+    
+    console.log("DATA", data);
 
     const fechaRegistro = data?.cliente?.fechaRegistro && typeof data.cliente.fechaRegistro === 'string'
       ? moment(data.cliente.fechaRegistro, 'DD/MM/YYYY').toDate()
@@ -198,6 +199,8 @@ export class CensoDialogComponent {
       medium: url,
       big: url
     }));
+
+    this.cdr.detectChanges;
   }
 
   ngOnInit(): void {
@@ -306,8 +309,7 @@ export class CensoDialogComponent {
   async onSubmit() {
     try {
       if (this.equipoForm.invalid && this.impresoraForm.invalid) {
-        // Mostrar un mensaje de error si ambos formularios son inválidos
-        Swal.fire('Error', 'Debe llenar la sección de "Descripción" ya sea "Descripción de equipo" o "Descripción de impresora"  ', 'error');
+        Swal.fire('Error', 'Debe llenar la sección de "Descripción" ya sea "Descripción de equipo" o "Descripción de impresora"', 'error');
         return;
       } else if (this.clientForm.getRawValue().cliente === undefined) {
         Swal.fire('Error', 'Debe seleccionar un cliente', 'error');
@@ -316,27 +318,24 @@ export class CensoDialogComponent {
         Swal.fire('Error', 'Debe subir al menos una imagen', 'error');
         return;
       }
-
-      const swalLaoading = Swal.fire({
+  
+      Swal.fire({
         title: 'Procesando...',
         text: 'Por favor espere mientras se guarda la información.',
         didOpen: () => {
           Swal.showLoading();
         },
         allowOutsideClick: false,
-        willClose: () => { }
       });
-
+  
       let censo: any;
-
+  
       const clientData = this.clientForm.getRawValue();
-
       clientData.fechaRegistro = clientData.fechaRegistro ? moment(clientData.fechaRegistro).format('DD/MM/YYYY') : null;
-
+  
       const equipoData = this.equipoForm.getRawValue();
-
       equipoData.fechaCaducidadAnti = equipoData.fechaCaducidadAnti ? moment(equipoData.fechaCaducidadAnti).format('DD/MM/YYYY') : null;
-
+  
       if (this.equipoForm.valid) {
         censo = {
           cliente: clientData,
@@ -348,67 +347,59 @@ export class CensoDialogComponent {
           impresora: this.impresoraForm.value,
         };
       }
-
+  
       let respCenso;
       let idCenso: string;
-
+  
       if (this.data.editMod) {
-
         respCenso = await this._censosSevice.updateCensoData(this.data.id, censo);
-
         idCenso = this.data.id;
-
-        // Subir imagenes
-        const upLoadPromises = Array.from(this.filesUpladed).map(async (file: File) => {
-          const resp = await this._censosSevice.uploadImg(file, idCenso);
-          return resp;
-        });
-
-        const nuevasImagenes = await Promise.all(upLoadPromises);
-
-        // Combinar imagenes anteriores con las nuevas
-        const imagenesFinales = [...this.data.imagenes, ...nuevasImagenes];
-        await this._censosSevice.updateCenso(idCenso, { imagenes: imagenesFinales });
-
-        // Eliminar imágenes de Firebase
-        const deletePromises = this.imagesToDelete.map(async (imgUrl: string) => {
-          await this._censosSevice.deleteImg(imgUrl, idCenso);
-        });
-        await Promise.all(deletePromises);
-
-        Swal.fire('Censo actualizado', 'El censo se ha actualizado con éxito', 'success');
-
-        swalLaoading.then(() => Swal.close());
-
-        Swal.fire('Censo actualizado', 'El censo se ha actualizado con éxito', 'success');
-
-      } else {
-
-        respCenso = await this._censosSevice.addCenso(censo);
-        idCenso = respCenso.id;
-
+  
         const uploadPromises = Array.from(this.filesUpladed).map(async (file: File) => {
           const resp = await this._censosSevice.uploadImg(file, idCenso);
           return resp;
         });
-
+  
+        const nuevasImagenes = await Promise.all(uploadPromises);
+  
+        const imagenesFinales = [...this.data.imagenes, ...nuevasImagenes];
+        await this._censosSevice.updateCenso(idCenso, { imagenes: imagenesFinales });
+  
+        const deletePromises = this.imagesToDelete.map(async (imgUrl: string) => {
+          await this._censosSevice.deleteImg(imgUrl, idCenso);
+        });
+        await Promise.all(deletePromises);
+  
+        Swal.close(); // Cerrar el alert de Procesando
+        Swal.fire('Censo actualizado', 'El censo se ha actualizado con éxito', 'success').then(() => {
+          this.dialogRef.close();
+          window.location.reload();
+        })
+      } else {
+        respCenso = await this._censosSevice.addCenso(censo);
+        idCenso = respCenso.id;
+  
+        const uploadPromises = Array.from(this.filesUpladed).map(async (file: File) => {
+          const resp = await this._censosSevice.uploadImg(file, idCenso);
+          return resp;
+        });
+  
         const updateCenso = this._censosSevice.updateCenso(idCenso, { imagenes: await Promise.all(uploadPromises) });
-
+  
         await Promise.all([respCenso, uploadPromises, updateCenso]);
-
-        swalLaoading.then(() => Swal.close());
+  
+        Swal.close(); // Cerrar el alert de Procesando
         Swal.fire('Censo guardado', 'El censo se ha guardado con éxito', 'success');
-
       }
-
+  
       this.dialogRef.close();
     } catch (error) {
       console.error(error);
       Swal.close();
       Swal.fire('Error', 'Hubo un problema al guardar el censo', 'error');
-
     }
   }
+  
 
   onNoClick(): void {
     this.dialogRef.close();
