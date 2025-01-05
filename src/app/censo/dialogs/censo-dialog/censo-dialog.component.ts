@@ -32,8 +32,9 @@ import { MatOptionModule } from '@angular/material/core';
 import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDateFormats } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import moment from 'moment';
 
-export const MY_DATE_FORMATS: MatDateFormats = {
+export const MY_DATE_FORMATS = {
   parse: {
     dateInput: 'DD/MM/YYYY',
   },
@@ -145,15 +146,13 @@ export class CensoDialogComponent {
   ) {
 
 
-    const fechaRegistro = data?.cliente?.fechaRegistro && typeof data.cliente.fechaRegistro === 'object'
-      ? this._censosSevice.convertTimestampToDate(data.cliente.fechaRegistro)
-      : '';
-
-    const fechaRegistroEquipo = data?.equipo?.fechaCaducidadAnti && typeof data?.equipo?.fechaCaducidadAnti === 'object'
-      ? this._censosSevice.convertTimestampToDate(data.equipo.fechaCaducidadAnti)
+    const fechaRegistro = data?.cliente?.fechaRegistro && typeof data.cliente.fechaRegistro === 'string'
+      ? moment(data.cliente.fechaRegistro, 'DD/MM/YYYY').toDate()
       : null;
 
-    console.log('fechaRegistro', fechaRegistro);
+    const fechaRegistroEquipo = data?.equipo?.fechaCaducidadAnti && typeof data?.equipo?.fechaCaducidadAnti === 'string'
+      ? moment(data?.equipo?.fechaCaducidadAnti, 'DD/MM/YYYY').toDate()
+      : null;
 
     this.clientForm = this.formBuilder.group({
       cliente: [{ value: data?.cliente?.['cliente'], disabled: true }, Validators.required],
@@ -162,6 +161,7 @@ export class CensoDialogComponent {
       telefono: [{ value: data?.cliente?.['telefono'], disabled: true }, Validators.required],
       correo: [{ value: data?.cliente?.['correo'], disabled: true }, Validators.required],
       fechaRegistro: [{ value: fechaRegistro, disabled: false }, Validators.required],
+
     });
 
 
@@ -329,14 +329,22 @@ export class CensoDialogComponent {
 
       let censo: any;
 
+      const clientData = this.clientForm.getRawValue();
+
+      clientData.fechaRegistro = clientData.fechaRegistro ? moment(clientData.fechaRegistro).format('DD/MM/YYYY') : null;
+
+      const equipoData = this.equipoForm.getRawValue();
+
+      equipoData.fechaCaducidadAnti = equipoData.fechaCaducidadAnti ? moment(equipoData.fechaCaducidadAnti).format('DD/MM/YYYY') : null;
+
       if (this.equipoForm.valid) {
         censo = {
-          cliente: this.clientForm.getRawValue(),
-          equipo: this.equipoForm.value,
+          cliente: clientData,
+          equipo: equipoData,
         };
       } else if (this.impresoraForm.valid) {
         censo = {
-          cliente: this.clientForm.getRawValue(),
+          cliente: clientData,
           impresora: this.impresoraForm.value,
         };
       }
@@ -429,9 +437,6 @@ export class CensoDialogComponent {
 
 
   editDispositivo(item: any, dispositivo: string) {
-
-    console.log('item', item);
-    console.log('dispositivo', dispositivo);
 
     var editMod: boolean = true;
     const dialogRef = this.dialog.open(ItemsDispositivoComponent, {
