@@ -1,7 +1,6 @@
-import { Component, Inject, viewChild, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, ViewChild } from '@angular/core';
 import { NgFor, CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -12,7 +11,6 @@ import {
   MatDialogTitle,
   MatDialogContent,
   MatDialogActions,
-  MatDialogClose,
 } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -27,12 +25,33 @@ import { CensosService } from '../../services/censos.service';
 import { ClienteRegistradoData } from './../../../catalogos/interfaces/censo.interface';
 import { ClientesDialogComponent } from '../clientes-dialog/clientes-dialog.component';
 import { ItemsDispositivoComponent } from '../items-dispositivo/items-dispositivo.component';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import moment from 'moment';
+
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  }
+};
 
 @Component({
   selector: 'app-censo-dialog',
   standalone: true,
-  providers: [provideNativeDateAdapter()],
-  imports: [ReactiveFormsModule, NgFor, MatCardModule, MatDatepickerModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, MatRadioModule, MatStepperModule, MatExpansionModule, NgxGalleryModule, CommonModule],
+  providers: [
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
+  ],
+  imports: [ReactiveFormsModule, NgFor, MatCardModule, MatDatepickerModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, MatRadioModule, MatStepperModule, MatExpansionModule, NgxGalleryModule, CommonModule, MatSelectModule, MatOptionModule],
   templateUrl: './censo-dialog.component.html',
   styleUrl: './censo-dialog.component.scss'
 })
@@ -52,6 +71,10 @@ export class CensoDialogComponent {
   censoId = '';
   public equipos: any[] = [];
   public impresoras: any[] = [];
+  isSmallScreen: boolean = false;
+  isSmallScreenImpresora: boolean = false;
+  private readonly customBreakpoint = '(max-width: 800px)';
+  selectedEquipo: any;
 
   setStep(index: number) {
     this.step = index;
@@ -117,17 +140,17 @@ export class CensoDialogComponent {
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<CensoDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ClienteRegistradoData,
+    private breakpointObserver: BreakpointObserver,
+    private cdr: ChangeDetectorRef
   ) {
 
-
-    const fechaRegistro = data?.cliente?.fechaRegistro && typeof data.cliente.fechaRegistro === 'object'
-      ? this._censosSevice.convertTimestampToDate(data.cliente.fechaRegistro)
-      : '';
-
-    const fechaRegistroEquipo = data?.equipo?.fechaCaducidadAnti && typeof data?.equipo?.fechaCaducidadAnti === 'object'
-      ? this._censosSevice.convertTimestampToDate(data.equipo.fechaCaducidadAnti)
+    const fechaRegistro = data?.cliente?.fechaRegistro && typeof data.cliente.fechaRegistro === 'string'
+      ? moment(data.cliente.fechaRegistro, 'DD/MM/YYYY').toDate()
       : null;
-      
+
+    const fechaRegistroEquipo = data?.equipo?.fechaCaducidadAnti && typeof data?.equipo?.fechaCaducidadAnti === 'string'
+      ? moment(data?.equipo?.fechaCaducidadAnti, 'DD/MM/YYYY').toDate()
+      : null;
 
     this.clientForm = this.formBuilder.group({
       cliente: [{ value: data?.cliente?.['cliente'], disabled: true }, Validators.required],
@@ -135,8 +158,9 @@ export class CensoDialogComponent {
       whatsApp: [{ value: data?.cliente?.['whatsApp'], disabled: true }, Validators.required],
       telefono: [{ value: data?.cliente?.['telefono'], disabled: true }, Validators.required],
       correo: [{ value: data?.cliente?.['correo'], disabled: true }, Validators.required],
-      fechaRegistro: [{ value: fechaRegistro, disabled: false }, Validators.required],
+      fechaRegistro: [{ value: fechaRegistro, disabled: false }, Validators.required]
     });
+
 
     this.equipoForm = this.formBuilder.group({
       modelo: [data?.equipo?.modelo || '', Validators.required],
@@ -150,8 +174,9 @@ export class CensoDialogComponent {
       areaDepartamento: [data?.equipo?.areaDepartamento || '', Validators.required],
       reponsableEquipo: [data?.equipo?.reponsableEquipo || '', Validators.required],
       responsableCorreo: [data?.equipo?.responsableCorreo || '', Validators.required],
-      tipo: [data?.equipo?.tipo || '', Validators.required],
+      tipo: [data?.equipo?.tipo || '', Validators.required]
     });
+
 
     this.impresoraForm = this.formBuilder.group({
       tipo: [data?.impresora?.tipo || '', Validators.required],
@@ -171,6 +196,8 @@ export class CensoDialogComponent {
       medium: url,
       big: url
     }));
+
+    this.cdr.detectChanges;
   }
 
   ngOnInit(): void {
@@ -183,6 +210,12 @@ export class CensoDialogComponent {
     }
     this.getDataDispositivo("equipo", this.equipos);
     this.getDataDispositivo("impresora", this.impresoras);
+    this.breakpointObserver
+      .observe([this.customBreakpoint])
+      .subscribe(result => {
+        this.isSmallScreen = result.matches;
+        this.isSmallScreenImpresora = result.matches;
+      });
   }
 
   isFormValid(): boolean {
@@ -226,6 +259,8 @@ export class CensoDialogComponent {
   async loadCenso(id: string) {
     try {
       const censo = await this._censosSevice.getCensoById(id);
+      console.log('Censo:', censo);
+
       if (censo) {
         this.existingImages = censo['imagenes'] || [];
         this.loadGalleryImages();
@@ -273,8 +308,7 @@ export class CensoDialogComponent {
   async onSubmit() {
     try {
       if (this.equipoForm.invalid && this.impresoraForm.invalid) {
-        // Mostrar un mensaje de error si ambos formularios son inválidos
-        Swal.fire('Error', 'Debe llenar la sección de "Descripción" ya sea "Descripción de equipo" o "Descripción de impresora"  ', 'error');
+        Swal.fire('Error', 'Debe llenar la sección de "Descripción" ya sea "Descripción de equipo" o "Descripción de impresora"', 'error');
         return;
       } else if (this.clientForm.getRawValue().cliente === undefined) {
         Swal.fire('Error', 'Debe seleccionar un cliente', 'error');
@@ -284,26 +318,31 @@ export class CensoDialogComponent {
         return;
       }
 
-      const swalLaoading = Swal.fire({
+      Swal.fire({
         title: 'Procesando...',
         text: 'Por favor espere mientras se guarda la información.',
         didOpen: () => {
           Swal.showLoading();
         },
         allowOutsideClick: false,
-        willClose: () => { }
       });
 
       let censo: any;
 
+      const clientData = this.clientForm.getRawValue();
+      clientData.fechaRegistro = clientData.fechaRegistro ? moment(clientData.fechaRegistro).format('DD/MM/YYYY') : null;
+
+      const equipoData = this.equipoForm.getRawValue();
+      equipoData.fechaCaducidadAnti = equipoData.fechaCaducidadAnti ? moment(equipoData.fechaCaducidadAnti).format('DD/MM/YYYY') : null;
+
       if (this.equipoForm.valid) {
         censo = {
-          cliente: this.clientForm.getRawValue(),
-          equipo: this.equipoForm.value,
+          cliente: clientData,
+          equipo: equipoData,
         };
       } else if (this.impresoraForm.valid) {
         censo = {
-          cliente: this.clientForm.getRawValue(),
+          cliente: clientData,
           impresora: this.impresoraForm.value,
         };
       }
@@ -312,37 +351,30 @@ export class CensoDialogComponent {
       let idCenso: string;
 
       if (this.data.editMod) {
-
         respCenso = await this._censosSevice.updateCensoData(this.data.id, censo);
-
         idCenso = this.data.id;
 
-        // Subir imagenes
-        const upLoadPromises = Array.from(this.filesUpladed).map(async (file: File) => {
+        const uploadPromises = Array.from(this.filesUpladed).map(async (file: File) => {
           const resp = await this._censosSevice.uploadImg(file, idCenso);
           return resp;
         });
 
-        const nuevasImagenes = await Promise.all(upLoadPromises);
+        const nuevasImagenes = await Promise.all(uploadPromises);
 
-        // Combinar imagenes anteriores con las nuevas
         const imagenesFinales = [...this.data.imagenes, ...nuevasImagenes];
         await this._censosSevice.updateCenso(idCenso, { imagenes: imagenesFinales });
 
-        // Eliminar imágenes de Firebase
         const deletePromises = this.imagesToDelete.map(async (imgUrl: string) => {
           await this._censosSevice.deleteImg(imgUrl, idCenso);
         });
         await Promise.all(deletePromises);
 
-        Swal.fire('Censo actualizado', 'El censo se ha actualizado con éxito', 'success');
-
-        swalLaoading.then(() => Swal.close());
-
-        Swal.fire('Censo actualizado', 'El censo se ha actualizado con éxito', 'success');
-
+        Swal.close(); // Cerrar el alert de Procesando
+        Swal.fire('Censo actualizado', 'El censo se ha actualizado con éxito', 'success').then(() => {
+          this.dialogRef.close();
+          window.location.reload();
+        })
       } else {
-
         respCenso = await this._censosSevice.addCenso(censo);
         idCenso = respCenso.id;
 
@@ -355,9 +387,8 @@ export class CensoDialogComponent {
 
         await Promise.all([respCenso, uploadPromises, updateCenso]);
 
-        swalLaoading.then(() => Swal.close());
+        Swal.close(); // Cerrar el alert de Procesando
         Swal.fire('Censo guardado', 'El censo se ha guardado con éxito', 'success');
-
       }
 
       this.dialogRef.close();
@@ -365,9 +396,9 @@ export class CensoDialogComponent {
       console.error(error);
       Swal.close();
       Swal.fire('Error', 'Hubo un problema al guardar el censo', 'error');
-
     }
   }
+
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -494,4 +525,6 @@ export class CensoDialogComponent {
   highlightInvalid() {
     this.highlightInvalidPanels = true;
   }
+
+
 }

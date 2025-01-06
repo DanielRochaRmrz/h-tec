@@ -109,3 +109,39 @@
   border: 2px solid red;
 }
 
+  @media(max-width: 800px){
+
+    mat-icon {
+      font-size: 12px; 
+    }
+
+    .title-resp{
+      display: inline; 
+      white-space: nowrap;
+      margin: 0;
+      padding: 0;
+      padding-bottom: 30px;
+      font-size: 10px;
+    }
+
+    .select-container {
+      width: 75%;  
+    }
+
+    .rectangular-button {
+      border-radius: 0; 
+      margin-bottom: 70px;
+      display: none;
+    }
+
+    .button-container{
+      display: none;
+    }
+
+    .btn-actions{
+      margin-top: -25px;
+      margin-bottom: -15px;
+      display: none;
+    }
+
+  }
