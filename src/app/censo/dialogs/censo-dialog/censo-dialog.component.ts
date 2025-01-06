@@ -1,7 +1,6 @@
-import { ChangeDetectorRef, Component, Inject, viewChild, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, ViewChild } from '@angular/core';
 import { NgFor, CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -144,8 +143,6 @@ export class CensoDialogComponent {
     private breakpointObserver: BreakpointObserver,
     private cdr: ChangeDetectorRef
   ) {
-    
-    console.log("DATA", data);
 
     const fechaRegistro = data?.cliente?.fechaRegistro && typeof data.cliente.fechaRegistro === 'string'
       ? moment(data.cliente.fechaRegistro, 'DD/MM/YYYY').toDate()
@@ -161,8 +158,7 @@ export class CensoDialogComponent {
       whatsApp: [{ value: data?.cliente?.['whatsApp'], disabled: true }, Validators.required],
       telefono: [{ value: data?.cliente?.['telefono'], disabled: true }, Validators.required],
       correo: [{ value: data?.cliente?.['correo'], disabled: true }, Validators.required],
-      fechaRegistro: [{ value: fechaRegistro, disabled: false }, Validators.required],
-
+      fechaRegistro: [{ value: fechaRegistro, disabled: false }, Validators.required]
     });
 
 
@@ -178,8 +174,9 @@ export class CensoDialogComponent {
       areaDepartamento: [data?.equipo?.areaDepartamento || '', Validators.required],
       reponsableEquipo: [data?.equipo?.reponsableEquipo || '', Validators.required],
       responsableCorreo: [data?.equipo?.responsableCorreo || '', Validators.required],
-      tipo: [data?.equipo?.tipo || '', Validators.required],
+      tipo: [data?.equipo?.tipo || '', Validators.required]
     });
+
 
     this.impresoraForm = this.formBuilder.group({
       tipo: [data?.impresora?.tipo || '', Validators.required],
@@ -262,6 +259,8 @@ export class CensoDialogComponent {
   async loadCenso(id: string) {
     try {
       const censo = await this._censosSevice.getCensoById(id);
+      console.log('Censo:', censo);
+
       if (censo) {
         this.existingImages = censo['imagenes'] || [];
         this.loadGalleryImages();
@@ -318,7 +317,7 @@ export class CensoDialogComponent {
         Swal.fire('Error', 'Debe subir al menos una imagen', 'error');
         return;
       }
-  
+
       Swal.fire({
         title: 'Procesando...',
         text: 'Por favor espere mientras se guarda la información.',
@@ -327,15 +326,15 @@ export class CensoDialogComponent {
         },
         allowOutsideClick: false,
       });
-  
+
       let censo: any;
-  
+
       const clientData = this.clientForm.getRawValue();
       clientData.fechaRegistro = clientData.fechaRegistro ? moment(clientData.fechaRegistro).format('DD/MM/YYYY') : null;
-  
+
       const equipoData = this.equipoForm.getRawValue();
       equipoData.fechaCaducidadAnti = equipoData.fechaCaducidadAnti ? moment(equipoData.fechaCaducidadAnti).format('DD/MM/YYYY') : null;
-  
+
       if (this.equipoForm.valid) {
         censo = {
           cliente: clientData,
@@ -347,29 +346,29 @@ export class CensoDialogComponent {
           impresora: this.impresoraForm.value,
         };
       }
-  
+
       let respCenso;
       let idCenso: string;
-  
+
       if (this.data.editMod) {
         respCenso = await this._censosSevice.updateCensoData(this.data.id, censo);
         idCenso = this.data.id;
-  
+
         const uploadPromises = Array.from(this.filesUpladed).map(async (file: File) => {
           const resp = await this._censosSevice.uploadImg(file, idCenso);
           return resp;
         });
-  
+
         const nuevasImagenes = await Promise.all(uploadPromises);
-  
+
         const imagenesFinales = [...this.data.imagenes, ...nuevasImagenes];
         await this._censosSevice.updateCenso(idCenso, { imagenes: imagenesFinales });
-  
+
         const deletePromises = this.imagesToDelete.map(async (imgUrl: string) => {
           await this._censosSevice.deleteImg(imgUrl, idCenso);
         });
         await Promise.all(deletePromises);
-  
+
         Swal.close(); // Cerrar el alert de Procesando
         Swal.fire('Censo actualizado', 'El censo se ha actualizado con éxito', 'success').then(() => {
           this.dialogRef.close();
@@ -378,20 +377,20 @@ export class CensoDialogComponent {
       } else {
         respCenso = await this._censosSevice.addCenso(censo);
         idCenso = respCenso.id;
-  
+
         const uploadPromises = Array.from(this.filesUpladed).map(async (file: File) => {
           const resp = await this._censosSevice.uploadImg(file, idCenso);
           return resp;
         });
-  
+
         const updateCenso = this._censosSevice.updateCenso(idCenso, { imagenes: await Promise.all(uploadPromises) });
-  
+
         await Promise.all([respCenso, uploadPromises, updateCenso]);
-  
+
         Swal.close(); // Cerrar el alert de Procesando
         Swal.fire('Censo guardado', 'El censo se ha guardado con éxito', 'success');
       }
-  
+
       this.dialogRef.close();
     } catch (error) {
       console.error(error);
@@ -399,7 +398,7 @@ export class CensoDialogComponent {
       Swal.fire('Error', 'Hubo un problema al guardar el censo', 'error');
     }
   }
-  
+
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -526,4 +525,6 @@ export class CensoDialogComponent {
   highlightInvalid() {
     this.highlightInvalidPanels = true;
   }
+
+
 }
