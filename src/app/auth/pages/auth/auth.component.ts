@@ -2,15 +2,15 @@ import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-
 import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
+import { response } from 'express';
 
 @Component({
   selector: 'app-auth',
@@ -56,8 +56,35 @@ export class AuthComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-      this.authService.login(email, password).catch(error => {
+
+      // Mostrar alerta de cargando
+      Swal.fire({
+        title: 'Cargando...',
+        text: 'Por favor, espere.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      this.authService.login(email, password).then(response => {
+        // Cerrar alerta de cargando
+        Swal.close();
+
+        // Redirigir al usuario al sistema
+        this.ngZone.run(() => {
+          this.router.navigate(['/']);
+        });
+      }).catch(error => {
+        // Cerrar alerta de cargando
+        Swal.close();
+
         console.error('Login error:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Credenciales inválidas. Por favor, inténtelo de nuevo.'
+        });
       });
     }
   }
