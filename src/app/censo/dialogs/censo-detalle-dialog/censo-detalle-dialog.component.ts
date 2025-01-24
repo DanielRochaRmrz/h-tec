@@ -66,8 +66,7 @@ export class CensoDetalleDialogComponent {
     public dialogRef: MatDialogRef<CensoDetalleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ClienteRegistradoData,
   ) {
-
-
+    
     const timestamp = new Timestamp(this.data?.equipo?.fechaCaducidadAnti.seconds, this.data?.equipo?.fechaCaducidadAnti.nanoseconds);
     this.formattedFechaCaducidadAnti = this.formatTimestamp(timestamp);
     const timestamp2 = new Timestamp(this.data.cliente.fechaRegistro.seconds, this.data.cliente.fechaRegistro.nanoseconds);

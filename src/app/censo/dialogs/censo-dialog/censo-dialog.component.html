@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Nuevo Censo</h2>
+<h2 mat-dialog-title> {{ isEditMode ? 'Editar censo' : 'Nuevo censo' }} </h2>
 <mat-dialog-content>
   <mat-stepper orientation="vertical" [linear]="isLinear" #stepper>
     <mat-step [stepControl]="clientForm">
@@ -67,9 +67,11 @@
       <mat-accordion class="example-headers-align">
         <div class="mt-2"></div>
         <form [formGroup]="equipoForm">
-          <mat-expansion-panel (click)="toggleExpansionPanel('equipo')" [disabled]="expansionPanelEquipoDisabled" [expanded]="expansionPanelEquipoExpanded" [ngClass]="{'invalid-panel': highlightInvalidPanels && isFormPanelInvalid('equipo') && !expansionPanelEquipoDisabled}" >
+          <mat-expansion-panel (click)="toggleExpansionPanel('equipo')" [disabled]="expansionPanelEquipoDisabled"
+            [expanded]="expansionPanelEquipoExpanded"
+            [ngClass]="{'invalid-panel': highlightInvalidPanels && isFormPanelInvalid('equipo') && !expansionPanelEquipoDisabled}">
             <mat-expansion-panel-header>
-              <mat-panel-title> Descripción de Equipos </mat-panel-title>
+              <mat-panel-title class="title-resp">Descripción de Equipos </mat-panel-title>
               <mat-panel-description>
                 <mat-icon>devices</mat-icon>
               </mat-panel-description>
@@ -78,30 +80,66 @@
             <div class="row g-3 mt-2">
               <div class="col-md-12">
                 <section class="example-section">
-                  <label class="example-margin">Equipo:</label>
-                  <mat-radio-group formControlName="tipo" class="radio-group-container">
-                    <div *ngFor="let equipo of equipos" class="dispositivo-container">
-                      <div class="radio-button-container">
-                        <mat-radio-button class="example-margin" [value]="equipo.nombre">{{ equipo.nombre }}</mat-radio-button>
-                        <div class="btn-container">
-                          <button mat-icon-button color="accent" (click)="editDispositivo(equipo, 'equipo')" class="btn-small">
-                            <mat-icon>edit</mat-icon>
-                          </button>
-                          <button mat-icon-button color="warn" (click)="deleteDispositivo(equipo, 'equipo')" class="btn-small">
-                            <mat-icon>delete</mat-icon>
-                          </button>
-                        </div>
-                      </div>
+
+                  <div class="col-md-12" *ngIf="isSmallScreen; else radioGroupTemplate">
+                    <!-- Mostrar mat-select en pantallas pequeñas -->
+                    <mat-form-field appearance="outline" class="select-container">
+                      <mat-label>Selecciona un equipo</mat-label>
+                      <mat-select formControlName="tipo" class="select-equipo">
+                        <mat-option *ngFor="let equipo of equipos" [value]="equipo.nombre">
+                          {{ equipo.nombre }} 
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <div *ngIf="selectedEquipo" class="btn-actions">
+                      <button mat-icon-button color="accent" (click)="editDispositivo(selectedEquipo, 'equipo')"
+                        class="btn-small">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button mat-icon-button color="warn" (click)="deleteDispositivo(selectedEquipo, 'equipo')"
+                        class="btn-small">
+                        <mat-icon>delete</mat-icon>
+                      </button>
                     </div>
-                  </mat-radio-group>
-                  <div class="margin-left-20">
-                    <div class="button-container">
-                      <button [disabled]="" mat-fab color="primary" (click)="openDialogDispositivos('equipo')">
+
+                    <div>
+                      <button mat-fab extended color="primary" (click)="openDialogDispositivos('equipo')"
+                        class="rectangular-button">
                         <mat-icon>add</mat-icon>
+                        Agregar equipo
                       </button>
                     </div>
                   </div>
+
+                  <ng-template #radioGroupTemplate>
+                    <label class="example-margin">Equipo:</label>
+                    <mat-radio-group formControlName="tipo" class="radio-group-container">
+                      <div *ngFor="let equipo of equipos" class="dispositivo-container">
+                        <div class="radio-button-container">
+                          <mat-radio-button class="example-margin" [value]="equipo.nombre">{{ equipo.nombre
+                            }}</mat-radio-button>
+                          <div class="btn-container">
+                            <button mat-icon-button color="accent" (click)="editDispositivo(equipo, 'equipo')"
+                              class="btn-small">
+                              <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button color="warn" (click)="deleteDispositivo(equipo, 'equipo')"
+                              class="btn-small">
+                              <mat-icon>delete</mat-icon>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </mat-radio-group>
+                  </ng-template>
+                  <div class="button-container">
+                    <button [disabled]="" mat-fab color="primary" (click)="openDialogDispositivos('equipo')">
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </div>
                 </section>
+
               </div>
 
               <hr />
@@ -190,9 +228,11 @@
         </form>
         <div class="mt-2"></div>
         <form [formGroup]="impresoraForm">
-          <mat-expansion-panel (click)="toggleExpansionPanel('impresora')" [disabled]="expansionPanelImpresoraDisabled" [expanded]="expansionPanelImpresoraExpanded" [ngClass]="{'invalid-panel': highlightInvalidPanels && isFormPanelInvalid('impresora') && !expansionPanelImpresoraDisabled}">
+          <mat-expansion-panel (click)="toggleExpansionPanel('impresora')" [disabled]="expansionPanelImpresoraDisabled"
+            [expanded]="expansionPanelImpresoraExpanded"
+            [ngClass]="{'invalid-panel': highlightInvalidPanels && isFormPanelInvalid('impresora') && !expansionPanelImpresoraDisabled}">
             <mat-expansion-panel-header>
-              <mat-panel-title> Descripción de Impresoras </mat-panel-title>
+              <mat-panel-title class="title-resp"> Descripción de Impresoras </mat-panel-title>
               <mat-panel-description>
                 <mat-icon>print</mat-icon>
               </mat-panel-description>
@@ -201,22 +241,58 @@
             <div class="row g-3 mt-2">
               <div class="col-md-12">
                 <section class="example-section">
-                  <label class="example-margin">Equipo:</label>
-                  <mat-radio-group formControlName="tipo" class="radio-group-container">
-                    <div *ngFor="let impresora of impresoras" class="dispositivo-container">
-                      <div class="radio-button-container">
-                        <mat-radio-button class="example-margin" [value]="impresora.nombre">{{impresora.nombre}}</mat-radio-button>
-                        <div class="btn-container">
-                          <button mat-icon-button color="accent" (click)="editDispositivo(impresora, 'impresora')" class="btn-small">
-                            <mat-icon>edit</mat-icon>
-                          </button>
-                          <button mat-icon-button color="warn" (click)="deleteDispositivo(impresora, 'impresora')" class="btn-small">
-                            <mat-icon>delete</mat-icon>
-                          </button>
+
+                  <div class="col-md-12" *ngIf="isSmallScreenImpresora; else radioGroupTemplateImpresora">
+                    <!-- Mostrar mat-select en pantallas pequeñas -->
+                    <mat-form-field appearance="outline" class="select-container">
+                      <mat-label>Selecciona una impresora</mat-label>
+                      <mat-select formControlName="tipo" class="select-equipo">
+                        <mat-option *ngFor="let impresora of impresoras" [value]="impresora.nombre">
+                          {{ impresora.nombre }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <div *ngIf="selectedEquipo" class="btn-actions">
+                      <button mat-icon-button color="accent" (click)="editDispositivo(selectedEquipo, 'equipo')"
+                        class="btn-small">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button mat-icon-button color="warn" (click)="deleteDispositivo(selectedEquipo, 'equipo')"
+                        class="btn-small">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+
+                    <div>
+                      <button mat-fab extended color="primary" (click)="openDialogDispositivos('impresora')"
+                        class="rectangular-button">
+                        Agregar impresora
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Dispositivos en pantalla grande -->
+                  <ng-template #radioGroupTemplateImpresora>
+                    <label class="example-margin">Equipo:</label>
+                    <mat-radio-group formControlName="tipo" class="radio-group-container">
+                      <div *ngFor="let impresora of impresoras" class="dispositivo-container">
+                        <div class="radio-button-container">
+                          <mat-radio-button class="example-margin"
+                            [value]="impresora.nombre">{{impresora.nombre}}</mat-radio-button>
+                          <div class="btn-container">
+                            <button mat-icon-button color="accent" (click)="editDispositivo(impresora, 'impresora')"
+                              class="btn-small">
+                              <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button color="warn" (click)="deleteDispositivo(impresora, 'impresora')"
+                              class="btn-small">
+                              <mat-icon>delete</mat-icon>
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </mat-radio-group>
+                    </mat-radio-group>
+                  </ng-template>
                   <div class="margin-left-20">
                     <div class="button-container">
                       <button [disabled]="" mat-fab color="primary" (click)="openDialogDispositivos('impresora')">
@@ -294,11 +370,9 @@
         </div>
         <div class="col-md-6 position-relative">
           <div class="row justify-content-center align-items-center g-2">
-            <ngx-gallery [options]="galleryOptions" [images]="galleryImages" (change)="onImageChange($event)"></ngx-gallery>
-            <button
-              *ngIf="galleryImages.length > 0"
-              class="btn-delete-image"
-              (click)="removeImage(currentImageIndex)">
+            <ngx-gallery [options]="galleryOptions" [images]="galleryImages"
+              (change)="onImageChange($event)"></ngx-gallery>
+            <button *ngIf="galleryImages.length > 0" class="btn-delete-image" (click)="removeImage(currentImageIndex)">
               Eliminar
             </button>
           </div>
