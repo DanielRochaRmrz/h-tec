@@ -15,11 +15,10 @@ import { Timestamp } from '@angular/fire/firestore';
 
 
 @Component({
-  selector: 'app-censo-detalle-dialog',
-  standalone: true,
-  imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule, NgxGalleryModule, CommonModule],
-  templateUrl: './censo-detalle-dialog.component.html',
-  styleUrl: './censo-detalle-dialog.component.scss'
+    selector: 'app-censo-detalle-dialog',
+    imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule, NgxGalleryModule, CommonModule],
+    templateUrl: './censo-detalle-dialog.component.html',
+    styleUrl: './censo-detalle-dialog.component.scss'
 })
 export class CensoDetalleDialogComponent {
 

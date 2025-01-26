@@ -23,11 +23,10 @@ import { ClientesService } from '../../../catalogos/services/clientes.service';
 import { Observable, map, startWith } from 'rxjs';
 
 @Component({
-  selector: 'app-clientes-dialog',
-  standalone: true,
-  imports: [AsyncPipe, FormsModule, ReactiveFormsModule, MatAutocompleteModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule],
-  templateUrl: './clientes-dialog.component.html',
-  styleUrl: './clientes-dialog.component.scss'
+    selector: 'app-clientes-dialog',
+    imports: [AsyncPipe, FormsModule, ReactiveFormsModule, MatAutocompleteModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule],
+    templateUrl: './clientes-dialog.component.html',
+    styleUrl: './clientes-dialog.component.scss'
 })
 export class ClientesDialogComponent {
   myControl = new FormControl('');

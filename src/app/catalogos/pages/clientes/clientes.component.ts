@@ -14,11 +14,10 @@ import { ClientesService } from '../../services/clientes.service';
 import { ClienteData } from '../../interfaces/clientes.interface';
 
 @Component({
-  selector: 'app-clientes',
-  standalone: true,
-  imports: [MatButtonModule, MatIconModule, MatPaginator, MatSort, MatPaginatorModule, MatSortModule, MatTableModule, MatInputModule, MatFormFieldModule],
-  templateUrl: './clientes.component.html',
-  styleUrl: './clientes.component.scss'
+    selector: 'app-clientes',
+    imports: [MatButtonModule, MatIconModule, MatPaginator, MatSort, MatPaginatorModule, MatSortModule, MatTableModule, MatInputModule, MatFormFieldModule],
+    templateUrl: './clientes.component.html',
+    styleUrl: './clientes.component.scss'
 })
 export class ClientesComponent {
 

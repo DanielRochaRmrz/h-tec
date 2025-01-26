@@ -13,11 +13,10 @@ import Swal from 'sweetalert2';
 import { response } from 'express';
 
 @Component({
-  selector: 'app-auth',
-  standalone: true,
-  imports: [MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatIconModule, ReactiveFormsModule],
-  templateUrl: './auth.component.html',
-  styleUrl: './auth.component.scss'
+    selector: 'app-auth',
+    imports: [MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatIconModule, ReactiveFormsModule],
+    templateUrl: './auth.component.html',
+    styleUrl: './auth.component.scss'
 })
 export class AuthComponent implements OnInit, OnDestroy {
   loginForm: FormGroup = this.formBuilder.group({

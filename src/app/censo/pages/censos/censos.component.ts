@@ -16,11 +16,10 @@ import { CensoDetalleDialogComponent } from '../../dialogs/censo-detalle-dialog/
 import { ClienteRegistradoData } from './../../../catalogos/interfaces/censo.interface';
 
 @Component({
-  selector: 'app-censos',
-  standalone: true,
-  imports: [MatButtonModule, MatIconModule, MatPaginator, MatSort, MatPaginatorModule, MatSortModule, MatTableModule, MatInputModule, MatFormFieldModule, CommonModule],
-  templateUrl: './censos.component.html',
-  styleUrl: './censos.component.scss'
+    selector: 'app-censos',
+    imports: [MatButtonModule, MatIconModule, MatPaginator, MatSort, MatPaginatorModule, MatSortModule, MatTableModule, MatInputModule, MatFormFieldModule, CommonModule],
+    templateUrl: './censos.component.html',
+    styleUrl: './censos.component.scss'
 })
 export class CensosComponent {
 

@@ -22,11 +22,10 @@ import { CodigoPostal, Estado, Estados, Municipio, MunicipiosResponse } from '..
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-clientes-dialog',
-  standalone: true,
-  imports: [ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, HttpClientModule, MatSelectModule, MatOptionModule, CommonModule],
-  templateUrl: './clientes-dialog.component.html',
-  styleUrl: './clientes-dialog.component.scss'
+    selector: 'app-clientes-dialog',
+    imports: [ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, HttpClientModule, MatSelectModule, MatOptionModule, CommonModule],
+    templateUrl: './clientes-dialog.component.html',
+    styleUrl: './clientes-dialog.component.scss'
 })
 export class ClientesDialogComponent implements OnInit {
   myForm: FormGroup;

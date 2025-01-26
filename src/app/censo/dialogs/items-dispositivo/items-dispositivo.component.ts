@@ -16,11 +16,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-items-dispositivo',
-  standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatIconModule, ReactiveFormsModule],
-  templateUrl: './items-dispositivo.component.html',
-  styleUrl: './items-dispositivo.component.scss'
+    selector: 'app-items-dispositivo',
+    imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatIconModule, ReactiveFormsModule],
+    templateUrl: './items-dispositivo.component.html',
+    styleUrl: './items-dispositivo.component.scss'
 })
 export class ItemsDispositivoComponent {
 

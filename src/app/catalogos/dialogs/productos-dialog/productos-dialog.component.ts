@@ -15,11 +15,10 @@ import { MatInputModule } from '@angular/material/input';
 import { ProductoData } from '../../interfaces/productos.interface';
 
 @Component({
-  selector: 'app-productos-dialog',
-  standalone: true,
-  imports: [ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule],
-  templateUrl: './productos-dialog.component.html',
-  styleUrl: './productos-dialog.component.scss'
+    selector: 'app-productos-dialog',
+    imports: [ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule],
+    templateUrl: './productos-dialog.component.html',
+    styleUrl: './productos-dialog.component.scss'
 })
 export class ProductosDialogComponent implements OnInit {
   myForm: FormGroup;

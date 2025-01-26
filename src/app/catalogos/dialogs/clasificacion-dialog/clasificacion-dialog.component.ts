@@ -18,11 +18,10 @@ import { clasificacionesData } from '../../interfaces/tecnicos.interfaces';
 import { TecnicosService } from '../../services/tecnicos.service';
 
 @Component({
-  selector: 'app-clasificacion-dialog',
-  standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatIconModule, ReactiveFormsModule],
-  templateUrl: './clasificacion-dialog.component.html',
-  styleUrl: './clasificacion-dialog.component.scss'
+    selector: 'app-clasificacion-dialog',
+    imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatIconModule, ReactiveFormsModule],
+    templateUrl: './clasificacion-dialog.component.html',
+    styleUrl: './clasificacion-dialog.component.scss'
 })
 export class ClasificacionDialogComponent implements OnInit {
 
