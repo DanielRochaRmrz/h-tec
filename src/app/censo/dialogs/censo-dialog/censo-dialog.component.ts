@@ -45,15 +45,14 @@ export const MY_DATE_FORMATS = {
 };
 
 @Component({
-  selector: 'app-censo-dialog',
-  standalone: true,
-  providers: [
-    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
-    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
-  ],
-  imports: [ReactiveFormsModule, NgFor, MatCardModule, MatDatepickerModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, MatRadioModule, MatStepperModule, MatExpansionModule, NgxGalleryModule, CommonModule, MatSelectModule, MatOptionModule],
-  templateUrl: './censo-dialog.component.html',
-  styleUrl: './censo-dialog.component.scss'
+    selector: 'app-censo-dialog',
+    providers: [
+        { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+        { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
+    ],
+    imports: [ReactiveFormsModule, NgFor, MatCardModule, MatDatepickerModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, MatRadioModule, MatStepperModule, MatExpansionModule, NgxGalleryModule, CommonModule, MatSelectModule, MatOptionModule],
+    templateUrl: './censo-dialog.component.html',
+    styleUrl: './censo-dialog.component.scss'
 })
 export class CensoDialogComponent {
 

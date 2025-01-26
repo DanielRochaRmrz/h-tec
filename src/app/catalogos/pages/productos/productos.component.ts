@@ -14,11 +14,10 @@ import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-productos',
-  standalone: true,
-  imports: [MatButtonModule, MatIconModule, MatPaginator, MatSort, MatPaginatorModule, MatSortModule, MatTableModule, MatInputModule, MatFormFieldModule, CommonModule],
-  templateUrl: './productos.component.html',
-  styleUrl: './productos.component.scss'
+    selector: 'app-productos',
+    imports: [MatButtonModule, MatIconModule, MatPaginator, MatSort, MatPaginatorModule, MatSortModule, MatTableModule, MatInputModule, MatFormFieldModule, CommonModule],
+    templateUrl: './productos.component.html',
+    styleUrl: './productos.component.scss'
 })
 export class ProductosComponent {
 

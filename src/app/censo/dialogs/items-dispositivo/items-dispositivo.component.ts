@@ -6,8 +6,7 @@ import {
   MatDialogRef,
   MatDialogTitle,
   MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
+  MatDialogActions
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -16,11 +15,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-items-dispositivo',
-  standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatIconModule, ReactiveFormsModule],
-  templateUrl: './items-dispositivo.component.html',
-  styleUrl: './items-dispositivo.component.scss'
+    selector: 'app-items-dispositivo',
+    imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatIconModule, ReactiveFormsModule],
+    templateUrl: './items-dispositivo.component.html',
+    styleUrl: './items-dispositivo.component.scss'
 })
 export class ItemsDispositivoComponent {
 
@@ -33,17 +31,17 @@ export class ItemsDispositivoComponent {
     private _censoService: CensosService,
     public dialogRef: MatDialogRef<ItemsDispositivoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-  ) {    
+  ) {
 
     this.isEditMode = data.editMod;
     this.tipo = data.tipo;
-    
+
     this.myForm = this.formBuilder.group({
       nombre: [data?.item?.nombre || '', Validators.required]
     });
   }
 
-  
+
   ngOnInit(): void { }
 
   async onSubmit() {

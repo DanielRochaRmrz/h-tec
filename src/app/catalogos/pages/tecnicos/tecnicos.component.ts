@@ -15,11 +15,10 @@ import { TecnicosDialogComponent } from '../../dialogs/tecnicos-dialog/tecnicos-
 import { error } from 'console';
 
 @Component({
-  selector: 'app-tecnicos',
-  standalone: true,
-  imports: [MatButtonModule, MatIconModule, MatPaginator, MatSort, MatPaginatorModule, MatSortModule, MatTableModule, MatInputModule, MatFormFieldModule],
-  templateUrl: './tecnicos.component.html',
-  styleUrl: './tecnicos.component.scss'
+    selector: 'app-tecnicos',
+    imports: [MatButtonModule, MatIconModule, MatPaginator, MatSort, MatPaginatorModule, MatSortModule, MatTableModule, MatInputModule, MatFormFieldModule],
+    templateUrl: './tecnicos.component.html',
+    styleUrl: './tecnicos.component.scss'
 })
 export class TecnicosComponent {
 

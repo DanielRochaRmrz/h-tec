@@ -8,7 +8,6 @@ import {
   MatDialogTitle,
   MatDialogContent,
   MatDialogActions,
-  MatDialogClose,
   MatDialog,
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -21,11 +20,10 @@ import { ClasificacionDialogComponent } from '../clasificacion-dialog/clasificac
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-tecnicos-dialog',
-  standalone: true,
-  imports: [ReactiveFormsModule, MatCheckboxModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, NgFor, NgIf],
-  templateUrl: './tecnicos-dialog.component.html',
-  styleUrl: './tecnicos-dialog.component.scss'
+    selector: 'app-tecnicos-dialog',
+    imports: [ReactiveFormsModule, MatCheckboxModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, NgFor, NgIf],
+    templateUrl: './tecnicos-dialog.component.html',
+    styleUrl: './tecnicos-dialog.component.scss'
 })
 export class TecnicosDialogComponent implements OnInit {
   myForm: FormGroup;

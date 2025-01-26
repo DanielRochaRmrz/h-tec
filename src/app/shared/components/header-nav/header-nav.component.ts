@@ -9,11 +9,10 @@ import { AuthService } from '../../../auth/services/auth.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-header-nav',
-  standalone: true,
-  imports: [RouterModule, RouterOutlet, MatCardModule, MatButtonModule, MatIconModule, MatSidenavModule, MatToolbarModule],
-  templateUrl: './header-nav.component.html',
-  styleUrl: './header-nav.component.scss'
+    selector: 'app-header-nav',
+    imports: [RouterModule, RouterOutlet, MatCardModule, MatButtonModule, MatIconModule, MatSidenavModule, MatToolbarModule],
+    templateUrl: './header-nav.component.html',
+    styleUrl: './header-nav.component.scss'
 })
 export class HeaderNavComponent {
 

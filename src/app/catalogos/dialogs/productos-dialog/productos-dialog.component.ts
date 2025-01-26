@@ -6,8 +6,7 @@ import {
   MatDialogRef,
   MatDialogTitle,
   MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
+  MatDialogActions
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,23 +14,22 @@ import { MatInputModule } from '@angular/material/input';
 import { ProductoData } from '../../interfaces/productos.interface';
 
 @Component({
-  selector: 'app-productos-dialog',
-  standalone: true,
-  imports: [ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule],
-  templateUrl: './productos-dialog.component.html',
-  styleUrl: './productos-dialog.component.scss'
+    selector: 'app-productos-dialog',
+    imports: [ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule],
+    templateUrl: './productos-dialog.component.html',
+    styleUrl: './productos-dialog.component.scss'
 })
 export class ProductosDialogComponent implements OnInit {
   myForm: FormGroup;
   isEditMode: boolean;
   isSaveDisabled: boolean = false;
-  type?: string;  
+  type?: string;
 
   constructor(
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<ProductosDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ProductoData,
-  ) { 
+  ) {
 
     this.isSaveDisabled = data.isSaveDisabled || false;
     this.type = data.type || '';
