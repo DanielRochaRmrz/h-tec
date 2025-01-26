@@ -6,8 +6,7 @@ import {
   MatDialogRef,
   MatDialogTitle,
   MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
+  MatDialogActions
 } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
@@ -23,7 +22,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-clientes-dialog',
-    imports: [ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, HttpClientModule, MatSelectModule, MatOptionModule, CommonModule],
+    imports: [ReactiveFormsModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, HttpClientModule, MatSelectModule, MatOptionModule, CommonModule],
     templateUrl: './clientes-dialog.component.html',
     styleUrl: './clientes-dialog.component.scss'
 })

@@ -8,7 +8,6 @@ import {
   MatDialogTitle,
   MatDialogContent,
   MatDialogActions,
-  MatDialogClose,
   MatDialog,
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,7 +21,7 @@ import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-tecnicos-dialog',
-    imports: [ReactiveFormsModule, MatCheckboxModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, NgFor, NgIf],
+    imports: [ReactiveFormsModule, MatCheckboxModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, NgFor, NgIf],
     templateUrl: './tecnicos-dialog.component.html',
     styleUrl: './tecnicos-dialog.component.scss'
 })

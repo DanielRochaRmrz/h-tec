@@ -8,7 +8,6 @@ import { MatButtonModule } from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
   MatDialogRef,
-  MatDialogTitle,
   MatDialogContent,
   MatDialogActions,
   MatDialogClose,
@@ -24,7 +23,7 @@ import { Observable, map, startWith } from 'rxjs';
 
 @Component({
     selector: 'app-clientes-dialog',
-    imports: [AsyncPipe, FormsModule, ReactiveFormsModule, MatAutocompleteModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule],
+    imports: [AsyncPipe, FormsModule, ReactiveFormsModule, MatAutocompleteModule, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule],
     templateUrl: './clientes-dialog.component.html',
     styleUrl: './clientes-dialog.component.scss'
 })

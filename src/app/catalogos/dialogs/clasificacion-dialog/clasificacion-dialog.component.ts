@@ -6,8 +6,7 @@ import {
   MatDialogRef,
   MatDialogTitle,
   MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
+  MatDialogActions
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -19,7 +18,7 @@ import { TecnicosService } from '../../services/tecnicos.service';
 
 @Component({
     selector: 'app-clasificacion-dialog',
-    imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatIconModule, ReactiveFormsModule],
+    imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatIconModule, ReactiveFormsModule],
     templateUrl: './clasificacion-dialog.component.html',
     styleUrl: './clasificacion-dialog.component.scss'
 })
