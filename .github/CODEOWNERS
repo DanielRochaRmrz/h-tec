@@ -1,0 +1,5 @@
+# global / default code owners
+* @DanielRochaRmrz @marpez4 
+
+# github, templates, workflows
+.github/ @DanielRochaRmrz @marpez4
