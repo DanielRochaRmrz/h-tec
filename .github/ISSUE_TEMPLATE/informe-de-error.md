@@ -1,9 +1,9 @@
 ---
 name: Informe de error
 about: Crea un informe para ayudarnos a mejorar.
-title: ''
-labels: ''
-assignees: ''
+title: 'Bugfix / '
+labels: bug
+assignees: DanielRochaRmrz
 
 ---
 

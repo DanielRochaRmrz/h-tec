@@ -2,9 +2,9 @@
 name: Solicitud de investigación
 about: Sugiere una función grande o una idea de hito para este proyecto que requiera
   una cantidad considerable de ingeniería y planificación.
-title: ''
-labels: ''
-assignees: ''
+title: 'Spike / '
+labels: enhancement, spike
+assignees: DanielRochaRmrz
 
 ---
 

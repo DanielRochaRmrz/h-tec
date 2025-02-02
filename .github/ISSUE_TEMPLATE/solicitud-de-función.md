@@ -1,9 +1,9 @@
 ---
 name: Solicitud de función
 about: Sugiera una idea para este proyecto
-title: ''
-labels: ''
-assignees: ''
+title: 'Feature / '
+labels: enhancement
+assignees: DanielRochaRmrz
 
 ---
 
