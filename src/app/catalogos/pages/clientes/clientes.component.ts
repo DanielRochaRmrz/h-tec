@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,6 +11,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ClientesDialogComponent } from '../../dialogs/clientes-dialog/clientes-dialog.component';
 import Swal from 'sweetalert2';
 import { ClientesService } from '../../services/clientes.service';
+import { DialogService } from '../../../shared/services/dialog.service';
 import { ClienteData } from '../../interfaces/clientes.interface';
 
 @Component({
@@ -29,9 +30,8 @@ export class ClientesComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private _clientesService: ClientesService, public dialog: MatDialog) {
-
-  }
+  private _dialogService = inject(DialogService);
+  private _clientesService = inject(ClientesService);
 
   ngAfterViewInit() {
     this.getDataClientes();
@@ -60,56 +60,62 @@ export class ClientesComponent {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(ClientesDialogComponent, {
-      data: {isSaveDisabled: false, type: 'agregar'},
+    const dialogRef = this._dialogService.abrirDialogo(ClientesDialogComponent, {
+      isSaveDisabled: false,
+      type: 'agregar'
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
+      if (result) {
         this._clientesService.addCliente(result).then(() => {
           Swal.fire(
             'Agregado',
-            'El cliente se ha sido agregado exitosamente.',
+            'El cliente ha sido agregado exitosamente.',
             'success'
           );
           this.getDataClientes();
         }).catch(error => {
           console.error('Error al agregar el cliente', error);
-        })
+        });
       }
     });
   }
 
-  consultar(row: any) {
-    this.dialog.open(ClientesDialogComponent, {
-     data: { ...row, isSaveDisabled: true, type: 'ver' }
-   });
- }
+  consultar(row: any): void {
+    this._dialogService.abrirDialogo(ClientesDialogComponent, {
+      ...row,
+      isSaveDisabled: true,
+      type: 'ver'
+    });
+  }
 
- editar(row: any) {
-   const dialogRef = this.dialog.open(ClientesDialogComponent, {
-     data: { ...row, isSaveDisabled: false, type: 'editar' }
-   });
-   dialogRef.afterClosed().subscribe(result => {
-     if (result) {
-       this._clientesService.actualizarCliente(row.id, result).then(() => {
-         Swal.fire(
-           'Actualizado',
-           'El cliente se ha sido actualizado.',
-           'success'
-         );
-         this.getDataClientes();
-       }).catch(error => {
-         Swal.fire(
-           'Error',
-           'Hubo un problema al actualizar el cliente.',
-           'error'
-         );
-         console.error('Error al actualizar el cliente', error);
-       });
-     }
-   });
- }
+  editar(row: any): void {
+    const dialogRef = this._dialogService.abrirDialogo(ClientesDialogComponent, {
+      ...row,
+      isSaveDisabled: false,
+      type: 'editar'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this._clientesService.actualizarCliente(row.id, result).then(() => {
+          Swal.fire(
+            'Actualizado',
+            'El cliente ha sido actualizado.',
+            'success'
+          );
+          this.getDataClientes();
+        }).catch(error => {
+          Swal.fire(
+            'Error',
+            'Hubo un problema al actualizar el cliente.',
+            'error'
+          );
+          console.error('Error al actualizar el cliente', error);
+        });
+      }
+    });
+  }
 
  eliminar(row: any) {
    Swal.fire({
