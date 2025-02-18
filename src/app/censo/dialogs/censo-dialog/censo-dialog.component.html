@@ -1,6 +1,6 @@
 <h2 mat-dialog-title> {{ isEditMode ? 'Editar censo' : 'Nuevo censo' }} </h2>
 <mat-dialog-content>
-  <mat-stepper orientation="vertical" [linear]="isLinear" #stepper>
+  <mat-stepper orientation="horizontal" [linear]="isLinear" #stepper>
     <mat-step [stepControl]="clientForm">
       <form [formGroup]="clientForm">
         <ng-template matStepLabel>Cliente</ng-template>
@@ -87,7 +87,7 @@
                       <mat-label>Selecciona un equipo</mat-label>
                       <mat-select formControlName="tipo" class="select-equipo">
                         <mat-option *ngFor="let equipo of equipos" [value]="equipo.nombre">
-                          {{ equipo.nombre }} 
+                          {{ equipo.nombre }}
                         </mat-option>
                       </mat-select>
                     </mat-form-field>

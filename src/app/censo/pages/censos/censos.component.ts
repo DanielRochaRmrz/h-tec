@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,6 +10,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { CensosService } from '../../services/censos.service';
+import { DialogService } from '../../../shared/services/dialog.service';
 import { CensosData } from '../../interfaces/cesos.interface';
 import { CensoDialogComponent } from '../../dialogs/censo-dialog/censo-dialog.component';
 import { CensoDetalleDialogComponent } from '../../dialogs/censo-detalle-dialog/censo-detalle-dialog.component';
@@ -29,9 +30,8 @@ export class CensosComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private _censosService: CensosService, public dialog: MatDialog) {
-
-  }
+  private _dialogService = inject(DialogService);
+  private _censosService = inject(CensosService);
 
   ngAfterViewInit() {
     this.getDataCensos();
@@ -61,28 +61,32 @@ export class CensosComponent {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(CensoDialogComponent, {
-      data: {},
-      panelClass: 'full-screen-modal',
+    const dialogRef = this._dialogService.abrirDialogo(CensoDialogComponent, {
+      data: {}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+    dialogRef.afterClosed().subscribe(() => {
       this.getDataCensos();
     });
   }
 
   openCensoDetalleDialog(row: CensosData): void {
-    const dialogRef = this.dialog.open(CensoDetalleDialogComponent, {
-      data: row,
-      autoFocus: false
+    const dialogRef = this._dialogService.abrirDialogo(CensoDetalleDialogComponent, {
+      ...row
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+    dialogRef.afterClosed().subscribe(() => {
       this.getDataCensos();
     });
   }
+
+  editar(row: any): void {
+    this._dialogService.abrirDialogo(CensoDialogComponent, {
+      ...row,
+      editMod: true
+    });
+  }
+
 
   eliminar(row: any): void {
     Swal.fire({
@@ -111,13 +115,6 @@ export class CensosComponent {
           console.error('Error al eliminar el producto', error);
         });
       }
-    });
-  }
-
-  editar(row: any): void {
-    this.dialog.open(CensoDialogComponent, {
-      data: { ...row, editMod: true },
-      panelClass: 'full-screen-modal',
     });
   }
 }
