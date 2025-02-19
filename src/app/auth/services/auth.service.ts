@@ -52,6 +52,7 @@ export class AuthService {
     this.auth.signOut().then(() => {
       if (this.isBrowser()) {
         localStorage.removeItem('user');
+        localStorage.clear();
       }
       this.ngZone.run(() => {
         this.userSubject.next(null);

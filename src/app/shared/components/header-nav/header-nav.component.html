@@ -1,89 +1,57 @@
-<mat-toolbar class="static-toolbar">
-  <button
-    mat-icon-button
-    class="ht-icon"
-    aria-label="Example icon-button with menu icon"
-    (click)="toggleDrawer()"
-  >
+<!-- Toolbar principal -->
+<mat-toolbar class="static-toolbar" [class.shifted]="drawer.opened && !isMobile">
+  <button mat-icon-button class="ht-icon" aria-label="Menú" (click)="toggleDrawer()">
     <mat-icon>menu</mat-icon>
   </button>
   <span>H-Tec</span>
   <span class="ht-spacer"></span>
-  <button
-    mat-icon-button
-    (click)="logout()"
-    class="ht-icon"
-  >
+  <button mat-icon-button (click)="logout()" class="ht-icon">
     <mat-icon>logout</mat-icon>
   </button>
 </mat-toolbar>
 
-<mat-drawer-container class="ht-container" hasBackdrop="false">
-  <mat-drawer #drawer mode="side" opened class="ht-sidenav">
-    <mat-toolbar>
-      <span>My Application</span>
+<!-- Backdrop (Fondo oscuro cuando el menú está abierto en móviles) -->
+<div class="menu-backdrop" *ngIf="isMobile && drawer.opened" (click)="closeDrawer()"></div>
+
+<mat-drawer-container class="ht-container">
+  <!-- Sidebar -->
+  <mat-drawer #drawer [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile" class="ht-sidenav"
+              [class.open]="drawer.opened">
+
+    <!-- Encabezado dentro del menú en pantallas grandes -->
+    <mat-toolbar *ngIf="!isMobile" class="menu-toolbar">
+      <span>H-Tec</span>
     </mat-toolbar>
 
     <div class="col-12">
       <div class="list-group">
-        <a
-          href="#"
-          [routerLinkActive]="['active']"
-          class="list-group-item list-group-item-action active"
-          >Inicio</a
-        >
+        <a href="#" [routerLink]="['/']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"
+           class="list-group-item list-group-item-action" (click)="closeDrawer()">Inicio</a>
 
         <div>
-          <a
-            href="#submenu"
-            [routerLinkActive]="['active']"
-            class="list-group-item list-group-item-action"
-            data-bs-toggle="collapse"
-            >Catálogos</a
-          >
-          <div id="submenu" class="collapse">
-            <a
-              href="#"
-              [routerLink]="['/catalogos/productos']"
-              [routerLinkActive]="['active']"
-              class="list-group-item list-group-item-action"
-              >Productos</a
-            >
-            <a
-              href="#"
-              [routerLink]="['/catalogos/tecnicos']"
-              [routerLinkActive]="['active']"
-              class="list-group-item list-group-item-action"
-              >Técnicos</a
-            >
-            <a
-              href="#"
-              [routerLink]="['/catalogos/clientes']"
-              [routerLinkActive]="['active']"
-              class="list-group-item list-group-item-action"
-              >Clientes</a
-            >
+          <a class="list-group-item list-group-item-action" (click)="toggleSubmenu()">Catálogos</a>
+          <div id="submenu" class="collapse" [class.show]="submenuOpen">
+            <a href="#" [routerLink]="['/catalogos/productos']" [routerLinkActive]="['active']"
+               class="list-group-item list-group-item-action" (click)="closeDrawer()">Productos</a>
+            <a href="#" [routerLink]="['/catalogos/tecnicos']" [routerLinkActive]="['active']"
+               class="list-group-item list-group-item-action" (click)="closeDrawer()">Técnicos</a>
+            <a href="#" [routerLink]="['/catalogos/clientes']" [routerLinkActive]="['active']"
+               class="list-group-item list-group-item-action" (click)="closeDrawer()">Clientes</a>
           </div>
         </div>
 
-        <a
-          href="#"
-          [routerLink]="['/censo/censo']"
-          [routerLinkActive]="['active']"
-          class="list-group-item list-group-item-action active"
-          >Censo</a
-        >
+        <a href="#" [routerLink]="['/censo/censo']" [routerLinkActive]="['active']"
+           class="list-group-item list-group-item-action" (click)="closeDrawer()">Censo</a>
       </div>
     </div>
   </mat-drawer>
 
+  <!-- Contenido principal -->
   <div class="ht-sidenav-content">
     <div class="container">
       <div class="row justify-content-center align-items-center g-2">
         <div class="col-12 mt-4">
-          <h1 class="text-start">
-            {{ title }}
-          </h1>
+          <h1 class="text-start">{{ title }}</h1>
         </div>
         <div class="col-12">
           <router-outlet></router-outlet>

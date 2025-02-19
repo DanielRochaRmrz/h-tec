@@ -3,6 +3,10 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+::ng-deep .mat-drawer-content {
+  display: grid;
+}
+
 @media (max-width: 768px) {
   .cdk-overlay-pane.full-screen-dialog {
     width: 100vw !important;
