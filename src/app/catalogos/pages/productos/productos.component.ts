@@ -1,6 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -10,6 +9,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ProductosDialogComponent } from '../../dialogs/productos-dialog/productos-dialog.component';
 import { ProductoData } from '../../interfaces/productos.interface';
 import { ProductosService } from '../../services/productos.service';
+import { DialogService } from '../../../shared/services/dialog.service';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 
@@ -29,9 +29,8 @@ export class ProductosComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private _productosService: ProductosService, public dialog: MatDialog) {
-
-  }
+  private _dialogService = inject(DialogService);
+  private _productosService = inject(ProductosService);
 
   ngAfterViewInit() {
     this.getDataProductos();
@@ -60,11 +59,10 @@ export class ProductosComponent {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(ProductosDialogComponent, {
-      data: {isSaveDisabled: false, type: 'agregar'},
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
+    this._dialogService.abrirDialogo(ProductosDialogComponent, {
+      isSaveDisabled: false,
+      type: 'agregar'
+    }).afterClosed().subscribe(result => {
       if (result) {
         this._productosService.addProducto(result).then(() => {
           Swal.fire(
@@ -80,15 +78,19 @@ export class ProductosComponent {
     });
   }
 
-  consultar(row: any) {
-     this.dialog.open(ProductosDialogComponent, {
-      data: { ...row, isSaveDisabled: true, type: 'ver' }
+  consultar(row: any): void {
+    this._dialogService.abrirDialogo(ProductosDialogComponent, {
+      ...row,
+      isSaveDisabled: true,
+      type: 'ver'
     });
   }
 
-  editar(row: any) {
-    const dialogRef = this.dialog.open(ProductosDialogComponent, {
-      data: { ...row, isSaveDisabled: false, type: 'editar' }
+  editar(row: any): void {
+    const dialogRef = this._dialogService.abrirDialogo(ProductosDialogComponent, {
+      ...row,
+      isSaveDisabled: false,
+      type: 'editar'
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
