@@ -1,54 +1,116 @@
-/* Estilo para el mat-toolbar */
+/* Ajustar tamaño del menú en móvil */
+@media (max-width: 768px) {
+  .ht-sidenav {
+    width: 60vw !important; /* Menú a pantalla completa */
+    height: 100vh !important; /* Asegura el alto total */
+    position: fixed;
+    top: 0;
+    left: 0; /* Mostrar inmediatamente en móviles */
+    background: #fff;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Permite desplazamiento si el contenido es mayor */
+  }
+
+  /* Fondo oscuro detrás del menú */
+  .menu-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+
+  /* Asegura que la lista de navegación se expanda completamente */
+  .list-group {
+    flex-grow: 1;
+    overflow-y: auto;
+    max-height: calc(100vh - 64px); /* Ajuste dinámico restando el tamaño del toolbar */
+  }
+
+  /* Ajuste del tamaño de cada ítem del menú */
+  .list-group-item {
+    min-height: 56px; /* Evita que se vean comprimidos */
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+  }
+
+  /* Ajustar el toolbar en móviles */
+  .static-toolbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 64px;
+    z-index: 1200;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+  }
+}
+
+/* Fijar el Toolbar en la parte superior */
 .static-toolbar {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 1000; /* Asegúrate de que el toolbar esté por encima de otros elementos */
-  height: 64px; /* Ajusta según la altura real del toolbar */
+  z-index: 1200; /* Asegura que el toolbar esté siempre visible */
+  height: 64px; /* Ajusta según el tamaño real del toolbar */
   display: flex;
   align-items: center;
+  background-color: white; /* Asegura que el fondo del toolbar sea visible */
+  border-bottom: 1px solid #ddd;
 }
 
-/* Espaciador flexible dentro del toolbar */
-.ht-spacer {
-  flex: 1 1 auto;
-}
-
-/* Contenedor principal */
+/* Ajustar el contenedor para respetar la altura del toolbar */
 .ht-container {
-  width: 100%;
-  height: 100vh;
-  padding-top: 64px; /* Espacio igual a la altura del mat-toolbar */
-  display: flex;
+  display: grid;
   flex-direction: column;
+  min-height: 100vh;
+  overflow: auto;
 }
 
-/* Contenido principal (router-outlet y demás) */
+/* Ajustar el contenido del sidenav */
+.ht-sidenav {
+  width: 260px;
+}
+
+.mat-drawer-container {
+  min-height: 100vh;
+  z-index: auto;
+  display: grid;
+}
+
+::ng-deep .mat-drawer-content {
+  display: grid !important;
+}
+
+/* Asegurar que el contenido respete el espacio del toolbar */
 .ht-sidenav-content {
   flex: 1;
-  overflow: visible;  /* Permite el scroll si el contenido es más grande que la pantalla */
+  overflow: auto;
+  margin-top: 64px; /* Ajusta para que el contenido inicie después del toolbar */
+}
+
+.mat-toolbar {
   display: flex;
-  justify-content: center;
-  align-items: flex-start; /* Asegura que el contenido comience desde arriba */
+  justify-content: space-between;
 }
 
-/* Estilos para la barra lateral */
-.ht-sidenav {
-  width: 230px;
-  flex-shrink: 0;
+.list-group-item {
+  font-size: 16px;
+  border-radius: 0px;
 }
 
-/* Responsividad para pantallas pequeñas */
-@media (max-width: 600px) {
-  .static-toolbar {
-    height: 56px; /* Ajustar altura si cambia en pantallas pequeñas */
-  }
+.list-group-item-action {
+  padding: 10px 15px;
+}
 
-  .ht-container {
-    padding-top: 56px;
-  }
-
-  .ht-sidenav {
-    width: 200px; /* Ajustar el ancho del sidenav para pantallas más pequeñas */
-  }
+.active {
+  background-color: #007bff !important;
+  color: white !important;
 }
